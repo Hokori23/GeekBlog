@@ -1,0 +1,64 @@
+{
+  "name": "geek_blog",
+  "version": "1.0.0",
+  "description": "geek_blog",
+  "author": "Hokori",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
+    "reset": "lerna clean --yes && rm -rf node_modules",
+    "postinstall": "lerna bootstrap",
+    "tree": "node tree.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hokori23/Pro_design.git"
+  },
+  "keywords": [
+    "TypeScript",
+    "Sequelize",
+    "Express",
+    "React",
+    "Blog"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hokori23/Pro_design/issues"
+  },
+  "homepage": "https://github.com/Hokori23/Pro_design#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^16.2.3",
+    "@commitlint/config-conventional": "^16.2.1",
+    "@typescript-eslint/eslint-plugin": "^5.21.0",
+    "@typescript-eslint/parser": "^5.21.0",
+    "chalk": "^4.1.0",
+    "dotenv": "^16.0.0",
+    "eslint": "^8.14.0",
+    "eslint-config-alloy": "^4.5.1",
+    "eslint-plugin-react": "^7.29.4",
+    "husky": "^4.3.8",
+    "lerna": "^3.22.1",
+    "lint-staged": "^12.4.1",
+    "prettier": "^2.6.2",
+    "tree-cli": "^0.6.7",
+    "typescript": "^4.6.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS || (node .scripts/pre_commit.cjs && exit 8)",
+      "post-merge": "sh .scripts/update_dependencies.sh"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,mjsx,cjs,cjsx}": [
+      "eslint --fix --color",
+      "git add"
+    ]
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}
