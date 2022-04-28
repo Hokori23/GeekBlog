@@ -1,0 +1,5 @@
+{
+    "rules": {
+        "semi/color-no-literal": [true, { "severity": "warning", "fixExact": false }]
+    }
+}
