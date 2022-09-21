@@ -7,8 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
-    "reset": "lerna clean --yes && rm -rf node_modules",
-    "postinstall": "lerna bootstrap",
+    "reset": "rm -rf node_modules",
     "tree": "node tree.js"
   },
   "repository": {
@@ -38,7 +37,6 @@
     "eslint-config-alloy": "^4.5.1",
     "eslint-plugin-react": "^7.29.4",
     "husky": "^4.3.8",
-    "lerna": "^3.22.1",
     "lint-staged": "^12.4.1",
     "prettier": "^2.6.2",
     "tree-cli": "^0.6.7",
