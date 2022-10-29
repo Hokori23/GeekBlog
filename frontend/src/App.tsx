@@ -1,50 +1,74 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.scss'
-import { Button, Toast } from '@douyinfe/semi-ui'
+import React, { FC, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Route, Switch } from 'react-router-dom'
+import { routes } from './routes'
+import { RootState, history, store } from '@/store'
+import { ConnectedRouter } from 'connected-react-router'
+import { RequestSnackBar } from '@/components/RequestSnackBar'
+import NotFoundPage from '@/containers/NotFoundPage'
+import MainLayout from '@/layouts/MainLayout'
+import { AliveScope } from 'react-activation'
+import './boot'
 
-function App() {
-  const [count, setCount] = useState(0)
+const root = document.querySelector('#root')
 
+const Routes: FC = () => {
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>Hello Vite + React!</p>
-        <p>
-          <Button
-            theme='solid'
-            color='primary'
-            onClick={() => Toast.warning({ content: 'welcome' })}
-          >
-            Hello Semi
-          </Button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className='App-link'
-            href='https://reactjs.org'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className='App-link'
-            href='https://vitejs.dev/guide/features.html'
-            target='_blank'
-            rel='noopener noreferrer'
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
+    <Switch>
+      {routes.map(
+        ({ path, routeProps, routes, component: Component, layout: Layout = MainLayout }) => (
+          <Route
+            key={path}
+            {...routeProps}
+            path={path}
+            render={(props: any) => (
+              <Layout>
+                <Component {...props} routes={routes} />
+              </Layout>
+            )}
+          />
+        ),
+      )}
+    </Switch>
   )
 }
 
+const App: FC = () => {
+  const state = useSelector((state: RootState) => state.common)
+  const dispatch = useSelector(() => store.dispatch.common)
+  const [appStyle, setAppStyle] = useState<React.CSSProperties>({})
+
+  useEffect(() => {
+    // 初始化页面高度
+    const listener = () => {
+      setAppStyle({
+        minHeight: window.innerHeight,
+      })
+      dispatch.SET_MAIN_HEIGHT()
+    }
+    listener()
+    document.addEventListener('resize', listener)
+    return () => {
+      document.removeEventListener('resize', listener)
+    }
+  }, [])
+  return (
+    <div className='App' style={appStyle}>
+      <ConnectedRouter history={history}>
+        {/**
+         * 404页面兜底
+         * <https://blog.csdn.net/grepets/article/details/96393575>}
+         */}
+        <AliveScope>
+          {/* <Route
+            render={({ location }) =>
+              (location as any)?.state?.is404 ? <NotFoundPage /> : <Routes />
+            }
+          /> */}
+          <Route render={({ location }) => <Routes />} />
+        </AliveScope>
+      </ConnectedRouter>
+    </div>
+  )
+}
 export default App

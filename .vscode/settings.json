@@ -1,22 +1,9 @@
 {
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "vue"
-  ],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "vue"],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "cSpell.words": [
-    "browserslist",
-    "cjsx",
-    "commitlint",
-    "Hokori",
-    "mjsx",
-    "vitejs"
-  ],
+  "cSpell.words": ["browserslist", "cjsx", "commitlint", "Hokori", "mjsx", "vitejs"],
   "[json]": {
     "editor.formatOnSave": false
   },
@@ -40,5 +27,5 @@
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "files.eol": "\n",
-  "typescript.tsdk": "node_modules\\typescript\\lib"
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

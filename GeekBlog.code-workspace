@@ -13,5 +13,7 @@
       "name": "Backend"
     }
   ],
-  "settings": {}
+  "settings": {
+    "typescript.tsdk": "Frontend/node_modules/typescript/lib"
+  }
 }
