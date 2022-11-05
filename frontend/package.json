@@ -8,6 +8,7 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@douyinfe/semi-icons": "^2.22.3",
 		"@douyinfe/semi-ui": "^2.22.3",
 		"@rematch/core": "^2.2.0",
 		"@rematch/immer": "^2.1.3",

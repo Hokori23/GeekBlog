@@ -1,21 +1,24 @@
 import React, { useEffect, Suspense } from 'react'
-import { LayoutProps } from '../types'
-import { useDeskTopSize } from '@/hooks/useScreenSize'
-import { Layout } from '@douyinfe/semi-ui'
+import { useMobileSize } from '@/hooks/useScreenSize'
+import { Layout, Nav as SemiNav } from '@douyinfe/semi-ui'
+import { IconHome, IconArticle, IconComment, IconBookmark } from '@douyinfe/semi-icons'
 import { useSelector } from 'react-redux'
 import { RootState, store } from '@/store'
 import useInitBlogConfig from '@/hooks/useInitBlogConfig'
 import PageLoading from '@/components/PageLoading'
+import { RouteName, routesMap } from '@/routes'
 
 // Components
 import Nav from '../components/Nav'
+import Footer from '../components/Footer'
 import { PathName } from '@/routes'
+import { LayoutProps } from '../types'
 
-const { Header, Footer, Sider, Content } = Layout
+const { Header, Footer: SemiFooter, Sider, Content } = Layout
 
 const MainLayout = React.memo<LayoutProps>(({ Component, ...props }) => {
   const { routes, location, history } = props
-  const isDeskTopSize = useDeskTopSize()
+  const isMobileSize = useMobileSize()
 
   const state = useSelector((state: RootState) => state.common)
   const dispatch = useSelector(() => store.dispatch.common)
@@ -30,17 +33,45 @@ const MainLayout = React.memo<LayoutProps>(({ Component, ...props }) => {
     }
   }, [])
 
-  // if (location.pathname === PathName._HOME) {
-  //   return null
-  // }
-
   return (
     <Layout className='layout'>
       <Header>
         <Nav />
       </Header>
+
       <Layout>
-        <Sider>Sider</Sider>
+        <Sider>
+          <SemiNav
+            selectedKeys={[routesMap[location.pathname].menuKey]}
+            style={{ maxWidth: 220, height: '100%' }}
+            isCollapsed={isMobileSize}
+            items={[
+              {
+                itemKey: routesMap[PathName.HOME].menuKey,
+                text: RouteName.HOME,
+                icon: <IconHome size='large' />,
+              },
+              {
+                // itemKey: routesMap[PathName.POST_OVERVIEW].menuKey,
+                text: RouteName.POST,
+                icon: <IconArticle size='large' />,
+              },
+              {
+                // itemKey: routesMap[PathName.MOMENT_OVERVIEW].menuKey,
+                text: RouteName.MOMENT,
+                icon: <IconComment size='large' />,
+              },
+              {
+                // itemKey: routesMap[PathName.POST_TAG].menuKey,
+                text: RouteName.POST_TAG,
+                icon: <IconBookmark size='large' />,
+              },
+            ]}
+            footer={{
+              collapseButton: true,
+            }}
+          />
+        </Sider>
         <Content>
           <PageLoading show={loadingBlogConfig} />
           <Suspense fallback={<PageLoading />}>
@@ -48,7 +79,9 @@ const MainLayout = React.memo<LayoutProps>(({ Component, ...props }) => {
           </Suspense>
         </Content>
       </Layout>
-      <Footer>Footer</Footer>
+      <SemiFooter>
+        <Footer />
+      </SemiFooter>
     </Layout>
   )
 })

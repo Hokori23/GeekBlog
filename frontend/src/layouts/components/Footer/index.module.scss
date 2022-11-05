@@ -1,0 +1,16 @@
+.footer {
+  display: flex;
+  align-items: center;
+  padding: 8px 24px;
+
+  span,
+  div {
+    color: var(--semi-color-text-2) !important;
+  }
+  background-color: rgba(var(--semi-grey-0), 1) !important;
+  .col {
+    display: flex;
+    justify-content: center;
+    flex: auto;
+  }
+}

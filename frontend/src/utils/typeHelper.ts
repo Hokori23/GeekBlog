@@ -12,3 +12,5 @@ export type ExtractProps<TComponentOrTProps> = TComponentOrTProps extends React.
 >
   ? TProps
   : TComponentOrTProps
+
+export type ObjectValues<T extends Object> = T extends { [key: string]: infer A } ? A : never

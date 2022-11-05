@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo } from 'react'
-import { Avatar, Dropdown, Modal, Nav as SemiNav } from '@douyinfe/semi-ui'
+import React, { useMemo } from 'react'
+import { Avatar, Dropdown, Modal, Nav as SemiNav, ButtonGroup, Button } from '@douyinfe/semi-ui'
 import { DropdownProps } from '@douyinfe/semi-ui/lib/es/dropdown'
 import { NavProps as SemiNavProps } from '@douyinfe/semi-ui/lib/es/navigation'
 import { useSelector } from 'react-redux'
@@ -38,21 +38,19 @@ const Nav = React.memo<SemiNavProps>(({ ...props }) => {
 
   const dropdownMenu = useMemo(() => {
     const menu: DropdownProps['menu'] = [
-      {
-        node: 'item',
-        name: RouteName.HOME,
-        active: !inAdminPage,
-        onClick: () => history.push(PathName.HOME),
-      },
-    ]
-    isAdmin &&
-      menu.push({
-        node: 'item',
-        name: RouteName.ADMIN,
-        active: inAdminPage,
-        onClick: () => history.push(PathName.ADMIN),
-      })
-    menu.push(
+      isAdmin
+        ? {
+            node: 'item',
+            name: RouteName.ADMIN,
+            active: inAdminPage,
+            onClick: () => history.push(PathName.ADMIN),
+          }
+        : {
+            node: 'item',
+            name: RouteName.HOME,
+            active: !inAdminPage,
+            onClick: () => history.push(PathName.HOME),
+          },
       {
         node: 'item',
         name: RouteName.USER,
@@ -61,27 +59,14 @@ const Nav = React.memo<SemiNavProps>(({ ...props }) => {
       {
         node: 'divider',
       },
-    )
-    isLogin
-      ? menu.push({
-          node: 'item',
-          name: '退出登录',
-          onClick: handleLogOut,
-        })
-      : menu.push(
-          {
-            node: 'item',
-            name: '登录',
-            onClick: () => history.push(PathName.LOGIN),
-          },
-          {
-            node: 'item',
-            name: '注册',
-            onClick: () => history.push(PathName.REGISTER),
-          },
-        )
+      {
+        node: 'item',
+        name: '退出登录',
+        onClick: handleLogOut,
+      },
+    ]
     return menu
-  }, [isLogin])
+  }, [])
 
   return (
     <SemiNav
@@ -91,9 +76,23 @@ const Nav = React.memo<SemiNavProps>(({ ...props }) => {
         text: blogName,
       }}
       footer={
-        <Dropdown position='bottomRight' menu={dropdownMenu}>
-          <Avatar alt={userInfo.userName} size='small' src={userInfo.avatarUrl} />
-        </Dropdown>
+        isLogin ? (
+          <Dropdown position='bottomRight' menu={dropdownMenu}>
+            <Avatar
+              alt={userInfo.userName}
+              size='small'
+              src={userInfo.avatarUrl}
+              style={{ marginRight: 12 }}
+            />
+          </Dropdown>
+        ) : (
+          <ButtonGroup>
+            <Button theme='solid' onClick={() => history.push(PathName.LOGIN)}>
+              登录
+            </Button>
+            <Button onClick={() => history.push(PathName.REGISTER)}>注册</Button>
+          </ButtonGroup>
+        )
       }
       {...props}
     />

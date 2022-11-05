@@ -96,6 +96,7 @@ export const routes: RouteConfig[] = [
   // },
   {
     path: PathName.INIT,
+    menuKey: PathName.INIT,
     component: lazy(() => import('@/containers/Init')),
     layout: BlankLayout,
     routeProps: {
@@ -195,6 +196,7 @@ export const routes: RouteConfig[] = [
   // },
   {
     path: PathName._HOME,
+    menuKey: PathName.HOME,
     component: lazy(() => import('@/containers/Home')),
     routeProps: {
       exact: true,
@@ -202,10 +204,12 @@ export const routes: RouteConfig[] = [
   },
   {
     path: PathName._HOME,
+    menuKey: PathName.HOME,
     component: lazy(() => import('@/containers/Home')),
     routes: [
       {
         path: PathName.HOME,
+        menuKey: PathName.HOME,
         component: HomeOverview,
       },
       // {
@@ -252,9 +256,34 @@ export const routes: RouteConfig[] = [
   // },
 ]
 
+const genRoutesMap = (routes: RouteConfig[]) => {
+  const routesMap: Record<
+    string,
+    {
+      path: string
+      menuKey: string
+    }
+  > = {}
+  const recur = (routes: RouteConfig[]) => {
+    routes.forEach(({ path, menuKey, routes }) => {
+      routesMap[path] = {
+        path,
+        menuKey,
+      }
+      routes && recur(routes)
+    })
+  }
+  recur(routes)
+  return routesMap
+}
+
+export const routesMap = genRoutesMap(routes)
+
 export interface RouteConfig {
   /* 路由路径 */
   path: string
+  /* 侧边栏Item激活Key */
+  menuKey: string
   /* 需要渲染的组件 */
   component: ComponentClass<any> | FunctionComponent<any>
   layout?: ComponentClass<LayoutProps> | FunctionComponent<LayoutProps>
