@@ -12,7 +12,7 @@ export interface CommonState {
   token?: string
   isLogin: boolean
   appBarTitle: string
-  blogConfig: Option[]
+  blogConfig: Option[] | null
   mainHeight: string
 }
 
@@ -21,7 +21,7 @@ export const defaultCommonState: CommonState = {
   token: '',
   isLogin: false,
   appBarTitle: '',
-  blogConfig: [],
+  blogConfig: null,
   mainHeight: '0px',
 }
 export const common = createModel<RootModel>()({

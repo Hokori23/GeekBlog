@@ -15,4 +15,4 @@ if (!token || !userInfo) {
   dispatch.common.setToken(token)
   dispatch.common.login()
 }
-dispatch.common.setBlogConfig(JSON.parse(blogConfig || '[]') as Option[])
+dispatch.common.setBlogConfig(JSON.parse(blogConfig || 'null'))

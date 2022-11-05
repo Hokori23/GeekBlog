@@ -1,4 +1,4 @@
-import { FunctionComponent, ComponentClass } from 'react'
+import { lazy, FunctionComponent, ComponentClass } from 'react'
 import { RouteComponentProps, RouteProps } from 'react-router-dom'
 import BlankLayout from '@/layouts/BlankLayout'
 import { LayoutProps } from '@/layouts/types'
@@ -96,7 +96,7 @@ export const routes: RouteConfig[] = [
   // },
   {
     path: PathName.INIT,
-    component: Init,
+    component: lazy(() => import('@/containers/Init')),
     layout: BlankLayout,
     routeProps: {
       exact: true,
@@ -195,14 +195,14 @@ export const routes: RouteConfig[] = [
   // },
   {
     path: PathName._HOME,
-    component: Home,
+    component: lazy(() => import('@/containers/Home')),
     routeProps: {
       exact: true,
     },
   },
   {
     path: PathName._HOME,
-    component: Home,
+    component: lazy(() => import('@/containers/Home')),
     routes: [
       {
         path: PathName.HOME,
