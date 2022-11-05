@@ -1,6 +1,7 @@
 import { FunctionComponent, ComponentClass } from 'react'
 import { RouteComponentProps, RouteProps } from 'react-router-dom'
 import BlankLayout from '@/layouts/BlankLayout'
+import { LayoutProps } from '@/layouts/types'
 import Demo from '@/containers/Demo'
 import Init from '@/containers/Init'
 import Sign from '@/containers/Sign'
@@ -192,55 +193,55 @@ export const routes: RouteConfig[] = [
   //     },
   //   ],
   // },
-  // {
-  //   path: PathName._HOME,
-  //   component: Home,
-  //   routeProps: {
-  //     exact: true,
-  //   },
-  // },
-  // {
-  //   path: PathName._HOME,
-  //   component: Home,
-  //   routes: [
-  //     {
-  //       path: PathName.HOME,
-  //       component: HomeOverview,
-  //     },
-  //     {
-  //       path: PathName.POST_DETAIL,
-  //       component: PostDetail,
-  //     },
-  //     {
-  //       path: PathName.POST_OVERVIEW,
-  //       component: PostOverview,
-  //     },
-  //     {
-  //       path: PathName.MOMENT_OVERVIEW,
-  //       component: MomentOverview,
-  //     },
-  //     {
-  //       path: PathName.POST_TAG_OVERVIEW,
-  //       component: PostTagOverview,
-  //     },
-  //     {
-  //       path: PathName.POST_TAG,
-  //       component: PostTag,
-  //     },
-  //     {
-  //       path: PathName.USER_DETAIL,
-  //       component: UserDetail,
-  //     },
-  //     {
-  //       path: PathName.USER,
-  //       component: User,
-  //     },
-  //     {
-  //       path: PathName._NOT_FOUND_PAGE,
-  //       component: NotFoundPage,
-  //     },
-  //   ],
-  // },
+  {
+    path: PathName._HOME,
+    component: Home,
+    routeProps: {
+      exact: true,
+    },
+  },
+  {
+    path: PathName._HOME,
+    component: Home,
+    routes: [
+      {
+        path: PathName.HOME,
+        component: HomeOverview,
+      },
+      // {
+      //   path: PathName.POST_DETAIL,
+      //   component: PostDetail,
+      // },
+      // {
+      //   path: PathName.POST_OVERVIEW,
+      //   component: PostOverview,
+      // },
+      // {
+      //   path: PathName.MOMENT_OVERVIEW,
+      //   component: MomentOverview,
+      // },
+      // {
+      //   path: PathName.POST_TAG_OVERVIEW,
+      //   component: PostTagOverview,
+      // },
+      // {
+      //   path: PathName.POST_TAG,
+      //   component: PostTag,
+      // },
+      // {
+      //   path: PathName.USER_DETAIL,
+      //   component: UserDetail,
+      // },
+      // {
+      //   path: PathName.USER,
+      //   component: User,
+      // },
+      // {
+      //   path: PathName._NOT_FOUND_PAGE,
+      //   component: NotFoundPage,
+      // },
+    ],
+  },
   // {
   //   path: PathName._NOT_FOUND_PAGE,
   //   component: NotFoundPage,
@@ -256,7 +257,7 @@ export interface RouteConfig {
   path: string
   /* 需要渲染的组件 */
   component: ComponentClass<any> | FunctionComponent<any>
-  layout?: ComponentClass<any> | FunctionComponent<any>
+  layout?: ComponentClass<LayoutProps> | FunctionComponent<LayoutProps>
   /* 子路由 */
   routes?: RouteConfig[]
   routeProps?: RouteProps

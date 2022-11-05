@@ -141,7 +141,7 @@ const Init: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
             },
           ]}
         />
-        <Form.Input
+        {/* <Form.Input
           field='emailCaptcha'
           label='邮箱验证码'
           rules={[
@@ -151,7 +151,7 @@ const Init: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
               message: '邮箱验证码为8位小写字母和数字组成，请检查格式',
             },
           ]}
-        />
+        /> */}
         <Form.Select
           field='gender'
           label='性别'

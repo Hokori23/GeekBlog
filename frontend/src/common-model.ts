@@ -9,7 +9,7 @@ import { computeDOMHeight } from './utils/tools'
 
 export interface CommonState {
   userInfo: Partial<User>
-  token: string
+  token?: string
   isLogin: boolean
   appBarTitle: string
   blogConfig: Option[]
@@ -27,21 +27,21 @@ export const defaultCommonState: CommonState = {
 export const common = createModel<RootModel>()({
   state: defaultCommonState,
   reducers: {
-    SET_USER_INFO: (state: CommonState, newUserInfo: Partial<User>) => {
+    setUserInfo: (state: CommonState, newUserInfo: Partial<User>) => {
       state.userInfo = newUserInfo
       localStorage.setItem(USER_INFO_NAME, JSON.stringify(newUserInfo))
       return state
     },
-    SET_TOKEN: (state: CommonState, newToken: string) => {
+    setToken: (state: CommonState, newToken?: string) => {
       state.token = newToken
-      if (newToken) localStorage.setItem(ACCESS_TOKEN_NAME, newToken)
+      newToken && localStorage.setItem(ACCESS_TOKEN_NAME, newToken)
       return state
     },
-    LOGIN: (state: CommonState) => {
+    login: (state: CommonState) => {
       state.isLogin = true
       return state
     },
-    LOGOUT: (state: CommonState) => {
+    logOut: (state: CommonState) => {
       state.userInfo = defaultCommonState.userInfo
       state.isLogin = false
       state.token = ''
@@ -49,16 +49,16 @@ export const common = createModel<RootModel>()({
       localStorage.removeItem(ACCESS_TOKEN_NAME)
       return state
     },
-    SET_APPBAR_TITLE: (state: CommonState, newTitle: string) => {
+    setAppBarTitle: (state: CommonState, newTitle: string) => {
       state.appBarTitle = newTitle
       return state
     },
-    SET_BLOG_CONFIG: (state: CommonState, newBlogConfig: Option[]) => {
+    setBlogConfig: (state: CommonState, newBlogConfig: Option[]) => {
       state.blogConfig = newBlogConfig
       localStorage.setItem(BLOG_CONFIG, JSON.stringify(newBlogConfig))
       return state
     },
-    SET_MAIN_HEIGHT: (state: CommonState, newHeight?: string) => {
+    setMainHeight: (state: CommonState, newHeight?: string) => {
       let height = newHeight
       if (!height) {
         height = `${window.innerHeight - (computeDOMHeight('#App-Bar', true) as number)}px`
@@ -74,8 +74,14 @@ export const common = createModel<RootModel>()({
         if (state.common.isLogin) {
           const res = await Request.User.Check()
           if (res?.code !== 0) {
-            common.LOGOUT()
+            common.logOut()
           }
+        }
+      },
+      async getBlogConfig(payload, state) {
+        const res = await Request.Option.RetrieveAll()
+        if (res?.data) {
+          common.setBlogConfig(res.data)
         }
       },
     }

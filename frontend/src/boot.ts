@@ -1,7 +1,6 @@
 import { store } from '@/store'
 import { ACCESS_TOKEN_NAME, BLOG_CONFIG, USER_INFO_NAME } from '@/utils/const'
 import { Option } from './utils/Request/Option'
-
 // 初始化store
 const { dispatch } = store
 
@@ -12,8 +11,8 @@ if (!token || !userInfo) {
   localStorage.removeItem(ACCESS_TOKEN_NAME)
   localStorage.removeItem(USER_INFO_NAME)
 } else {
-  dispatch.common.SET_USER_INFO(JSON.parse(userInfo || 'null'))
-  dispatch.common.SET_TOKEN(token)
-  dispatch.common.LOGIN()
+  dispatch.common.setUserInfo(JSON.parse(userInfo || 'null'))
+  dispatch.common.setToken(token)
+  dispatch.common.login()
 }
-dispatch.common.SET_BLOG_CONFIG(JSON.parse(blogConfig || '[]') as Option[])
+dispatch.common.setBlogConfig(JSON.parse(blogConfig || '[]') as Option[])

@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, BrowserRouter } from 'react-router-dom'
 import { routes } from './routes'
 import { RootState, history, store } from '@/store'
 import { ConnectedRouter } from 'connected-react-router'
@@ -21,11 +21,7 @@ const Routes: FC = () => {
             key={path}
             {...routeProps}
             path={path}
-            render={(props: any) => (
-              <Layout>
-                <Component {...props} routes={routes} />
-              </Layout>
-            )}
+            render={(props: any) => <Layout Component={Component} {...props} routes={routes} />}
           />
         ),
       )}
@@ -44,7 +40,7 @@ const App: FC = () => {
       setAppStyle({
         minHeight: window.innerHeight,
       })
-      dispatch.SET_MAIN_HEIGHT()
+      dispatch.setMainHeight()
     }
     listener()
     document.addEventListener('resize', listener)
@@ -54,20 +50,22 @@ const App: FC = () => {
   }, [])
   return (
     <div className='App' style={appStyle}>
-      <ConnectedRouter history={history}>
-        {/**
-         * 404页面兜底
-         * <https://blog.csdn.net/grepets/article/details/96393575>}
-         */}
-        <AliveScope>
+      <BrowserRouter>
+        <ConnectedRouter history={history}>
+          {/**
+           * 404页面兜底
+           * <https://blog.csdn.net/grepets/article/details/96393575>}
+           */}
+          {/* <AliveScope> */}
           {/* <Route
             render={({ location }) =>
               (location as any)?.state?.is404 ? <NotFoundPage /> : <Routes />
             }
           /> */}
           <Route render={({ location }) => <Routes />} />
-        </AliveScope>
-      </ConnectedRouter>
+          {/* </AliveScope> */}
+        </ConnectedRouter>
+      </BrowserRouter>
     </div>
   )
 }

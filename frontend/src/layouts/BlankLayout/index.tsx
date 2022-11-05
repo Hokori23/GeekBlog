@@ -1,5 +1,6 @@
 import React from 'react'
+import { LayoutProps } from '../types'
 
-const BlankLayout: React.FC = ({ children }) => children as React.ReactElement
+const BlankLayout = React.memo<LayoutProps>(({ Component, ...props }) => <Component {...props} />)
 
 export default BlankLayout

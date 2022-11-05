@@ -66,7 +66,7 @@ export const Request = async <T>(config: EnhanceAxiosRequestConfig) => {
         content: '登陆失效，请重新登陆',
         duration: 3,
       })
-      dispatch.common.LOGOUT()
+      dispatch.common.logOut()
     } else if (err?.response?.status === 403) {
       Notification.error({
         title: '警告',

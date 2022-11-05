@@ -106,7 +106,7 @@ export const Edit = async (user: Partial<User>) => {
     data: user,
   })
   if (!data?.data) return
-  store.dispatch.common.SET_USER_INFO(data.data)
+  store.dispatch.common.setUserInfo(data.data)
   return data.data
 }
 
@@ -133,11 +133,7 @@ export const Delete__Admin = async (id: number) => {
   })
 }
 
-export const SendCaptcha = async (
-  userAccount: string,
-  userName: string,
-  email: string,
-) => {
+export const SendCaptcha = async (userAccount: string, userName: string, email: string) => {
   return await Request<Restful<string>>({
     method: 'POST',
     url: '/api/captcha/get',

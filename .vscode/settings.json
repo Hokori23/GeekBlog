@@ -3,7 +3,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "cSpell.words": ["browserslist", "cjsx", "commitlint", "Hokori", "mjsx", "vitejs"],
+  "cSpell.words": ["browserslist", "cjsx", "commitlint", "Hokori", "mjsx", "Sider", "vitejs"],
   "[json]": {
     "editor.formatOnSave": false
   },
