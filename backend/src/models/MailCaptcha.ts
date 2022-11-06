@@ -1,12 +1,21 @@
-import { DataTypes, Model } from 'sequelize'
+import {
+  DataTypes,
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+} from 'sequelize'
 import sequelize from 'database'
 
-class MailCaptcha extends Model {
-  public id!: number | null
-  public email!: string
-  public captcha!: string
-  public readonly createdAt!: Date
-  public readonly updatedAt!: Date
+class MailCaptcha extends Model<
+  InferAttributes<MailCaptcha>,
+  InferCreationAttributes<MailCaptcha>
+> {
+  public declare id: CreationOptional<number>
+  public declare email: string
+  public declare captcha: string
+  public declare readonly createdAt?: Date
+  public declare readonly updatedAt?: Date
 }
 
 MailCaptcha.init(
@@ -28,6 +37,8 @@ MailCaptcha.init(
       type: DataTypes.STRING(8),
       allowNull: false,
     },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
   {
     sequelize,

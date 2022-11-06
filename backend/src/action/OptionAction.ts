@@ -1,7 +1,7 @@
 import { Option } from '@models'
-import { Transaction } from 'sequelize/types'
+import { InferAttributes, Transaction, WhereOptions } from 'sequelize/types'
 import { Op, QueryTypes } from 'sequelize'
-import { OptionAttribute } from '@models/Option'
+import { OptionAttributes } from '@models/Option'
 import config from '@config'
 
 import sequelize from '@database'
@@ -23,10 +23,7 @@ const Create = async (option: Option, t?: Transaction): Promise<Option> => {
  * @param { Option[] } arr
  * @param { Transaction } t?
  */
-const CreateBulk = async (
-  arr: Option[],
-  t?: Transaction,
-): Promise<Option[]> => {
+const CreateBulk = async (arr: Option[], t?: Transaction): Promise<Option[]> => {
   return await Option.bulkCreate(arr, {
     validate: true,
     transaction: t,
@@ -38,10 +35,7 @@ const CreateBulk = async (
  * @param { Option[] } arr
  * @param { Transaction } t?
  */
-const CreateBulk__Update = async (
-  arr: Option[],
-  t?: Transaction,
-): Promise<Option[]> => {
+const CreateBulk__Update = async (arr: Option[], t?: Transaction): Promise<Option[]> => {
   return await Option.bulkCreate(arr, {
     validate: true,
     updateOnDuplicate: ['module', 'key', 'value'],
@@ -74,11 +68,7 @@ const Retrieve__All = async (): Promise<Option[]> => {
 /**
  * 修改
  */
-const Update = async (
-  oldOption: Option,
-  newOption: Option,
-  t?: Transaction,
-): Promise<Option> => {
+const Update = async (oldOption: Option, newOption: Option, t?: Transaction): Promise<Option> => {
   return await Object.assign(oldOption, newOption).save({
     transaction: t,
   })
@@ -86,13 +76,10 @@ const Update = async (
 
 /**
  * 删除设置字段
- * @param { number } id
  */
-const Delete = async (id: number): Promise<number> => {
+const Delete = async (where: { module?: string; key?: string }): Promise<number> => {
   return await Option.destroy({
-    where: {
-      id,
-    },
+    where,
   })
 }
 
@@ -117,7 +104,7 @@ const Delete__All = async (t?: Transaction): Promise<void> => {
 export const Init = async () => {
   const existedOptions = await Retrieve__All()
   if (existedOptions.length) return
-  const options: OptionAttribute[] = [
+  const options: OptionAttributes[] = [
     {
       module: 'system',
       key: 'publicPath',

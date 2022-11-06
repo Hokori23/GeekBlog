@@ -71,7 +71,7 @@ export const isPrimitiveArray = (arr: any[], type: PrimitiveType): boolean => {
  * @description 如果前一个对象没有当前对象的属性，则采用当前对象的
  * @description 针对Object.assign后面对象属性覆盖前面对象属性的问题
  */
-export const mixin = <T>(...objs: T[]): T => {
+export const mixin = <T extends Record<string | number | symbol, any> = any>(...objs: T[]): T => {
   if (!objs.length) throw new Error('参数错误: { objs: Object[] }')
   if (objs.length === 1) return objs[0]
   // 检查传参类型
@@ -79,7 +79,7 @@ export const mixin = <T>(...objs: T[]): T => {
     if (typeof objs[i] !== 'object') {
       throw new TypeError('参数类型错误: [ objs: Object[] ]')
     }
-    Object.keys(objs[i]).forEach((key: string) => {
+    Reflect.ownKeys(objs[i]).forEach((key: keyof T) => {
       if (isUndef(objs[i - 1][key])) {
         objs[i - 1][key] = objs[i][key]
       }
@@ -94,7 +94,7 @@ export const mixin = <T>(...objs: T[]): T => {
  */
 export const toArray = (obj: Object): string[] => {
   const res: string[] = []
-  Object.keys(obj).forEach((key) => {
+  Reflect.ownKeys(obj).forEach((key) => {
     res.push(obj[key])
   })
   return res
@@ -105,7 +105,7 @@ export const toArray = (obj: Object): string[] => {
  * @param { Object } obj
  * @param { Array<string> } params
  */
-export const checkIntegrity = <T>(obj: T, params?: Array<keyof T>): boolean => {
+export const checkIntegrity = <T extends Object>(obj: T, params?: Array<keyof T>): boolean => {
   return params
     ? params.every((v) => {
         return isDef(obj[v])

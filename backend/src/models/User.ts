@@ -1,4 +1,10 @@
-import { DataTypes, Model } from 'sequelize'
+import {
+  DataTypes,
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+} from 'sequelize'
 import sequelize from 'database'
 
 export enum Gender {
@@ -17,19 +23,19 @@ export enum GroupCN {
   SUPER_ADMIN = '超级管理员',
 }
 
-class User extends Model {
-  public id!: number | null
-  public userAccount!: string
-  public userName!: string
-  public password?: string
-  public gender?: Gender
-  public email!: string
-  public url?: string
-  public avatarUrl?: string
-  public profile?: string
-  public group?: Group
-  public readonly createdAt!: Date
-  public readonly updatedAt!: Date
+class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
+  public declare id: CreationOptional<number> | null
+  public declare userAccount: string
+  public declare userName: string
+  public declare password?: string
+  public declare gender?: Gender
+  public declare email: string
+  public declare url?: string
+  public declare avatarUrl?: string
+  public declare profile?: string
+  public declare group?: Group
+  public declare readonly createdAt?: Date
+  public declare readonly updatedAt?: Date
 }
 
 User.init(
@@ -127,6 +133,8 @@ User.init(
       defaultValue: Group.SUBSCRIBER,
       allowNull: false,
     },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
   {
     sequelize,

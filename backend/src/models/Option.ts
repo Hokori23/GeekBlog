@@ -1,16 +1,14 @@
-import { DataTypes, Model } from 'sequelize'
+import { DataTypes, Model, InferAttributes, InferCreationAttributes } from 'sequelize'
 import sequelize from 'database'
-export interface OptionAttribute {
-  module: string
-  key: string
-  value?: string
-}
-class Option extends Model {
-  public module!: string
-  public key!: string
-  public value!: string
-  public readonly createdAt!: Date
-  public readonly updatedAt!: Date
+
+export type OptionAttributes = InferAttributes<Option>
+
+class Option extends Model<InferAttributes<Option>, InferCreationAttributes<Option>> {
+  public declare module: string
+  public declare key: string
+  public declare value?: string
+  public declare readonly createdAt?: Date
+  public declare readonly updatedAt?: Date
 }
 
 Option.init(
@@ -29,6 +27,8 @@ Option.init(
       comment: '设置value值',
       type: DataTypes.TEXT,
     },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
   {
     sequelize,

@@ -78,6 +78,7 @@ export const exampleAttribute: NewCommentAttributes = {
   title: '你在 [埃と誇り] 的评论有了新的回复！',
   post: Post.build({
     id: 1,
+    uid: 1,
     title: 'postTitle',
     content: ' content',
   }),

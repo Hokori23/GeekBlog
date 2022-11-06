@@ -1,14 +1,20 @@
-import { DataTypes, Model } from 'sequelize'
+import {
+  DataTypes,
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+} from 'sequelize'
 import sequelize from 'database'
 import { Toggle } from './Post'
 import User from './User'
 
-class Mail extends Model {
-  public id!: number | null
-  public uid!: number
-  public isSubscribed!: boolean
-  public readonly createdAt!: Date
-  public readonly updatedAt!: Date
+class Mail extends Model<InferAttributes<Mail>, InferCreationAttributes<Mail>> {
+  public declare id: CreationOptional<number>
+  public declare uid: number
+  public declare isSubscribed?: boolean
+  public declare readonly createdAt?: Date
+  public declare readonly updatedAt?: Date
 }
 
 Mail.init(
@@ -40,6 +46,8 @@ Mail.init(
       allowNull: false,
       defaultValue: Toggle.N,
     },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
   {
     sequelize,

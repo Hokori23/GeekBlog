@@ -1,7 +1,13 @@
-import { DataTypes, Model } from 'sequelize';
-import sequelize from 'database';
-import User from './User';
-import PostComment from './PostComment';
+import {
+  DataTypes,
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+} from 'sequelize'
+import sequelize from 'database'
+import User from './User'
+import PostComment from './PostComment'
 
 /**
  * @description 添加字段同时要更改相应字段的validate属性
@@ -27,6 +33,7 @@ export enum PostTypeCN {
 
 export enum PostTypeResponseCN {
   POST = '帖子',
+  // eslint-disable-next-line @typescript-eslint/no-duplicate-enum-values
   LANDSCAPE = '帖子',
   MOMENT = '说说',
   PAGE = '自定义页面',
@@ -36,29 +43,29 @@ export enum Toggle {
   N = 0,
   Y = 1,
 }
-class Post extends Model {
-  public id!: number | null;
-  public uid!: number;
-  public title?: string;
-  public coverUrl?: string;
-  public content!: string;
-  public type?: PostType;
-  public draftContent?: string;
-  public isDraft?: Toggle;
-  public isHidden?: Toggle;
-  public isLocked?: Toggle;
-  public priority?: number;
-  public likesCount?: number;
-  public dislikesCount?: number;
-  public pageViews?: number;
+class Post extends Model<InferAttributes<Post>, InferCreationAttributes<Post>> {
+  public declare id: CreationOptional<number>
+  public declare uid: number
+  public declare title?: string
+  public declare coverUrl?: string
+  public declare content: string
+  public declare type?: PostType
+  public declare draftContent?: string
+  public declare isDraft?: Toggle
+  public declare isHidden?: Toggle
+  public declare isLocked?: Toggle
+  public declare priority?: number
+  public declare likesCount?: number
+  public declare dislikesCount?: number
+  public declare pageViews?: number
 
-  public postComments?: PostComment[];
+  public declare postComments?: PostComment[]
 
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  public declare readonly createdAt?: Date
+  public declare readonly updatedAt?: Date
 
   public getUrl(publicPath: string) {
-    return `${publicPath}/post/detail/${String(this.id)}`;
+    return `${publicPath}/post/detail/${String(this.id)}`
   }
 }
 
@@ -157,10 +164,12 @@ Post.init(
       allowNull: false,
       defaultValue: 0,
     },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
   {
     sequelize,
-  }
-);
+  },
+)
 
-export default Post;
+export default Post

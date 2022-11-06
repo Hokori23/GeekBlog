@@ -1,27 +1,36 @@
-import { DataTypes, Model } from 'sequelize';
-import sequelize from 'database';
-import Post from './Post';
-import User from './User';
+import {
+  DataTypes,
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+} from 'sequelize'
+import sequelize from 'database'
+import Post from './Post'
+import User from './User'
 
-class PostComment extends Model {
-  public id!: number;
-  public rootId?: number;
-  public parentId?: number;
-  public pid!: number;
-  public uid!: number;
-  public content!: string;
-  public email!: string;
-  public url?: string;
-  public ip!: string;
-  public userAgent?: string;
-  public likesCount?: number;
-  public dislikesCount?: number;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+class PostComment extends Model<
+  InferAttributes<PostComment>,
+  InferCreationAttributes<PostComment>
+> {
+  public declare id: CreationOptional<number>
+  public declare rootId?: number
+  public declare parentId?: number
+  public declare pid: number
+  public declare uid: number
+  public declare content: string
+  public declare email: string
+  public declare url?: string
+  public declare ip: string
+  public declare userAgent?: string
+  public declare likesCount?: number
+  public declare dislikesCount?: number
+  public declare readonly createdAt?: Date
+  public declare readonly updatedAt?: Date
 }
 
 export interface PostCommentWithAuthor extends PostComment {
-  author?: User;
+  author?: User
 }
 
 PostComment.init(
@@ -102,10 +111,12 @@ PostComment.init(
       allowNull: false,
       defaultValue: 0,
     },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
   {
     sequelize,
-  }
-);
+  },
+)
 
-export default PostComment;
+export default PostComment

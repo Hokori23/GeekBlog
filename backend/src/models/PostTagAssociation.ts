@@ -1,14 +1,23 @@
-import { DataTypes, Model } from 'sequelize';
-import sequelize from 'database';
-import PostTag from './PostTag';
-import Post from './Post';
+import {
+  DataTypes,
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+} from 'sequelize'
+import sequelize from 'database'
+import PostTag from './PostTag'
+import Post from './Post'
 
-class PostTagAssociation extends Model {
-  public id!: number;
-  public pid!: number;
-  public tid!: number;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+class PostTagAssociation extends Model<
+  InferAttributes<PostTagAssociation>,
+  InferCreationAttributes<PostTagAssociation>
+> {
+  public declare id: CreationOptional<number>
+  public declare pid: number
+  public declare tid: number
+  public declare readonly createdAt?: Date
+  public declare readonly updatedAt?: Date
 }
 
 PostTagAssociation.init(
@@ -35,10 +44,12 @@ PostTagAssociation.init(
         key: 'id',
       },
     },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
   {
     sequelize,
-  }
-);
+  },
+)
 
-export default PostTagAssociation;
+export default PostTagAssociation

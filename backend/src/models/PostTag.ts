@@ -1,15 +1,21 @@
-import { DataTypes, Model } from 'sequelize';
-import sequelize from 'database';
+import {
+  DataTypes,
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+} from 'sequelize'
+import sequelize from 'database'
 
-class PostTag extends Model {
-  public id!: number | null;
-  public name!: string;
-  public description?: string;
-  public slug!: string;
-  public iconClass?: string;
-  public iconColor?: string;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+class PostTag extends Model<InferAttributes<PostTag>, InferCreationAttributes<PostTag>> {
+  public declare id: CreationOptional<number>
+  public declare name: string
+  public declare description?: string
+  public declare slug: string
+  public declare iconClass?: string
+  public declare iconColor?: string
+  public declare readonly createdAt?: Date
+  public declare readonly updatedAt?: Date
 }
 
 PostTag.init(
@@ -42,10 +48,12 @@ PostTag.init(
       comment: '图标颜色: { 16位进值 | rgb | rgba } 帖子类型',
       type: DataTypes.STRING(50),
     },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
   {
     sequelize,
-  }
-);
+  },
+)
 
-export default PostTag;
+export default PostTag

@@ -1,9 +1,4 @@
-import {
-  UserAction as Action,
-  MailCaptchaAction,
-  OptionAction,
-  MailAction,
-} from 'action'
+import { UserAction as Action, MailCaptchaAction, OptionAction, MailAction } from 'action'
 import { User, Option, Mail } from 'models'
 import { Restful, md5Crypto, isUndef, isDef } from 'utils'
 import { CodeDictionary } from '@const'
@@ -19,27 +14,24 @@ enum CheckCaptchaResult {
   ERROR = 2,
 }
 
-const checkCaptcha = (
-  updateTime: any,
-  rawOptions: Option[],
-): CheckCaptchaResult => {
+const checkCaptcha = (updateTime: any, rawOptions: Option[]): CheckCaptchaResult => {
   const captchaExpiredTimeData = rawOptions.find(
     (v) => v.module === 'email' && v.key === 'expiredTime',
   )
-  if (isUndef(captchaExpiredTimeData)) return CheckCaptchaResult.ERROR
-  const reg = /^\d*/g
-  const match = reg.exec(captchaExpiredTimeData.value)
-  if (isUndef(match)) return CheckCaptchaResult.ERROR
-  const expiredTime = moment(updateTime).add(
-    match[0],
-    captchaExpiredTimeData.value.slice(
-      reg.lastIndex,
-    ) as moment.DurationInputArg2,
-  )
+  if (isDef(captchaExpiredTimeData?.value)) {
+    const reg = /^\d*/g
+    const match = reg.exec(captchaExpiredTimeData!.value)
+    if (isUndef(match)) return CheckCaptchaResult.ERROR
+    const expiredTime = moment(updateTime).add(
+      match[0],
+      captchaExpiredTimeData!.value.slice(reg.lastIndex) as moment.DurationInputArg2,
+    )
 
-  const nowTime = moment()
-  if (nowTime.isAfter(expiredTime)) return CheckCaptchaResult.EXPIRED
-  return CheckCaptchaResult.SUCCESS
+    const nowTime = moment()
+    if (nowTime.isAfter(expiredTime)) return CheckCaptchaResult.EXPIRED
+    return CheckCaptchaResult.SUCCESS
+  }
+  return CheckCaptchaResult.ERROR
 }
 /**
  * 初始化超级管理员
@@ -64,7 +56,7 @@ const Init = async (user: User): Promise<Restful> => {
     user.group = Group.SUPER_ADMIN
     const registeredUser = await Action.Create(user, t)
     await Promise.all([
-      MailAction.Create(Mail.build({ uid: registeredUser.id }), t),
+      MailAction.Create(Mail.build({ uid: registeredUser.id as number }), t),
       _Create(t),
     ])
     await t.commit()
@@ -75,10 +67,7 @@ const Init = async (user: User): Promise<Restful> => {
     )
   } catch (e: any) {
     await t.rollback()
-    return new Restful(
-      CodeDictionary.COMMON_ERROR,
-      `注册失败, ${String(e.message)}`,
-    )
+    return new Restful(CodeDictionary.COMMON_ERROR, `注册失败, ${String(e.message)}`)
   }
 }
 
@@ -103,10 +92,7 @@ const Register = async (user: User, captcha: string): Promise<Restful> => {
       Action.Retrieve('email', user.email),
     ])
     if (values.filter((v) => isDef(v)).length) {
-      return new Restful(
-        CodeDictionary.REGISTER_ERROR__USER_ACCOUNT_EXISTED,
-        '账号已存在',
-      )
+      return new Restful(CodeDictionary.REGISTER_ERROR__USER_ACCOUNT_EXISTED, '账号已存在')
     }
 
     const [existedMailCaptcha, rawOptions] = await Promise.all([
@@ -114,27 +100,15 @@ const Register = async (user: User, captcha: string): Promise<Restful> => {
       OptionAction.Retrieve__All(),
     ])
     if (isUndef(existedMailCaptcha)) {
-      return new Restful(
-        CodeDictionary.REGISTER_ERROR__NO_CAPTCHA,
-        '没有相应激活码信息',
-      )
+      return new Restful(CodeDictionary.REGISTER_ERROR__NO_CAPTCHA, '没有相应激活码信息')
     }
     if (existedMailCaptcha.captcha !== captcha) {
-      return new Restful(
-        CodeDictionary.REGISTER_ERROR__ERROR_CAPTCHA,
-        '邮箱激活码错误',
-      )
+      return new Restful(CodeDictionary.REGISTER_ERROR__ERROR_CAPTCHA, '邮箱激活码错误')
     }
 
-    const checkCaptchaResult = checkCaptcha(
-      existedMailCaptcha.updatedAt,
-      rawOptions,
-    )
+    const checkCaptchaResult = checkCaptcha(existedMailCaptcha.updatedAt, rawOptions)
     if (checkCaptchaResult === CheckCaptchaResult.EXPIRED) {
-      return new Restful(
-        CodeDictionary.REGISTER_ERROR__CAPTCHA_EXPIRED,
-        '邮箱激活码过期',
-      )
+      return new Restful(CodeDictionary.REGISTER_ERROR__CAPTCHA_EXPIRED, '邮箱激活码过期')
     }
     if (checkCaptchaResult === CheckCaptchaResult.ERROR) {
       throw new Error('解析邮箱系统设置失败')
@@ -148,7 +122,7 @@ const Register = async (user: User, captcha: string): Promise<Restful> => {
     user.group = Group.SUBSCRIBER
 
     const registeredUser = await Action.Create(user, t)
-    await MailAction.Create(Mail.build({ uid: registeredUser.id }), t)
+    await MailAction.Create(Mail.build({ uid: registeredUser.id as number }), t)
     await MailCaptchaAction.Delete(existedMailCaptcha.id as number, t)
     await t.commit()
     return new Restful(
@@ -158,10 +132,7 @@ const Register = async (user: User, captcha: string): Promise<Restful> => {
     )
   } catch (e: any) {
     await t.rollback()
-    return new Restful(
-      CodeDictionary.COMMON_ERROR,
-      `注册失败, ${String(e.message)}`,
-    )
+    return new Restful(CodeDictionary.COMMON_ERROR, `注册失败, ${String(e.message)}`)
   }
 }
 
@@ -169,10 +140,7 @@ const Register = async (user: User, captcha: string): Promise<Restful> => {
  * 登录
  * @param { User } user
  */
-const Login = async (
-  userAccount: string,
-  password: string,
-): Promise<Restful> => {
+const Login = async (userAccount: string, password: string): Promise<Restful> => {
   try {
     const existedUser = await Action.Retrieve('userAccount', userAccount)
     if (isUndef(existedUser)) {
@@ -188,10 +156,7 @@ const Login = async (
     }
     return new Restful(CodeDictionary.LOGIN_ERROR, '账号或密码错误')
   } catch (e: any) {
-    return new Restful(
-      CodeDictionary.COMMON_ERROR,
-      `登陆失败, ${String(e.message)}`,
-    )
+    return new Restful(CodeDictionary.COMMON_ERROR, `登陆失败, ${String(e.message)}`)
   }
 }
 
@@ -203,17 +168,11 @@ const Retrieve__ID = async (id: number): Promise<Restful> => {
   try {
     const user = await Action.Retrieve__Safely('id', id)
     if (isUndef(user)) {
-      return new Restful(
-        CodeDictionary.RETRIEVE_ERROR__USER_NON_EXISTED,
-        '用户不存在',
-      )
+      return new Restful(CodeDictionary.RETRIEVE_ERROR__USER_NON_EXISTED, '用户不存在')
     }
     return new Restful(CodeDictionary.SUCCESS, '查询成功', user.toJSON())
   } catch (e: any) {
-    return new Restful(
-      CodeDictionary.COMMON_ERROR,
-      `查询失败, ${String(e.message)}`,
-    )
+    return new Restful(CodeDictionary.COMMON_ERROR, `查询失败, ${String(e.message)}`)
   }
 }
 
@@ -225,10 +184,7 @@ const Retrieve__All = async (): Promise<Restful> => {
     const users = await Action.Retrieve__All__Safely()
     return new Restful(CodeDictionary.SUCCESS, '查询成功', users)
   } catch (e: any) {
-    return new Restful(
-      CodeDictionary.COMMON_ERROR,
-      `查询失败, ${String(e.message)}`,
-    )
+    return new Restful(CodeDictionary.COMMON_ERROR, `查询失败, ${String(e.message)}`)
   }
 }
 
@@ -239,10 +195,7 @@ const Edit = async (user: any): Promise<Restful> => {
   try {
     const existedUser = await Action.Retrieve('id', user.id as number)
     if (isUndef(existedUser)) {
-      return new Restful(
-        CodeDictionary.REGISTER_ERROR__USER_ACCOUNT_EXISTED,
-        '账号不存在',
-      )
+      return new Restful(CodeDictionary.REGISTER_ERROR__USER_ACCOUNT_EXISTED, '账号不存在')
     }
 
     // TODO: 暂时不给更改密码
@@ -254,39 +207,24 @@ const Edit = async (user: any): Promise<Restful> => {
       Omit(newUser.toJSON() as any, ['password']),
     )
   } catch (e: any) {
-    return new Restful(
-      CodeDictionary.COMMON_ERROR,
-      `编辑失败, ${String(e.message)}`,
-    )
+    return new Restful(CodeDictionary.COMMON_ERROR, `编辑失败, ${String(e.message)}`)
   }
 }
 
 /**
  * 编辑用户
  */
-const Edit__Admin = async (
-  user: User,
-  operatorGroup: Group,
-): Promise<Restful> => {
+const Edit__Admin = async (user: User, operatorGroup: Group): Promise<Restful> => {
   try {
     const existedUser = await Action.Retrieve('id', user.id as number)
     if (isUndef(existedUser)) {
-      return new Restful(
-        CodeDictionary.REGISTER_ERROR__USER_ACCOUNT_EXISTED,
-        '账号不存在',
-      )
+      return new Restful(CodeDictionary.REGISTER_ERROR__USER_ACCOUNT_EXISTED, '账号不存在')
     }
     if (operatorGroup <= (existedUser.group as Group)) {
-      return new Restful(
-        CodeDictionary.EDIT_ERROR__NO_PERMISSION,
-        '你的权限不足以修改该账号信息',
-      )
+      return new Restful(CodeDictionary.EDIT_ERROR__NO_PERMISSION, '你的权限不足以修改该账号信息')
     }
     if (operatorGroup <= (user.group as Group)) {
-      return new Restful(
-        CodeDictionary.EDIT_ERROR__NO_PERMISSION,
-        '你不能给予该用户这样的权限等级',
-      )
+      return new Restful(CodeDictionary.EDIT_ERROR__NO_PERMISSION, '你不能给予该用户这样的权限等级')
     }
     // TODO: 暂时不给更改密码
     delete user.password
@@ -297,10 +235,7 @@ const Edit__Admin = async (
       Omit(newUser.toJSON() as any, ['password']),
     )
   } catch (e: any) {
-    return new Restful(
-      CodeDictionary.COMMON_ERROR,
-      `编辑失败, ${String(e.message)}`,
-    )
+    return new Restful(CodeDictionary.COMMON_ERROR, `编辑失败, ${String(e.message)}`)
   }
 }
 
@@ -318,40 +253,28 @@ const Delete = async (id: string): Promise<Restful> => {
       ? new Restful(CodeDictionary.SUCCESS, '删除账号成功')
       : new Restful(CodeDictionary.DELETE_ERROR__USER, '删除账号失败')
   } catch (e: any) {
-    return new Restful(
-      CodeDictionary.COMMON_ERROR,
-      `删除账号失败, ${String(e.message)}`,
-    )
+    return new Restful(CodeDictionary.COMMON_ERROR, `删除账号失败, ${String(e.message)}`)
   }
 }
 
 /**
  * 删除用户
  */
-const Delete__Admin = async (
-  id: string,
-  operatorGroup: Group,
-): Promise<Restful> => {
+const Delete__Admin = async (id: string, operatorGroup: Group): Promise<Restful> => {
   try {
     const existedUser = await Action.Retrieve('id', Number(id))
     if (isUndef(existedUser)) {
       return new Restful(1, '账号不存在')
     }
     if (operatorGroup <= (existedUser.group as Group)) {
-      return new Restful(
-        CodeDictionary.EDIT_ERROR__NO_PERMISSION,
-        '你的权限不足以删除该账号',
-      )
+      return new Restful(CodeDictionary.EDIT_ERROR__NO_PERMISSION, '你的权限不足以删除该账号')
     }
     const deleteRow = await Action.Delete(Number(id))
     return deleteRow > 0
       ? new Restful(CodeDictionary.SUCCESS, '删除账号成功')
       : new Restful(CodeDictionary.DELETE_ERROR__USER, '删除账号失败')
   } catch (e: any) {
-    return new Restful(
-      CodeDictionary.COMMON_ERROR,
-      `删除账号失败, ${String(e.message)}`,
-    )
+    return new Restful(CodeDictionary.COMMON_ERROR, `删除账号失败, ${String(e.message)}`)
   }
 }
 
