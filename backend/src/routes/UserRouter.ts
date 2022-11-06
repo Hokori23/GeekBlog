@@ -1,15 +1,15 @@
-import { Router } from 'express';
-import jwt from 'jsonwebtoken';
+import { Router } from 'express'
+import jwt from 'jsonwebtoken'
 
-import { UserService as Service } from '@service';
-import { User } from 'models';
-import { Restful, checkIntegrity, isUndef, isNaN } from '@utils';
-import { CodeDictionary } from '@const';
-import config from '@config';
-import { Group } from '@models/User';
-const { cryptoConfig, tokenExpiredTime } = config;
+import { UserService as Service } from '@service'
+import { User } from 'models'
+import { Restful, checkIntegrity, isUndef, isNaN } from '@utils'
+import { CodeDictionary } from '@const'
+import config from '@config'
+import { Group } from '@models/User'
+const { cryptoConfig, tokenExpiredTime } = config
 
-const userRouter = Router();
+const userRouter = Router()
 
 /**
  * 初始化超级管理员
@@ -17,44 +17,39 @@ const userRouter = Router();
  * @param { User } user
  */
 userRouter.post('/init', async (req, res, next) => {
-  const user = User.build(req.body);
+  const user = User.build(req.body)
   if (!checkIntegrity(user, ['userAccount', 'userName', 'password', 'email'])) {
-    res.status(200).json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'));
-    return next();
+    res.status(200).json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'))
+    return next()
   }
   try {
-    res.status(200).json(await Service.Init(user));
+    res.status(200).json(await Service.Init(user))
   } catch (e) {
     // TODO: 进行邮件提醒
-    res.status(500).end();
+    res.status(500).end()
   }
-  next();
-});
+  next()
+})
 /**
  * 注册
  * @path /register
  * @param { User } user
  */
 userRouter.post('/register', async (req, res, next) => {
-  const user = User.build(req.body);
-  const { captcha } = req.body;
-  if (
-    !checkIntegrity(
-      user,
-      ['userAccount', 'userName', 'password', 'email'] || isUndef(captcha)
-    )
-  ) {
-    res.status(200).json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'));
-    return next();
+  const user = User.build(req.body)
+  const { captcha } = req.body
+  if (!checkIntegrity(user, ['userAccount', 'userName', 'password', 'email']) || isUndef(captcha)) {
+    res.status(200).json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'))
+    return next()
   }
   try {
-    res.status(200).json(await Service.Register(user, captcha));
+    res.status(200).json(await Service.Register(user, captcha))
   } catch (e) {
     // TODO: 进行邮件提醒
-    res.status(500).end();
+    res.status(500).end()
   }
-  next();
-});
+  next()
+})
 
 /**
  * 登录
@@ -63,13 +58,13 @@ userRouter.post('/register', async (req, res, next) => {
  * @param { string } password
  */
 userRouter.post('/login', async (req, res, next) => {
-  const { userAccount, password } = req.body;
+  const { userAccount, password } = req.body
   if (isUndef(userAccount) || isUndef(password)) {
-    res.status(200).json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'));
-    return next();
+    res.status(200).json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'))
+    return next()
   }
   try {
-    const result = await Service.Login(userAccount, password);
+    const result = await Service.Login(userAccount, password)
     if (result.code === 0) {
       // 设置token
       result.data.token = jwt.sign(
@@ -83,39 +78,37 @@ userRouter.post('/login', async (req, res, next) => {
         {
           // 12个小时
           expiresIn: tokenExpiredTime,
-        }
-      );
+        },
+      )
     }
-    res.status(200).json(result);
+    res.status(200).json(result)
   } catch (e) {
     // TODO: 进行邮件提醒
-    res.status(500).end();
+    res.status(500).end()
   }
-  next();
-});
+  next()
+})
 /**
  * 遍历/单个查询
  * @path /retrieve
  * @param { string } id?
  */
 userRouter.get('/retrieve', async (req, res, next) => {
-  const { id } = req.query;
+  const { id } = req.query
   try {
     if (isUndef(id)) {
-      res.status(200).json(await Service.Retrieve__All());
+      res.status(200).json(await Service.Retrieve__All())
     } else if (isNaN(id)) {
-      res
-        .status(200)
-        .json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'));
+      res.status(200).json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'))
     } else {
-      res.status(200).json(await Service.Retrieve__ID(Number(id)));
+      res.status(200).json(await Service.Retrieve__ID(Number(id)))
     }
   } catch (e) {
     // 进行邮件提醒
-    res.status(500).end();
+    res.status(500).end()
   }
-  next();
-});
+  next()
+})
 
 /**
  * 编辑用户
@@ -126,29 +119,20 @@ userRouter.post('/edit', async (req: any, res, next) => {
   try {
     // DEBUG: 注意Postman x-www-form-urlencoded传的是字符串， 严格等于会弹403
     if (req.auth.id !== req.body.id) {
-      res.status(403).end();
-      return next();
+      res.status(403).end()
+      return next()
     }
-    if (
-      !checkIntegrity(req.body as User, [
-        'id',
-        'userAccount',
-        'userName',
-        'email',
-      ])
-    ) {
-      res
-        .status(200)
-        .json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'));
-      return next();
+    if (!checkIntegrity(req.body as User, ['id', 'userAccount', 'userName', 'email'])) {
+      res.status(200).json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'))
+      return next()
     }
-    res.status(200).json(await Service.Edit(req.body));
+    res.status(200).json(await Service.Edit(req.body))
   } catch (e) {
     // TODO: 进行邮件提醒
-    res.status(500).end();
+    res.status(500).end()
   }
-  next();
-});
+  next()
+})
 
 /**
  * 编辑用户
@@ -158,20 +142,16 @@ userRouter.post('/edit', async (req: any, res, next) => {
 userRouter.post('/edit-admin', async (req: any, res, next) => {
   try {
     if (!checkIntegrity(req.body, ['id', 'userAccount', 'userName', 'email'])) {
-      res
-        .status(200)
-        .json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'));
-      return next();
+      res.status(200).json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'))
+      return next()
     }
-    res
-      .status(200)
-      .json(await Service.Edit__Admin(req.body as User, req.auth.group));
+    res.status(200).json(await Service.Edit__Admin(req.body as User, req.auth.group))
   } catch (e) {
     // TODO: 进行邮件提醒
-    res.status(500).end();
+    res.status(500).end()
   }
-  next();
-});
+  next()
+})
 
 /**
  * 注销账号
@@ -182,21 +162,16 @@ userRouter.post('/delete', async (req: any, res, next) => {
     if (req.auth.group === Group.SUPER_ADMIN) {
       res
         .status(200)
-        .json(
-          new Restful(
-            CodeDictionary.DELETE_ERROR__USER_ADMIN,
-            '不能删除超级管理员账号'
-          )
-        );
+        .json(new Restful(CodeDictionary.DELETE_ERROR__USER_ADMIN, '不能删除超级管理员账号'))
     } else {
-      res.status(200).json(await Service.Delete(req.auth.id));
+      res.status(200).json(await Service.Delete(req.auth.id))
     }
   } catch (e) {
     // TODO: 进行邮件提醒
-    res.status(500).end();
+    res.status(500).end()
   }
-  next();
-});
+  next()
+})
 
 /**
  * 注销账号
@@ -204,30 +179,23 @@ userRouter.post('/delete', async (req: any, res, next) => {
  * @param { string } id
  */
 userRouter.post('/delete-admin', async (req: any, res, next) => {
-  const { id } = req.body;
+  const { id } = req.body
   try {
     if (isNaN(id)) {
-      res
-        .status(200)
-        .json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'));
+      res.status(200).json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'))
     } else if (req.auth.id === id && req.auth.group === Group.SUPER_ADMIN) {
       res
         .status(200)
-        .json(
-          new Restful(
-            CodeDictionary.DELETE_ERROR__USER_ADMIN,
-            '不能删除超级管理员账号'
-          )
-        );
+        .json(new Restful(CodeDictionary.DELETE_ERROR__USER_ADMIN, '不能删除超级管理员账号'))
     } else {
-      res.status(200).json(await Service.Delete__Admin(id, req.auth.group));
+      res.status(200).json(await Service.Delete__Admin(id, req.auth.group))
     }
   } catch (e) {
     // TODO: 进行邮件提醒
-    res.status(500).end();
+    res.status(500).end()
   }
-  next();
-});
+  next()
+})
 
 /**
  * 检查登陆状态
@@ -235,12 +203,12 @@ userRouter.post('/delete-admin', async (req: any, res, next) => {
  */
 userRouter.post('/check', async (req, res, next) => {
   try {
-    res.status(200).json(new Restful(CodeDictionary.SUCCESS, '已登录'));
+    res.status(200).json(new Restful(CodeDictionary.SUCCESS, '已登录'))
   } catch (e) {
     // TODO: 进行邮件提醒
-    res.status(500).end();
+    res.status(500).end()
   }
-  next();
-});
+  next()
+})
 
-export default userRouter;
+export default userRouter
