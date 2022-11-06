@@ -7,6 +7,14 @@ import { Banner, Button, Form, Modal, Notification, Typography } from '@douyinfe
 import { Gender, GenderCN } from '@/utils/Request/User'
 import Spin from '@/components/Spin'
 import styles from './index.module.scss'
+import {
+  IconKey,
+  IconLock,
+  IconMail,
+  IconMale,
+  IconUser,
+  IconUserCircle,
+} from '@douyinfe/semi-icons'
 
 const { Title } = Typography
 
@@ -31,7 +39,7 @@ const Init: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
             afterClose: () => history.replace(`${PathName.LOGIN}`),
             hasCancel: false,
           })
-          setModalTimer(setTimeout(destroy, 2000))
+          setModalTimer(setTimeout(destroy, 1500))
         }
       } catch {}
     },
@@ -57,9 +65,12 @@ const Init: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
     }
   }, [])
 
-  useEffect(() => () => {
-    modalTimer && clearTimeout(modalTimer)
-  })
+  useEffect(
+    () => () => {
+      modalTimer && clearTimeout(modalTimer)
+    },
+    [],
+  )
 
   return (
     <div id='InitContainer'>
@@ -75,6 +86,9 @@ const Init: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
         <Form.Input
           field='userAccount'
           label='账号'
+          prefix={<IconUser />}
+          showClear
+          trigger={['blur', 'change']}
           rules={[
             { required: true, message: '请填写账号' },
             {
@@ -90,6 +104,9 @@ const Init: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
         <Form.Input
           field='userName'
           label='用户名'
+          prefix={<IconUserCircle />}
+          showClear
+          trigger={['blur', 'change']}
           rules={[
             { required: true, message: '请填写用户名' },
             {
@@ -105,6 +122,10 @@ const Init: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
         <Form.Input
           field='password'
           label='密码'
+          showClear
+          prefix={<IconLock />}
+          mode='password'
+          trigger={['blur', 'change']}
           rules={[
             { required: true, message: '请填写密码' },
             {
@@ -120,11 +141,13 @@ const Init: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
         <Form.Input
           field='doubleCheckPassword'
           label='确认密码'
-          trigger='blur'
+          showClear
+          prefix={<IconKey />}
+          trigger={['blur', 'change']}
           rules={[
             { required: true, message: '请填写确认密码' },
             {
-              validator: (_, value) => formRef.current?.formApi.getValue('password') === value,
+              validator: (_, value) => formRef.current!.formApi.getValue('password') === value,
               message: '两次填写密码不匹配',
             },
           ]}
@@ -132,6 +155,9 @@ const Init: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
         <Form.Input
           field='email'
           label='邮箱'
+          showClear
+          trigger={['blur', 'change']}
+          prefix={<IconMail />}
           rules={[
             { required: true, message: '邮箱不能为空' },
             {
@@ -141,20 +167,10 @@ const Init: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
             },
           ]}
         />
-        {/* <Form.Input
-          field='emailCaptcha'
-          label='邮箱验证码'
-          rules={[
-            { required: true, message: '邮箱验证码不能为空' },
-            {
-              validator: (_, value) => /^[a-z0-9]{8,8}$/.test(value),
-              message: '邮箱验证码为8位小写字母和数字组成，请检查格式',
-            },
-          ]}
-        /> */}
         <Form.Select
           field='gender'
           label='性别'
+          prefix={<IconMale />}
           placeholder='请选择性别'
           initValue={Gender.UNKNOWN}
           optionList={[

@@ -56,14 +56,14 @@ const App: FC = () => {
            * 404页面兜底
            * <https://blog.csdn.net/grepets/article/details/96393575>}
            */}
-          {/* <AliveScope> */}
-          {/* <Route
+          <AliveScope>
+            {/* <Route
             render={({ location }) =>
               (location as any)?.state?.is404 ? <NotFoundPage /> : <Routes />
             }
           /> */}
-          <Route render={({ location }) => <Routes />} />
-          {/* </AliveScope> */}
+            <Route render={({ location }) => <Routes />} />
+          </AliveScope>
         </ConnectedRouter>
       </BrowserRouter>
     </div>

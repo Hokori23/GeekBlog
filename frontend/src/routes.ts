@@ -1,12 +1,12 @@
 import { lazy, FunctionComponent, ComponentClass } from 'react'
 import { RouteComponentProps, RouteProps } from 'react-router-dom'
 import BlankLayout from '@/layouts/BlankLayout'
+import SignLayout from '@/layouts/SignLayout'
 import { LayoutProps } from '@/layouts/types'
 import Demo from '@/containers/Demo'
 import Init from '@/containers/Init'
 import Sign from '@/containers/Sign'
 import Login from '@/containers/Sign/Login'
-import Register from '@/containers/Sign/Register'
 import Home from '@/containers/Home'
 import HomeOverview from '@/containers/Home/HomeOverview'
 import PostOverview from '@/containers/Home/PostOverview'
@@ -27,6 +27,7 @@ import PostDetailAdmin from '@/containers/Admin/PostDetailAdmin'
 import MomentDetailAdmin from '@/containers/Admin/MomentDetailAdmin'
 import UserDetailAdmin from '@/containers/Admin/UserDetailAdmin'
 import System from '@/containers/Admin/System'
+import { WithRouterProps } from 'react-router'
 
 export enum PathName {
   DEMO = '/demo',
@@ -103,37 +104,43 @@ export const routes: RouteConfig[] = [
       exact: true,
     },
   },
-  // {
-  //   path: PathName.SIGN,
-  //   component: Sign,
-  //   routeProps: {
-  //     exact: true,
-  //   },
-  // },
-  // {
-  //   path: PathName.SIGN,
-  //   component: Sign,
-  //   routes: [
-  //     {
-  //       path: PathName.LOGIN,
-  //       component: Login,
-  //       routeProps: {
-  //         exact: true,
-  //       },
-  //     },
-  //     {
-  //       path: PathName.REGISTER,
-  //       component: Register,
-  //       routeProps: {
-  //         exact: true,
-  //       },
-  //     },
-  //     {
-  //       path: PathName._NOT_FOUND_PAGE,
-  //       component: Redirect404,
-  //     },
-  //   ],
-  // },
+  {
+    path: PathName.SIGN,
+    menuKey: PathName.SIGN,
+    component: lazy(() => import('@/containers/Sign')),
+    layout: SignLayout,
+    routeProps: {
+      exact: true,
+    },
+  },
+  {
+    path: PathName.SIGN,
+    menuKey: PathName.SIGN,
+    component: lazy(() => import('@/containers/Sign')),
+    layout: SignLayout,
+    routes: [
+      {
+        path: PathName.LOGIN,
+        menuKey: PathName.LOGIN,
+        component: lazy(() => import('@/containers/Sign/Login')),
+        routeProps: {
+          exact: true,
+        },
+      },
+      {
+        path: PathName.REGISTER,
+        menuKey: PathName.REGISTER,
+        component: lazy(() => import('@/containers/Sign/Register')),
+        routeProps: {
+          exact: true,
+        },
+      },
+      // {
+      //   path: PathName._NOT_FOUND_PAGE,
+      //   component: Redirect404,
+      // },
+    ],
+  },
   // {
   //   path: PathName.ADMIN,
   //   component: Admin,
@@ -286,7 +293,11 @@ export interface RouteConfig {
   menuKey: string
   /* 需要渲染的组件 */
   component: ComponentClass<any> | FunctionComponent<any>
-  layout?: ComponentClass<LayoutProps> | FunctionComponent<LayoutProps>
+  layout?:
+    | ComponentClass<LayoutProps>
+    | FunctionComponent<LayoutProps>
+    | WithRouterProps<FunctionComponent<LayoutProps>>
+    | WithRouterProps<FunctionComponent<LayoutProps>>
   /* 子路由 */
   routes?: RouteConfig[]
   routeProps?: RouteProps

@@ -37,7 +37,7 @@ const Footer: FC<FooterProps> = ({ id, className }) => {
           <Text>
             由<Text link={{ href: 'https://blog.hokori.online', target: '_blank' }}>Hokori</Text>
             提供技术支持
-            {` 博客已建 ${dateText}`}
+            {dateText && ` 博客已建 ${dateText}`}
           </Text>
         </Space>
       </div>

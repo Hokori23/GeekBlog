@@ -133,15 +133,15 @@ export const Delete__Admin = async (id: number) => {
   })
 }
 
-export const SendCaptcha = async (userAccount: string, userName: string, email: string) => {
+export const SendCaptcha = async (data: {
+  userAccount: string
+  userName: string
+  email: string
+}) => {
   return await Request<Restful<string>>({
     method: 'POST',
     url: '/api/captcha/get',
-    data: {
-      userAccount,
-      userName,
-      email,
-    },
+    data,
   })
 }
 

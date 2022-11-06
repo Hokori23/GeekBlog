@@ -13,6 +13,7 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import { PathName } from '@/routes'
 import { LayoutProps } from '../types'
+import { withRouter } from 'react-router-dom'
 
 const { Header, Footer: SemiFooter, Sider, Content } = Layout
 
@@ -72,7 +73,7 @@ const MainLayout = React.memo<LayoutProps>(({ Component, ...props }) => {
             }}
           />
         </Sider>
-        <Content>
+        <Content style={{ position: 'relative' }}>
           <PageLoading show={loadingBlogConfig} />
           <Suspense fallback={<PageLoading />}>
             <Component {...props} />
@@ -86,4 +87,4 @@ const MainLayout = React.memo<LayoutProps>(({ Component, ...props }) => {
   )
 })
 
-export default MainLayout
+export default withRouter(MainLayout)
