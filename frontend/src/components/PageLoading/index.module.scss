@@ -1,0 +1,15 @@
+.loading {
+  height: 100%;
+  width: 100%;
+  background: #fff;
+  &-hidden {
+    display: none;
+  }
+}
+.loadingAnimation {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 300;
+}

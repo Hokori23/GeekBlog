@@ -72,6 +72,7 @@ export const common = createModel<RootModel>()({
     return {
       async checkLogin(payload, state) {
         if (state.common.isLogin) {
+          // 当本地为已登录状态时，向后端确认此状态是否合法
           const res = await Request.User.Check()
           if (res?.code !== 0) {
             common.logOut()

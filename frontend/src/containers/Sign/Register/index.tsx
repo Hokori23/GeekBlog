@@ -55,19 +55,24 @@ const Register = React.memo<RouteComponentProps & RouteConfig>(({ location, hist
     },
   )
 
-  const sendCaptchaService = useRequest(async () => {
-    try {
-      const formApi = formRef.current!.formApi
-      await formApi.validate(['userAccount', 'userName', 'email'])
-      const data = formApi.getValues()
-      const res = await Request.User.SendCaptcha(data)
-      if (res?.code === 0) {
-        Toast.info({
-          content: res.message,
-        })
-      }
-    } catch {}
-  })
+  const sendCaptchaService = useRequest(
+    async () => {
+      try {
+        const formApi = formRef.current!.formApi
+        await formApi.validate(['userAccount', 'userName', 'email'])
+        const data = formApi.getValues()
+        const res = await Request.User.SendCaptcha(data)
+        if (res?.code === 0) {
+          Toast.info({
+            content: res.message,
+          })
+        }
+      } catch {}
+    },
+    {
+      manual: true,
+    },
+  )
 
   useEffect(() => {
     if (needRedirect) {
@@ -178,7 +183,7 @@ const Register = React.memo<RouteComponentProps & RouteConfig>(({ location, hist
           rules={[
             { required: true, message: '邮箱验证码不能为空' },
             {
-              validator: (_, value) => /^[a-z0-9]{8,8}$/.test(value),
+              validator: (_, value) => !value || /^[a-z0-9]{8,8}$/.test(value),
               message: '邮箱验证码为8位小写字母和数字组成，请检查格式',
             },
           ]}

@@ -31,9 +31,12 @@ const Login = React.memo<RouteComponentProps & RouteConfig>(({ location, history
           const { destroy } = Modal.info({
             title: '提示',
             content: '登陆成功，正在跳转到首页',
-            okText: '跳转',
+            footer: <div style={{ padding: 8 }} />,
             closable: false,
-            afterClose: dispatch.login,
+            afterClose: () => {
+              dispatch.login()
+              history.replace(`${PathName.HOME}`)
+            },
             hasCancel: false,
           })
           setModalTimer(setTimeout(destroy, 1500))
@@ -56,7 +59,7 @@ const Login = React.memo<RouteComponentProps & RouteConfig>(({ location, history
     return () => {
       modalTimer && clearTimeout(modalTimer)
     }
-  }, [isLogin])
+  }, [])
 
   return (
     <div id='LoginContainer'>

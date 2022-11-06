@@ -1,13 +1,22 @@
 import React, { useMemo } from 'react'
-import { Avatar, Dropdown, Modal, Nav as SemiNav, ButtonGroup, Button } from '@douyinfe/semi-ui'
+import {
+  Avatar,
+  Dropdown,
+  Modal,
+  Nav as SemiNav,
+  ButtonGroup,
+  Button,
+  Typography,
+} from '@douyinfe/semi-ui'
 import { DropdownProps } from '@douyinfe/semi-ui/lib/es/dropdown'
 import { NavProps as SemiNavProps } from '@douyinfe/semi-ui/lib/es/navigation'
 import { useSelector } from 'react-redux'
 import { RootState, store } from '@/store'
-import { Location } from 'history'
 import { PathName, RouteName } from '@/routes'
 import { Group } from '@/utils/Request/User'
 import { useHistory, useLocation } from 'react-router-dom'
+
+const { Title } = Typography
 
 const Nav = React.memo<SemiNavProps>(({ ...props }) => {
   const location = useLocation()
@@ -73,7 +82,11 @@ const Nav = React.memo<SemiNavProps>(({ ...props }) => {
       mode='horizontal'
       header={{
         // logo: <img src="https://sf6-cdn-tos.douyinstatic.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/webcast_logo.svg" />,
-        text: blogName,
+        text: (
+          <Title heading={5} link onClick={() => history.push(PathName.HOME)}>
+            {blogName}
+          </Title>
+        ),
       }}
       footer={
         isLogin ? (

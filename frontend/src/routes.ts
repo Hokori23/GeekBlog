@@ -217,16 +217,18 @@ export const routes: RouteConfig[] = [
       {
         path: PathName.HOME,
         menuKey: PathName.HOME,
-        component: HomeOverview,
+        component: lazy(() => import('@/containers/Home/HomeOverview')),
       },
       // {
       //   path: PathName.POST_DETAIL,
       //   component: PostDetail,
+      //   component: lazy(() => import('@/containers/HomeOverview')),
       // },
-      // {
-      //   path: PathName.POST_OVERVIEW,
-      //   component: PostOverview,
-      // },
+      {
+        path: PathName.POST_OVERVIEW,
+        menuKey: PathName.POST_OVERVIEW,
+        component: lazy(() => import('@/containers/Home/PostOverview')),
+      },
       // {
       //   path: PathName.MOMENT_OVERVIEW,
       //   component: MomentOverview,

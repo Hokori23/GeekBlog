@@ -1,8 +1,7 @@
-// import _markdownIt from 'markdown-it'
-// import hljs from 'highlight.js'
 import { formatDistanceToNow as _formatDistanceToNow, isValid } from 'date-fns'
 import { zhCN } from 'date-fns/locale'
 import lottie, { AnimationConfigWithData, AnimationConfigWithPath } from 'lottie-web'
+import qs from 'qs'
 
 export const isDef = <T>(v: T | undefined | null): v is T => v !== undefined && v !== null
 
@@ -11,30 +10,17 @@ export const isUndef = (v: any): v is undefined | null => v === undefined || v =
 export const isEmail = (v: string): boolean =>
   /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/.test(v)
 
-export const scrollTo = (
-  id: string,
-  block: 'center' | 'end' | 'nearest' | 'start' | undefined = 'center',
-  behavior: 'smooth' | 'auto' | undefined = 'smooth',
+export const scrollIntoTop = (
+  el: HTMLElement | null = document.querySelector('#right-content'),
 ) => {
-  const anchor = document.querySelector(id)
-  if (anchor) {
-    anchor.scrollIntoView({ behavior, block })
+  if (!el) {
+    document.body.scrollTop = 0
+    document.documentElement.scrollTop = 0
+  } else {
+    el.scrollTop = 0
   }
 }
 
-export const scrollIntoTop = (
-  block: 'center' | 'end' | 'nearest' | 'start' | undefined = 'center',
-  behavior: 'smooth' | 'auto' | undefined = 'smooth',
-) => {
-  scrollTo('#back-to-top-anchor', block, behavior)
-}
-
-export const scrollIntoBottom = (
-  block: 'center' | 'end' | 'nearest' | 'start' | undefined = 'center',
-  behavior: 'smooth' | 'auto' | undefined = 'smooth',
-) => {
-  scrollTo('#go-to-bottom-anchor', block, behavior)
-}
 export const $ = (selector: string): HTMLElement | null => document.querySelector(selector)
 
 export const $$ = (selector: string) => document.querySelectorAll(selector)
@@ -77,4 +63,19 @@ export const loadAnimation = (
     animationData,
   })
   return lottieIns
+}
+
+export type GetUrlParamsFn = <T extends Record<string | number | symbol, any> = any>(
+  searchStr?: string,
+) => T
+
+export const getUrlParams: GetUrlParamsFn = <T>(searchStr?: string) => {
+  let _searchStr = searchStr || window.location.search
+  if (_searchStr.startsWith('?')) {
+    _searchStr = _searchStr.slice(1)
+  }
+  if (_searchStr) {
+    return qs.parse(_searchStr) as unknown as T
+  }
+  return {} as unknown as T
 }
