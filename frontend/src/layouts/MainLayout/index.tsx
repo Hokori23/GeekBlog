@@ -5,15 +5,15 @@ import { IconHome, IconArticle, IconComment, IconBookmark } from '@douyinfe/semi
 import { useSelector } from 'react-redux'
 import { store } from '@/store'
 import useInitBlogConfig from '@/hooks/useInitBlogConfig'
-import PageLoading from '@/components/PageLoading'
 import { RouteName, routesMap } from '@/routes'
+import { withRouter } from 'react-router-dom'
+import { PathName } from '@/routes'
 
 // Components
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
-import { PathName } from '@/routes'
+import PageLoading from '@/components/PageLoading'
 import { LayoutProps } from '../types'
-import { withRouter } from 'react-router-dom'
 
 const { Header, Sider, Content } = Layout
 
@@ -72,7 +72,7 @@ const MainLayout = React.memo<LayoutProps>(({ Component, ...props }) => {
       <Layout>
         <Sider>
           <SemiNav
-            selectedKeys={[routesMap[location.pathname].menuKey]}
+            selectedKeys={[routesMap[location.pathname]?.menuKey]}
             style={{ maxWidth: 220, height: '100%' }}
             isCollapsed={collapsed}
             onSelect={({ itemKey }) =>

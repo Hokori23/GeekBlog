@@ -135,10 +135,11 @@ export const routes: RouteConfig[] = [
           exact: true,
         },
       },
-      // {
-      //   path: PathName._NOT_FOUND_PAGE,
-      //   component: Redirect404,
-      // },
+      {
+        path: PathName._NOT_FOUND_PAGE,
+        menuKey: PathName.NOT_FOUND_PAGE,
+        component: Redirect404,
+      },
     ],
   },
   // {
@@ -218,6 +219,9 @@ export const routes: RouteConfig[] = [
         path: PathName.HOME,
         menuKey: PathName.HOME,
         component: lazy(() => import('@/containers/Home/HomeOverview')),
+        routeProps: {
+          exact: true,
+        },
       },
       // {
       //   path: PathName.POST_DETAIL,
@@ -228,6 +232,9 @@ export const routes: RouteConfig[] = [
         path: PathName.POST_OVERVIEW,
         menuKey: PathName.POST_OVERVIEW,
         component: lazy(() => import('@/containers/Home/PostOverview')),
+        routeProps: {
+          exact: true,
+        },
       },
       // {
       //   path: PathName.MOMENT_OVERVIEW,
@@ -249,20 +256,23 @@ export const routes: RouteConfig[] = [
       //   path: PathName.USER,
       //   component: User,
       // },
-      // {
-      //   path: PathName._NOT_FOUND_PAGE,
-      //   component: NotFoundPage,
-      // },
+      {
+        path: PathName._NOT_FOUND_PAGE,
+        menuKey: PathName.NOT_FOUND_PAGE,
+        component: lazy(() => import('@/containers/NotFoundPage')),
+      },
     ],
   },
-  // {
-  //   path: PathName._NOT_FOUND_PAGE,
-  //   component: NotFoundPage,
-  // },
-  // {
-  //   path: PathName.NOT_FOUND_PAGE,
-  //   component: NotFoundPage,
-  // },
+  {
+    path: PathName._NOT_FOUND_PAGE,
+    menuKey: PathName.NOT_FOUND_PAGE,
+    component: lazy(() => import('@/containers/NotFoundPage')),
+  },
+  {
+    path: PathName.NOT_FOUND_PAGE,
+    menuKey: PathName.NOT_FOUND_PAGE,
+    component: lazy(() => import('@/containers/NotFoundPage')),
+  },
 ]
 
 const genRoutesMap = (routes: RouteConfig[]) => {

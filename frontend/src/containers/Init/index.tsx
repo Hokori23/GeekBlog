@@ -6,7 +6,6 @@ import { useRequest, useAsyncEffect } from 'ahooks'
 import { Banner, Button, Form, Modal, Notification, Typography } from '@douyinfe/semi-ui'
 import { Gender, GenderCN } from '@/utils/Request/User'
 import Spin from '@/components/Spin'
-import styles from './index.module.scss'
 import {
   IconKey,
   IconLock,

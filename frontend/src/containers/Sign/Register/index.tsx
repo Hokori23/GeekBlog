@@ -13,6 +13,7 @@ import {
   IconMailStroked1,
   IconMale,
   IconUser,
+  IconUserCircle,
   IconSend,
 } from '@douyinfe/semi-icons'
 import { useSelector } from 'react-redux'
@@ -122,8 +123,26 @@ const Register = React.memo<RouteComponentProps & RouteConfig>(({ location, hist
           ]}
         />
         <Form.Input
-          field='password'
+          field='userName'
           label='用户名'
+          prefix={<IconUserCircle />}
+          showClear
+          trigger={['blur', 'change']}
+          rules={[
+            { required: true, message: '请填写用户名' },
+            {
+              validator: (_, value) => /^.{2,20}$/.test(value),
+              message: '用户名长度应为2至20字符',
+            },
+            {
+              validator: (_, value) => /^\w+$/.test(value),
+              message: '用户名只能由字母、数字、下划线组成',
+            },
+          ]}
+        />
+        <Form.Input
+          field='password'
+          label='密码'
           prefix={<IconLock />}
           showClear
           trigger={['blur', 'change']}

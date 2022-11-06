@@ -1,13 +1,14 @@
-import React, { FC, useEffect } from 'react'
+import { FC } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { PathName, RouteName } from '@/routes'
-// import './index.less'
-import { store } from '@/store'
-import { useSelector } from 'react-redux'
+import { PathName } from '@/routes'
+import styles from './index.module.scss'
 import notFoundPageSvg from '@/static/svg/404.json'
 import { useAnimation } from '@/hooks/useAnimation'
-import InnerLink from '@/components/InnerLink'
+import { Button, Typography } from '@douyinfe/semi-ui'
 import { useMobileSize } from '@/hooks/useScreenSize'
+import { IconArrowLeft } from '@douyinfe/semi-icons'
+
+const { Title } = Typography
 
 const NotFoundPage: FC<RouteComponentProps> = ({ history }) => {
   const { ref: animationDOM } = useAnimation(notFoundPageSvg)
@@ -15,33 +16,39 @@ const NotFoundPage: FC<RouteComponentProps> = ({ history }) => {
   const isMobileSize = useMobileSize()
 
   return (
-    <div className='not-found-404'>
-      404
-      {/* <div className='not-found-404__backward'>
+    <div className={styles['not-found-404']}>
+      <div className={styles['not-found-404__backward']}>
         <Button
           aria-label='back'
           onClick={() => {
             history.goBack()
           }}
-          // size="large"
-          startIcon={<NavigateBeforeIcon />}
+          theme='borderless'
+          icon={<IconArrowLeft />}
         >
           返回上一页
         </Button>
       </div>
-      <div className={isMobileSize ? 'not-found-404__content--mobile' : 'not-found-404__content'}>
-        <div className='not-found-404__text'>
-          <Typography style={{ color: '#555e7e' }} variant={isMobileSize ? 'h4' : 'h3'}>
+      <div
+        className={
+          isMobileSize ? styles['not-found-404__content--mobile'] : styles['not-found-404__content']
+        }
+      >
+        <div className={styles['not-found-404__text']}>
+          <Title color='secondary' heading={isMobileSize ? 4 : 3}>
             Sorry, 找不到页面
-          </Typography>
-          <Button aria-label='home' style={{ marginTop: 20 }} variant='contained'>
-            <InnerLink style={{ color: 'inherit' }} to={PathName.HOME}>
-              返回首页
-            </InnerLink>
+          </Title>
+          <Button
+            theme='solid'
+            aria-label='home'
+            style={{ marginTop: 20 }}
+            onClick={() => history.push(PathName.HOME)}
+          >
+            返回首页
           </Button>
         </div>
-        <div className='not-found-404__animation' ref={animationDOM} />
-      </div> */}
+        <div className={styles['not-found-404__animation']} ref={animationDOM} />
+      </div>
     </div>
   )
 }
