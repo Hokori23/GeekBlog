@@ -1,2 +1,9 @@
-.App {
+.milkdown {
+  box-shadow: unset !important;
+  .editor {
+    padding-top: 32px !important;
+    & > *:first-child {
+      margin-top: 0;
+    }
+  }
 }

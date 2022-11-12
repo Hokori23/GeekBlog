@@ -1,0 +1,14 @@
+.postDetailWrapper {
+  min-height: calc(100% - 69px);
+  position: relative;
+
+  .postDetailContainer {
+    height: 100%;
+  }
+
+  .action-btns {
+    position: absolute;
+    right: 20px;
+    top: 32px;
+  }
+}

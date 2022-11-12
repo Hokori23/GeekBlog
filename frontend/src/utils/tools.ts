@@ -1,5 +1,6 @@
 import { formatDistanceToNow as _formatDistanceToNow, isValid } from 'date-fns'
 import { zhCN } from 'date-fns/locale'
+import { isNil } from 'lodash-es'
 import lottie, { AnimationConfigWithData, AnimationConfigWithPath } from 'lottie-web'
 import qs from 'qs'
 
@@ -34,8 +35,10 @@ export const computeDOMHeight = (selector: string, noPX?: boolean) => {
   return noPX ? removePX(height) : height
 }
 
-export const setUpYunImg = (fileUrl: string, type: 'sm' | 'md' | 'origin'): string =>
-  /^https?:\/\/upyun\.hokori\.online/.test(fileUrl) ? `${fileUrl}!${type}` : fileUrl
+export const setUpYunImg = (fileUrl?: string, type?: 'sm' | 'md' | 'origin'): string | undefined =>
+  fileUrl && type && /^https?:\/\/upyun\.hokori\.online/.test(fileUrl)
+    ? `${fileUrl}!${type}`
+    : fileUrl
 
 export const formatDistanceToNow = (date: string | Date | undefined) => {
   if (!date || !isValid(date)) return '-'
@@ -78,4 +81,74 @@ export const getUrlParams: GetUrlParamsFn = <T>(searchStr?: string) => {
     return qs.parse(_searchStr) as unknown as T
   }
   return {} as unknown as T
+}
+
+interface JSONOptions {
+  noError?: boolean
+}
+
+export const JSONParse = <T = unknown>(
+  json?: string | null,
+  { noError = true }: JSONOptions = {},
+): T | undefined | null => {
+  if (isNil(json)) {
+    return json
+  }
+  try {
+    return JSON.parse(json)
+  } catch (e) {
+    if (!noError) {
+      throw e
+    }
+  }
+}
+
+export const JSONStringify = (
+  obj: unknown,
+  { noError = true }: JSONOptions = {},
+): string | undefined | null => {
+  if (isNil(obj)) {
+    return obj
+  }
+  try {
+    return JSON.stringify(obj)
+  } catch (e) {
+    if (!noError) {
+      throw e
+    }
+  }
+}
+
+export interface LsGetOption<T> extends JSONOptions {
+  defaultValue?: T
+  raw?: boolean
+}
+export interface LsSetOption {
+  raw?: boolean
+}
+
+export const ls = {
+  get: <T>(key?: string, { defaultValue, raw }: LsGetOption<T> = {}): T | undefined => {
+    if (isNil(key)) {
+      return defaultValue || key
+    }
+    const res = localStorage.getItem(key)
+    if (isNil(res)) {
+      return defaultValue
+    }
+    if (raw) {
+      return (res || defaultValue) as T
+    }
+    return JSONParse<T>(res) || defaultValue
+  },
+  set: (key: string, value?: unknown, { raw }: LsSetOption = {}) => {
+    if (isNil(value)) {
+      return localStorage.removeItem(key)
+    }
+    const _value = raw ? String(value) : JSONStringify(value)
+    if (isNil(_value)) {
+      return localStorage.removeItem(key)
+    }
+    localStorage.setItem(key, _value)
+  },
 }

@@ -4,7 +4,7 @@ import { Layout, Nav as SemiNav } from '@douyinfe/semi-ui'
 import { IconHome, IconArticle, IconComment, IconBookmark } from '@douyinfe/semi-icons'
 import { useSelector } from 'react-redux'
 import { store } from '@/store'
-import useInitBlogConfig from '@/hooks/useInitBlogConfig'
+import useInit from '@/hooks/useInit'
 import { RouteName, routesMap } from '@/routes'
 import { withRouter } from 'react-router-dom'
 import { PathName } from '@/routes'
@@ -23,7 +23,7 @@ const MainLayout = React.memo<LayoutProps>(({ Component, ...props }) => {
   const [collapsed, setCollapsed] = useState(isMobileSize)
 
   const dispatch = useSelector(() => store.dispatch.common)
-  const { loading: loadingBlogConfig } = useInitBlogConfig()
+  const { getBlogConfigService } = useInit()
 
   const menu = useMemo(() => {
     return [
@@ -75,7 +75,7 @@ const MainLayout = React.memo<LayoutProps>(({ Component, ...props }) => {
             selectedKeys={[routesMap[location.pathname]?.menuKey]}
             style={{ maxWidth: 220, height: '100%' }}
             isCollapsed={collapsed}
-            onSelect={({ itemKey }) =>
+            onClick={({ itemKey }) =>
               history.push(menu.find((menuItem) => menuItem.itemKey === itemKey)?.path as string)
             }
             onCollapseChange={setCollapsed}
@@ -86,9 +86,9 @@ const MainLayout = React.memo<LayoutProps>(({ Component, ...props }) => {
           />
         </Sider>
         <Content style={{ position: 'relative' }}>
-          <PageLoading show={loadingBlogConfig} />
+          <PageLoading show={getBlogConfigService.loading} />
           <Suspense fallback={<PageLoading />}>
-            <div id='right-content' style={{ height: 'calc(100vh - 60px)', overflow: 'scroll' }}>
+            <div id='right-content' style={{ height: 'calc(100vh - 60px)', overflowY: 'auto' }}>
               <Component {...props} />
               <Footer />
             </div>

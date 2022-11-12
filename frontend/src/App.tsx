@@ -6,7 +6,7 @@ import { ConnectedRouter } from 'connected-react-router'
 import NotFoundPage from '@/containers/NotFoundPage'
 import MainLayout from '@/layouts/MainLayout'
 import { AliveScope } from 'react-activation'
-import './boot'
+import './App.scss'
 
 const Routes: FC = () => {
   return (

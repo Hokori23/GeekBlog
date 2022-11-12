@@ -34,8 +34,8 @@ export const GetAuthorizationAndPolicy = async (
 }
 
 export const Upload = async (formData: FormData, payload: any, url: string) => {
-  Object.keys(payload).forEach((key) => {
-    formData.append(key, payload[key])
+  Reflect.ownKeys(payload).forEach((key) => {
+    formData.append(key as string, payload[key])
   })
   return await Request<UploadRestful>({
     method: 'POST',

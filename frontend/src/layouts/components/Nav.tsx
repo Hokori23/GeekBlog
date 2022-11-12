@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import {
   Avatar,
   Dropdown,
@@ -15,17 +15,18 @@ import { RootState, store } from '@/store'
 import { PathName, RouteName } from '@/routes'
 import { Group } from '@/utils/Request/User'
 import { useHistory, useLocation } from 'react-router-dom'
+import useAuth from '@/hooks/useAuth'
 
 const { Title } = Typography
 
-const Nav = React.memo<SemiNavProps>(({ ...props }) => {
+const Nav = React.memo<SemiNavProps>((props) => {
   const location = useLocation()
   const history = useHistory()
   const state = useSelector((state: RootState) => state.common)
   const dispatch = useSelector(() => store.dispatch.common)
 
   const { isLogin, userInfo } = state
-  const isAdmin = useMemo(() => (userInfo?.group || 0) > Group.SUBSCRIBER, [userInfo?.group])
+  const { isAdmin } = useAuth()
   const inAdminPage = useMemo(
     () => location.pathname.startsWith(PathName.ADMIN),
     [location.pathname],
@@ -35,7 +36,7 @@ const Nav = React.memo<SemiNavProps>(({ ...props }) => {
     [state.blogConfig],
   )
 
-  const handleLogOut = () => {
+  const handleLogOut = useCallback(() => {
     Modal.info({
       title: '提示',
       content: '确定要退出登录？',
@@ -43,7 +44,7 @@ const Nav = React.memo<SemiNavProps>(({ ...props }) => {
         dispatch.logOut()
       },
     })
-  }
+  }, [dispatch])
 
   const dropdownMenu = useMemo(() => {
     const menu: DropdownProps['menu'] = [
@@ -92,9 +93,9 @@ const Nav = React.memo<SemiNavProps>(({ ...props }) => {
         isLogin ? (
           <Dropdown position='bottomRight' menu={dropdownMenu}>
             <Avatar
-              alt={userInfo.userName}
+              alt={userInfo?.userName}
               size='small'
-              src={userInfo.avatarUrl}
+              src={userInfo?.avatarUrl}
               style={{ marginRight: 12 }}
             />
           </Dropdown>

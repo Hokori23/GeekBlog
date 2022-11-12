@@ -14,7 +14,7 @@ const HomeOverview: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
   return (
     <>
       <Row type='flex' justify='center' className={styles.overviewWrapper}>
-        <Col span={24} xl={12} xxl={14}>
+        <Col span={24} xl={18} xxl={16}>
           <List
             className={styles.overviewContainer}
             loading={loading}
@@ -22,18 +22,20 @@ const HomeOverview: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
             renderItem={(post) => (
               <PostOverviewItem
                 post={post}
-                onClick={() => history.push(`${PathName._POST_DETAIL}/${post.id}`)}
+                onClick={() => history.push(`${PathName.HOME_DETAIL}?id=${post.id}`)}
               />
             )}
             emptyContent={<Typography.Title>暂无文章或说说</Typography.Title>}
           />
         </Col>
       </Row>
-      <Row type='flex' justify='center'>
-        <Col span={20} xl={12} xxl={14}>
-          <Pagination {...pagination} style={{ padding: '0 12px', boxSizing: 'border-box' }} />
-        </Col>
-      </Row>
+      {posts?.length && (
+        <Row type='flex' justify='center'>
+          <Col span={20} xl={12} xxl={14}>
+            <Pagination {...pagination} style={{ padding: '0 12px', boxSizing: 'border-box' }} />
+          </Col>
+        </Row>
+      )}
       <ScrollTop />
     </>
   )

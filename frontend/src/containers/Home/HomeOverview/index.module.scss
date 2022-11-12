@@ -1,0 +1,21 @@
+.overviewWrapper {
+  min-height: calc(100% - 69px);
+  position: relative;
+
+  .overviewContainer {
+    height: 100%;
+  }
+  :global {
+    .semi-spin,
+    .semi-spin-children,
+    .semi-list-items,
+    .semi-list-empty {
+      height: 100%;
+    }
+    .semi-list-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

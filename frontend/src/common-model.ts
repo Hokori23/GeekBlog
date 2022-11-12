@@ -1,40 +1,42 @@
 import { createModel } from '@rematch/core'
-import { RequestSnackBarProps } from './components/RequestSnackBar'
 import { RootModel } from './models'
-import { ACCESS_TOKEN_NAME, USER_INFO_NAME, BLOG_CONFIG } from './utils/const'
+import { LS_KEYS } from './utils/const'
 import Request from './utils/Request'
 import { Option } from './utils/Request/Option'
 import { User } from './utils/Request/User'
-import { computeDOMHeight } from './utils/tools'
+import { computeDOMHeight, ls } from './utils/tools'
 
 export interface CommonState {
-  userInfo: Partial<User>
+  userInfo?: Partial<User>
   token?: string
   isLogin: boolean
-  appBarTitle: string
   blogConfig: Option[] | null
   mainHeight: string
 }
 
 export const defaultCommonState: CommonState = {
-  userInfo: {},
-  token: '',
+  userInfo: ls.get<Partial<User>>(LS_KEYS.USER_INFO_NAME, {
+    defaultValue: {},
+  }),
+  token: ls.get<string>(LS_KEYS.ACCESS_TOKEN_NAME, { raw: true }),
   isLogin: false,
-  appBarTitle: '',
-  blogConfig: null,
+  blogConfig: ls.get<Option[] | null>(LS_KEYS.BLOG_CONFIG, {
+    defaultValue: null,
+  })!,
   mainHeight: '0px',
 }
+
 export const common = createModel<RootModel>()({
   state: defaultCommonState,
   reducers: {
     setUserInfo: (state: CommonState, newUserInfo: Partial<User>) => {
       state.userInfo = newUserInfo
-      localStorage.setItem(USER_INFO_NAME, JSON.stringify(newUserInfo))
+      localStorage.setItem(LS_KEYS.USER_INFO_NAME, JSON.stringify(newUserInfo))
       return state
     },
     setToken: (state: CommonState, newToken?: string) => {
       state.token = newToken
-      newToken && localStorage.setItem(ACCESS_TOKEN_NAME, newToken)
+      newToken && localStorage.setItem(LS_KEYS.ACCESS_TOKEN_NAME, newToken)
       return state
     },
     login: (state: CommonState) => {
@@ -45,17 +47,13 @@ export const common = createModel<RootModel>()({
       state.userInfo = defaultCommonState.userInfo
       state.isLogin = false
       state.token = ''
-      localStorage.removeItem(USER_INFO_NAME)
-      localStorage.removeItem(ACCESS_TOKEN_NAME)
-      return state
-    },
-    setAppBarTitle: (state: CommonState, newTitle: string) => {
-      state.appBarTitle = newTitle
+      localStorage.removeItem(LS_KEYS.USER_INFO_NAME)
+      localStorage.removeItem(LS_KEYS.ACCESS_TOKEN_NAME)
       return state
     },
     setBlogConfig: (state: CommonState, newBlogConfig: Option[]) => {
       state.blogConfig = newBlogConfig
-      localStorage.setItem(BLOG_CONFIG, JSON.stringify(newBlogConfig))
+      localStorage.setItem(LS_KEYS.BLOG_CONFIG, JSON.stringify(newBlogConfig))
       return state
     },
     setMainHeight: (state: CommonState, newHeight?: string) => {
@@ -70,7 +68,7 @@ export const common = createModel<RootModel>()({
   effects: (dispatch) => {
     const { common } = dispatch
     return {
-      async checkLogin(payload, state) {
+      async checkLogin(_, state) {
         if (state.common.isLogin) {
           // 当本地为已登录状态时，向后端确认此状态是否合法
           const res = await Request.User.Check()
@@ -79,7 +77,7 @@ export const common = createModel<RootModel>()({
           }
         }
       },
-      async getBlogConfig(payload, state) {
+      async getBlogConfig() {
         const res = await Request.Option.RetrieveAll()
         if (res?.data) {
           common.setBlogConfig(res.data)

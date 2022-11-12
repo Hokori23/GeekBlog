@@ -1,6 +1,6 @@
 import React, { useEffect, Suspense } from 'react'
 import { Layout } from '@douyinfe/semi-ui'
-import useInitBlogConfig from '@/hooks/useInitBlogConfig'
+import useInit from '@/hooks/useInit'
 import PageLoading from '@/components/PageLoading'
 import styles from './index.module.scss'
 
@@ -17,7 +17,7 @@ const { Header, Footer: SemiFooter, Sider, Content } = Layout
 const SignLayout = React.memo<LayoutProps>(({ Component, ...props }) => {
   const { location, history } = props
 
-  const { loading: loadingBlogConfig, cancel } = useInitBlogConfig()
+  const { getBlogConfigService } = useInit()
 
   useEffect(() => {
     if (location.pathname === PathName._HOME) {
@@ -32,7 +32,7 @@ const SignLayout = React.memo<LayoutProps>(({ Component, ...props }) => {
       </Header>
 
       <Content style={{ position: 'relative' }}>
-        <PageLoading show={loadingBlogConfig} />
+        <PageLoading show={getBlogConfigService.loading} />
         <section className={styles.signContainer}>
           <aside className={styles.banner}>banner TODO</aside>
           <section className={styles.form}>

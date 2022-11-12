@@ -1,5 +1,5 @@
 import { Space, Col, Row, Typography, Image } from '@douyinfe/semi-ui'
-import React, { FC, Fragment } from 'react'
+import React, { FC, Fragment, useMemo } from 'react'
 import classnames from 'classnames'
 import { useMobileSize } from '@/hooks/useScreenSize'
 import { RootState } from '@/store'
@@ -41,26 +41,31 @@ const Footer: FC<FooterProps> = ({ id, className }) => {
           </Text>
         </Space>
       </div>
-      <div className={styles.col}>
-        <Space vertical align='center'>
-          <Text component='div' style={{ display: 'flex', alignItems: 'center' }}>
-            本站由
-            {/* TODO: 替换图片 */}
-            <Image
-              height={25}
-              style={{ padding: '0 5px' }}
-              src='https://upyun.hokori.online/2021-03-07/upyun.png'
-            />
-            提供 CDN 加速 / 云存储服务
-          </Text>
-          <Text>
-            互联网ICP备案：
-            <Text link={{ href: 'http://www.beian.gov.cn', target: '_blank' }}>
-              粤ICP备19141609号
-            </Text>
-          </Text>
-        </Space>
-      </div>
+      {useMemo(
+        () => (
+          <div className={styles.col}>
+            <Space vertical align='center'>
+              <Text component='div' style={{ display: 'flex', alignItems: 'center' }}>
+                本站由
+                {/* TODO: 替换图片 */}
+                <Image
+                  height={25}
+                  style={{ padding: '0 5px' }}
+                  src='https://upyun.hokori.online/2021-03-07/upyun.png'
+                />
+                提供 CDN 加速 / 云存储服务
+              </Text>
+              <Text>
+                互联网ICP备案：
+                <Text link={{ href: 'http://www.beian.gov.cn', target: '_blank' }}>
+                  粤ICP备19141609号
+                </Text>
+              </Text>
+            </Space>
+          </div>
+        ),
+        [],
+      )}
       {/* <div className={styles.col}>
         <Space vertical align='center' />
       </div> */}

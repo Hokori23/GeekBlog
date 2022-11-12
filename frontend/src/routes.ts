@@ -4,13 +4,7 @@ import BlankLayout from '@/layouts/BlankLayout'
 import SignLayout from '@/layouts/SignLayout'
 import { LayoutProps } from '@/layouts/types'
 import Demo from '@/containers/Demo'
-import Init from '@/containers/Init'
-import Sign from '@/containers/Sign'
-import Login from '@/containers/Sign/Login'
-import Home from '@/containers/Home'
-import HomeOverview from '@/containers/Home/HomeOverview'
 import PostOverview from '@/containers/Home/PostOverview'
-import PostDetail from '@/containers/Home/PostDetail'
 import MomentOverview from '@/containers/Home/MomentOverview'
 import PostTag from '@/containers/Home/PostTag'
 import PostTagOverview from '@/containers/Home/PostTagOverview'
@@ -37,9 +31,9 @@ export enum PathName {
   REGISTER = '/sign/register',
   _HOME = '/',
   HOME = '/home',
+  HOME_DETAIL = '/home/detail',
   POST_OVERVIEW = '/post',
-  _POST_DETAIL = '/post/detail',
-  POST_DETAIL = '/post/detail/:id',
+  POST_DETAIL = '/post/detail',
   MOMENT_OVERVIEW = '/moment',
   _MOMENT_DETAIL = '/moment/detail',
   POST_TAG = '/tags',
@@ -47,18 +41,18 @@ export enum PathName {
   POST_TAG_OVERVIEW = '/tag/:slug',
   USER = '/user',
   _USER_DETAIL = '/user/detail',
-  USER_DETAIL = '/user/detail/:id',
+  USER_DETAIL = '/user/detail',
   ADMIN = '/admin',
   POST_TAG_ADMIN = '/admin/post-tag',
   POST_ADMIN = '/admin/post',
   MOMENT_ADMIN = '/admin/moment',
   USER_ADMIN = '/admin/user',
   _USER_DETAIL_ADMIN = '/admin/user/detail',
-  USER_DETAIL_ADMIN = '/admin/user/detail/:id',
+  USER_DETAIL_ADMIN = '/admin/user/detail',
   _POST_DETAIL_ADMIN = '/admin/post/detail',
-  POST_DETAIL_ADMIN = '/admin/post/detail/:id',
+  POST_DETAIL_ADMIN = '/admin/post/detail',
   _MOMENT_DETAIL_ADMIN = '/admin/moment/detail',
-  MOMENT_DETAIL_ADMIN = '/admin/moment/detail/:id',
+  MOMENT_DETAIL_ADMIN = '/admin/moment/detail',
   SYSTEM = '/admin/system',
   _NOT_FOUND_PAGE = '*',
   NOT_FOUND_PAGE = '/404',
@@ -138,7 +132,7 @@ export const routes: RouteConfig[] = [
       {
         path: PathName._NOT_FOUND_PAGE,
         menuKey: PathName.NOT_FOUND_PAGE,
-        component: Redirect404,
+        component: lazy(() => import('@/containers/Redirect404')),
       },
     ],
   },
@@ -223,15 +217,26 @@ export const routes: RouteConfig[] = [
           exact: true,
         },
       },
-      // {
-      //   path: PathName.POST_DETAIL,
-      //   component: PostDetail,
-      //   component: lazy(() => import('@/containers/HomeOverview')),
-      // },
+      {
+        path: PathName.HOME_DETAIL,
+        menuKey: PathName.HOME,
+        component: lazy(() => import('@/containers/Home/PostDetail')),
+        routeProps: {
+          exact: true,
+        },
+      },
       {
         path: PathName.POST_OVERVIEW,
         menuKey: PathName.POST_OVERVIEW,
         component: lazy(() => import('@/containers/Home/PostOverview')),
+        routeProps: {
+          exact: true,
+        },
+      },
+      {
+        path: PathName.POST_DETAIL,
+        menuKey: PathName.POST_OVERVIEW,
+        component: lazy(() => import('@/containers/Home/PostDetail')),
         routeProps: {
           exact: true,
         },
