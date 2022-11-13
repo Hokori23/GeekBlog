@@ -1,5 +1,5 @@
 import React, { FC, useMemo, useRef, useState } from 'react'
-import { Button, Col, Row, ButtonGroup } from '@douyinfe/semi-ui'
+import { Button, Col, Row, ButtonGroup, Popconfirm, Modal } from '@douyinfe/semi-ui'
 import { RouteComponentProps } from 'react-router-dom'
 import { RouteConfig } from '@/routes'
 import useUrlParams from '@/hooks/useUrlParams'
@@ -12,13 +12,18 @@ import ScrollTop from '@/components/ScrollTop'
 import Spin from '@/components/Spin'
 import Banner from './Banner'
 import Markdown, { EditorHandler } from '@/components/Markdown/Editor'
+import { IconAlertTriangle } from '@douyinfe/semi-icons'
+import { useMobileSize } from '@/hooks/useScreenSize'
+import classnames from 'classnames'
 
 const PostDetail: FC<RouteComponentProps & RouteConfig> = (props) => {
   const { urlParams } = useUrlParams<{ id: string }>()
+  const isMobileSize = useMobileSize()
   const { id } = urlParams
   const { isAdmin } = useAuth()
   const [isEdit, setIsEdit] = useState(false)
-  const { getPostService, savePostService } = useRequest({
+
+  const { getPostService, editPostService } = useRequest({
     id: Number(id),
     onSave: () => setIsEdit(false),
   })
@@ -26,9 +31,82 @@ const PostDetail: FC<RouteComponentProps & RouteConfig> = (props) => {
 
   const markdownRef = useRef<EditorHandler | null>(null)
   const Content = useMemo(
-    () => <Markdown ref={markdownRef} defaultValue={post?.content} readOnly={!isEdit} />,
+    () => (
+      <Markdown
+        ref={markdownRef}
+        className={classnames({
+          [styles.markdown__edit]: isEdit,
+        })}
+        defaultValue={post?.content}
+        readOnly={!isEdit}
+      />
+    ),
     [post?.content, isEdit],
   )
+
+  const EditGroupButton = useMemo(() => {
+    if (isEdit) {
+      return (
+        <>
+          <Button
+            theme='solid'
+            loading={editPostService.loading}
+            disabled={!isAdmin}
+            onClick={() => editPostService.run(markdownRef.current?.getValue() || '')}
+          >
+            保存
+          </Button>
+          <Button
+            disabled={editPostService.loading || !isAdmin}
+            onClick={() => {
+              markdownRef.current?.refresh()
+              setIsEdit(false)
+            }}
+          >
+            取消
+          </Button>
+        </>
+      )
+    }
+
+    return (
+      <>
+        <Button theme='solid' onClick={() => setIsEdit(true)}>
+          编辑
+        </Button>
+        {isMobileSize ? (
+          <Button
+            theme='light'
+            type='danger'
+            onClick={() =>
+              Modal.error({
+                title: '确定要删除此文章？',
+                content: '此修改将不可逆',
+                onOk: () => {},
+              })
+            }
+          >
+            删除
+          </Button>
+        ) : (
+          <Popconfirm
+            title='确定要删除此文章？'
+            content='此修改将不可逆'
+            okType='danger'
+            icon={
+              <IconAlertTriangle style={{ color: 'var(--semi-color-danger)' }} size='extra-large' />
+            }
+            position='leftTop'
+            onConfirm={() => {}}
+          >
+            <Button theme='light' type='danger'>
+              删除
+            </Button>
+          </Popconfirm>
+        )}
+      </>
+    )
+  }, [isAdmin, isEdit, isMobileSize, getPostService.loading, editPostService.loading])
 
   return (
     <>
@@ -39,33 +117,21 @@ const PostDetail: FC<RouteComponentProps & RouteConfig> = (props) => {
           ) : (
             post && (
               <Row type='flex' justify='center'>
-                <Banner post={post} onEditMode={setIsEdit} />
+                <Banner post={post} />
                 {/* TODO: 标签编辑 */}
                 {/* TODO: 高级设置 */}
                 <Col span={24} xl={18} xxl={16} style={{ position: 'relative' }}>
-                  {Content}
-                  {isEdit && (
-                    <ButtonGroup className={styles['action-btns']}>
-                      <Button
-                        theme='solid'
-                        loading={savePostService.loading}
-                        disabled={!isAdmin}
-                        onClick={() => savePostService.run(markdownRef.current?.getValue() || '')}
-                      >
-                        保存
-                      </Button>
-                      <Button
-                        loading={savePostService.loading}
-                        disabled={!isAdmin}
-                        onClick={() => {
-                          markdownRef.current?.refresh()
-                          setIsEdit(false)
-                        }}
-                      >
-                        取消
-                      </Button>
+                  {isAdmin && (
+                    <ButtonGroup
+                      className={classnames({
+                        [styles['action-btns']]: true,
+                        [styles['action-btns__edit']]: isEdit,
+                      })}
+                    >
+                      {EditGroupButton}
                     </ButtonGroup>
                   )}
+                  {Content}
                 </Col>
               </Row>
             )

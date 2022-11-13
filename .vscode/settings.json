@@ -4,6 +4,7 @@
     "source.fixAll.eslint": true
   },
   "cSpell.words": [
+    "ahooks",
     "backtop",
     "browserslist",
     "btns",
@@ -11,10 +12,13 @@
     "commitlint",
     "commonmark",
     "douyinfe",
+    "ErrorBoundary",
     "Hokori",
     "Milkdown",
     "mjsx",
     "nord",
+    "Popconfirm",
+    "prosemirror",
     "Sider",
     "tids",
     "TINYINT",

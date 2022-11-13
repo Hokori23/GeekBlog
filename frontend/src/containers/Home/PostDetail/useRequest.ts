@@ -1,12 +1,11 @@
 import { Notification } from '@douyinfe/semi-ui'
 import { useRequest } from 'ahooks'
 import { Request } from '@/utils'
-import { PostWithAuthor } from '@/utils/Request/Post'
 
 export default ({ id, onSave }: { id: number; onSave: () => void }) => {
   const getPostService = useRequest(() => Request.Post.Retrieve(Number(id)))
   const post = getPostService.data?.data
-  const savePostService = useRequest(
+  const editPostService = useRequest(
     async (content = '') => {
       const tags = post?.tags.map((v) => v.id) || []
       const newPost = {
@@ -29,9 +28,12 @@ export default ({ id, onSave }: { id: number; onSave: () => void }) => {
       manual: true,
     },
   )
+  const deletePostService = useRequest(async () => {
+    const res = await Request.Post.Delete__Admin
+  })
 
   return {
     getPostService,
-    savePostService,
+    editPostService,
   }
 }

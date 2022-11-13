@@ -10,5 +10,24 @@
     position: absolute;
     right: 20px;
     top: 32px;
+    z-index: 999;
+    &__edit {
+      top: 64px;
+    }
+  }
+
+  .markdown {
+    &__edit {
+      :global {
+        .milkdown .editor {
+          padding-top: 55px !important;
+        }
+        .milkdown-menu {
+          position: sticky;
+          top: 0;
+          z-index: 999;
+        }
+      }
+    }
   }
 }

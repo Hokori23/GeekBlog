@@ -9,5 +9,5 @@ configResponsive({
   xxl: 1600,
 })
 
-export const useMobileSize = () => !useResponsive().md
-export const useDeskTopSize = () => useResponsive().md
+export const useMobileSize = () => !useResponsive().lg
+export const useDeskTopSize = () => useResponsive().lg

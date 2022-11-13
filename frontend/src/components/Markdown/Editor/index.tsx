@@ -14,10 +14,25 @@ import {
   getMarkdown as _getMarkdown,
   replaceAll,
 } from '@milkdown/utils'
-import { Title, Paragraph, Image, Hr, EmptyComponent } from '../CustomComponents'
+import { Title, Image, Hr, EmptyComponent } from '../CustomComponents'
 import { gfm, paragraph, image, hr, heading } from '@milkdown/preset-gfm'
 import { prism } from '@milkdown/plugin-prism'
+import { useUpdateEffect } from 'ahooks'
+import ErrorBoundary from '@/components/ErrorBoundary'
+
+// plugins
+import { tooltip } from '@milkdown/plugin-tooltip'
+import { history } from '@milkdown/plugin-history'
+import { clipboard } from '@milkdown/plugin-clipboard'
+import { emoji } from '@milkdown/plugin-emoji'
+import { cursor } from '@milkdown/plugin-cursor'
+import { menu, menuPlugin } from '@milkdown/plugin-menu'
+import { indent } from '@milkdown/plugin-indent'
+import { upload, uploadPlugin } from '@milkdown/plugin-upload'
+import uploader from './uploader'
+
 import './index.scss'
+import 'material-icons/iconfont/material-icons.css'
 
 interface EditorProps
   extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -40,12 +55,15 @@ const MilkdownEditor = React.memo(
 
       const { editor } = useEditor((root, renderReact) => {
         const nodes = gfm
-          .configure(paragraph, { view: renderReact(Paragraph) })
+          .configure(paragraph, {
+            className: () =>
+              'semi-typography semi-typography-paragraph semi-typography-primary semi-typography-normal',
+          })
           .configure(image, { view: renderReact(inline ? EmptyComponent : Image) })
           .configure(heading, { view: renderReact(Title) })
           .configure(hr, { view: renderReact(Hr) })
 
-        const _editor = Editor.make()
+        return Editor.make()
           .config((ctx) => {
             ctx.set(rootCtx, root)
             ctx.set(editorViewOptionsCtx, { editable: () => !readOnlyRef.current })
@@ -53,14 +71,24 @@ const MilkdownEditor = React.memo(
           })
           .use(nord)
           .use(nodes)
+          .use(menu.configure(menuPlugin, {}))
+          .use(tooltip)
+          .use(history)
           .use(prism)
-
-        return _editor
+          .use(clipboard)
+          .use(emoji)
+          .use(cursor)
+          .use(indent)
+          .use(
+            upload.configure(uploadPlugin, {
+              uploader,
+              enableHtmlFileUploader: true,
+            }),
+          )
       })
 
       const editorInstance = editor.editor.current
       const getMarkdown = useCallback(() => {
-        const editorInstance = editor.editor.current
         let markdownContent = ''
         editorInstance?.action((ctx) => {
           markdownContent = _getMarkdown()(ctx)
@@ -86,13 +114,19 @@ const MilkdownEditor = React.memo(
 
       useEffect(() => {
         readOnlyRef.current = readOnly
+      }, [])
+
+      useUpdateEffect(() => {
+        readOnlyRef.current = readOnly
         forceUpdate()
       }, [readOnly])
 
       return (
-        <div {...props}>
-          <ReactEditor editor={editor} />
-        </div>
+        <ErrorBoundary>
+          <div {...props}>
+            <ReactEditor editor={editor} />
+          </div>
+        </ErrorBoundary>
       )
     },
   ),

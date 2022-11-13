@@ -14,6 +14,7 @@ import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import PageLoading from '@/components/PageLoading'
 import { LayoutProps } from '../types'
+import ErrorBoundary from '@/components/ErrorBoundary'
 
 const { Header, Sider, Content } = Layout
 
@@ -87,12 +88,14 @@ const MainLayout = React.memo<LayoutProps>(({ Component, ...props }) => {
         </Sider>
         <Content style={{ position: 'relative' }}>
           <PageLoading show={getBlogConfigService.loading} />
-          <Suspense fallback={<PageLoading />}>
-            <div id='right-content' style={{ height: 'calc(100vh - 60px)', overflowY: 'auto' }}>
-              <Component {...props} />
-              <Footer />
-            </div>
-          </Suspense>
+          <ErrorBoundary>
+            <Suspense fallback={<PageLoading />}>
+              <div id='right-content' style={{ height: 'calc(100vh - 60px)', overflowY: 'auto' }}>
+                <Component {...props} />
+                <Footer />
+              </div>
+            </Suspense>
+          </ErrorBoundary>
         </Content>
       </Layout>
     </Layout>

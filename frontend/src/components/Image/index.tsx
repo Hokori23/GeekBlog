@@ -6,10 +6,15 @@ import Spin from '@/components/Spin'
 import { IconUploadError } from '@douyinfe/semi-icons'
 
 const { Paragraph } = Typography
+type ImageNativeProps = Omit<
+  React.DetailedHTMLProps<React.HTMLAttributes<HTMLImageElement>, HTMLImageElement>,
+  'ref'
+>
 
-const Image = React.memo<ImageProps & { className?: string | null; style?: React.CSSProperties }>(
-  ({ src, ...props }) => (
+const Image = React.memo(
+  React.forwardRef<SemiImage, ImageProps & ImageNativeProps>(({ src, ...props }, ref) => (
     <SemiImage
+      ref={ref}
       src={setUpYunImg(src!, 'md')}
       preview={{ src: setUpYunImg(src!, 'origin') }}
       placeholder={<Spin />}
@@ -28,7 +33,7 @@ const Image = React.memo<ImageProps & { className?: string | null; style?: React
       }
       {...props}
     />
-  ),
+  )),
 )
 
 export default Image
