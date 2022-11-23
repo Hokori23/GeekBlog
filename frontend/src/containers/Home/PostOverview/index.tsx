@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { PathName, RouteConfig } from '@/routes'
 import { usePostOverview } from '@/hooks/usePostOverview'
@@ -13,6 +13,18 @@ const PostOverview: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
   const { loading, posts, pagination } = usePostOverview({
     postTypes: [PostType.POST, PostType.LANDSCAPE],
   })
+
+  const paginationComponent = useMemo(
+    () =>
+      Boolean(posts?.length) && (
+        <Row type='flex' justify='center'>
+          <Col span={20} xl={12} xxl={14}>
+            <Pagination {...pagination} style={{ padding: '0 12px', boxSizing: 'border-box' }} />
+          </Col>
+        </Row>
+      ),
+    [posts?.length, pagination],
+  )
 
   return (
     <>
@@ -32,13 +44,7 @@ const PostOverview: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
           />
         </Col>
       </Row>
-      {posts?.length && (
-        <Row type='flex' justify='center'>
-          <Col span={22} xl={17} xxl={15}>
-            <Pagination {...pagination} style={{ padding: '0 12px', boxSizing: 'border-box' }} />
-          </Col>
-        </Row>
-      )}
+      {paginationComponent}
       <ScrollTop />
     </>
   )

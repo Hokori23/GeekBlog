@@ -40,55 +40,69 @@ const PostOverviewItem = React.memo<PostOverviewItemProps>(({ post, onClick }) =
     [tags],
   )
 
-  const Cover = coverUrl && (
-    <div className={styles.imgContainer} onClick={(e) => e.stopPropagation()}>
-      {/* TODO: diff复用节点, loading态时依旧展示上一张图片 */}
-      <Image src={coverUrl} className={styles.img} />
-    </div>
+  const Cover = useMemo(
+    () =>
+      coverUrl && (
+        <div className={styles.imgContainer} onClick={(e) => e.stopPropagation()}>
+          {/* TODO: diff复用节点, loading态时依旧展示上一张图片 */}
+          <Image src={coverUrl} className={styles.img} />
+        </div>
+      ),
+    [coverUrl],
   )
 
-  const Title = title && (
-    <SemiTitle heading={1} style={{ fontWeight: 500, marginLeft: 4 }}>
-      {title}
-      {Boolean(priority) && (
-        <IconBackTop
-          size='extra-large'
-          style={{ color: 'var(--semi-color-danger)', marginLeft: 12 }}
-        />
-      )}
-    </SemiTitle>
+  const Title = useMemo(
+    () =>
+      title && (
+        <SemiTitle heading={1} style={{ fontWeight: 500, marginLeft: 4 }}>
+          {title}
+          {Boolean(priority) && (
+            <IconBackTop
+              size='extra-large'
+              style={{ color: 'var(--semi-color-danger)', marginLeft: 12 }}
+            />
+          )}
+        </SemiTitle>
+      ),
+    [title, priority],
   )
 
-  const Actions = [
-    <Badge key='pageViews' count={pageViews} overflowCount={99}>
-      <Avatar size='extra-small' style={{ backgroundColor: 'transparent' }}>
-        <IconEyeOpened size='extra-large' style={{ color: 'var(--semi-color-text-2)' }} />
-      </Avatar>
-    </Badge>,
-    <Badge key='postComments' count={postComments?.length} overflowCount={99}>
-      <Avatar size='extra-small' style={{ backgroundColor: 'transparent', marginLeft: 8 }}>
-        <IconComment size='extra-large' style={{ color: 'var(--semi-color-text-2)' }} />
-      </Avatar>
-    </Badge>,
-    <TagGroup
-      key='tags'
-      showPopover
-      maxTagCount={3}
-      tagList={tagList}
-      size='large'
-      style={{ marginLeft: 8 }}
-    />,
-  ]
+  const Actions = useMemo(
+    () => [
+      <Badge key='pageViews' count={pageViews} overflowCount={99}>
+        <Avatar size='extra-small' style={{ backgroundColor: 'transparent' }}>
+          <IconEyeOpened size='extra-large' style={{ color: 'var(--semi-color-text-2)' }} />
+        </Avatar>
+      </Badge>,
+      <Badge key='postComments' count={postComments?.length} overflowCount={99}>
+        <Avatar size='extra-small' style={{ backgroundColor: 'transparent', marginLeft: 8 }}>
+          <IconComment size='extra-large' style={{ color: 'var(--semi-color-text-2)' }} />
+        </Avatar>
+      </Badge>,
+      <TagGroup
+        key='tags'
+        showPopover
+        maxTagCount={3}
+        tagList={tagList}
+        size='large'
+        style={{ marginLeft: 8 }}
+      />,
+    ],
+    [pageViews, postComments?.length, tagList],
+  )
 
-  const Description = (
-    <Tooltip
-      content={formatDistanceToNow(new Date(createdAt), {
-        locale: zhCN,
-        addSuffix: true,
-      })}
-    >
-      {format(new Date(createdAt), 'yyyy/MM/dd hh:mm')}
-    </Tooltip>
+  const Description = useMemo(
+    () => (
+      <Tooltip
+        content={formatDistanceToNow(new Date(createdAt), {
+          locale: zhCN,
+          addSuffix: true,
+        })}
+      >
+        {format(new Date(createdAt), 'yyyy/MM/dd hh:mm')}
+      </Tooltip>
+    ),
+    [createdAt],
   )
 
   const { _content, needEllipsis, overviewContent } = useMemo(() => {
@@ -106,6 +120,23 @@ const PostOverviewItem = React.memo<PostOverviewItemProps>(({ post, onClick }) =
     }
   }, [content])
 
+  const contentComponent = useMemo(
+    () =>
+      _content &&
+      (needEllipsis ? (
+        <Collapsible
+          isOpen={false}
+          collapseHeight={300}
+          className={styles.contentContainer__collapsed}
+        >
+          <Markdown defaultValue={overviewContent} readOnly={true} />
+        </Collapsible>
+      ) : (
+        <Markdown defaultValue={overviewContent} readOnly={true} />
+      )),
+    [overviewContent, _content, needEllipsis],
+  )
+
   return (
     <List.Item
       className={styles.postOverviewItem}
@@ -118,20 +149,7 @@ const PostOverviewItem = React.memo<PostOverviewItemProps>(({ post, onClick }) =
             description={Description}
             avatar={<Avatar alt={author.userName} size='default' src={author.avatarUrl} />}
           />
-          <div className={styles.contentContainer}>
-            {_content &&
-              (needEllipsis ? (
-                <Collapsible
-                  isOpen={false}
-                  collapseHeight={300}
-                  className={styles.contentContainer__collapsed}
-                >
-                  <Markdown defaultValue={overviewContent} readOnly={true} />
-                </Collapsible>
-              ) : (
-                <Markdown defaultValue={overviewContent} readOnly={true} />
-              ))}
-          </div>
+          <div className={styles.contentContainer}>{contentComponent}</div>
         </Card>
       }
     />

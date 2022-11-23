@@ -27,13 +27,19 @@ const Banner = React.memo<BannerProps>(({ post }) => {
     [createdAt],
   )
 
-  return (
-    <header className={styles.bannerWrapper}>
-      {coverUrl && (
+  const bannerBg = useMemo(
+    () =>
+      coverUrl && (
         <figure className={styles.bannerBg}>
           <img src={setUpYunImg(coverUrl, 'md')} />
         </figure>
-      )}
+      ),
+    [coverUrl],
+  )
+
+  return (
+    <header className={styles.bannerWrapper}>
+      {bannerBg}
       <figure
         className={classnames({
           [styles.bannerTextWrapper]: true,

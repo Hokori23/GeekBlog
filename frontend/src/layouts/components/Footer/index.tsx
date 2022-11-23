@@ -20,13 +20,15 @@ const Footer: FC<FooterProps> = ({ id, className }) => {
   const state = useSelector((state: RootState) => state.common)
   const isMobileSize = useMobileSize()
 
-  const blogCreatedAt = state.blogConfig?.find(
-    (v) => v.module === 'system' && v.key === 'createdAt',
-  )?.value
+  const blogCreatedAt = useMemo(
+    () => state.blogConfig?.find((v) => v.module === 'system' && v.key === 'createdAt')?.value,
+    [state.blogConfig],
+  )
 
-  const blogName = state.blogConfig?.find(
-    (v) => v.module === 'system' && v.key === 'blogName',
-  )?.value
+  const blogName = useMemo(
+    () => state.blogConfig?.find((v) => v.module === 'system' && v.key === 'blogName')?.value,
+    [state.blogConfig],
+  )
 
   const { dateText, yearText } = useTimer(Number(blogCreatedAt), blogName)
   return (

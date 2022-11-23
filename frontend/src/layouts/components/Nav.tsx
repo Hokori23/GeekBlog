@@ -46,6 +46,15 @@ const Nav = React.memo<SemiNavProps>((props) => {
     })
   }, [dispatch])
 
+  const header = useMemo(
+    () => (
+      <Title heading={5} link onClick={() => history.push(PathName.HOME)}>
+        {blogName}
+      </Title>
+    ),
+    [blogName, history],
+  )
+
   const dropdownMenu = useMemo(() => {
     const menu: DropdownProps['menu'] = [
       isAdmin
@@ -78,36 +87,36 @@ const Nav = React.memo<SemiNavProps>((props) => {
     return menu
   }, [])
 
+  const footer = useMemo(
+    () =>
+      isLogin ? (
+        <Dropdown position='bottomRight' menu={dropdownMenu}>
+          <Avatar
+            alt={userInfo?.userName}
+            size='small'
+            src={userInfo?.avatarUrl}
+            style={{ marginRight: 12 }}
+          />
+        </Dropdown>
+      ) : (
+        <ButtonGroup>
+          <Button theme='solid' onClick={() => history.push(PathName.LOGIN)}>
+            登录
+          </Button>
+          <Button onClick={() => history.push(PathName.REGISTER)}>注册</Button>
+        </ButtonGroup>
+      ),
+    [isLogin],
+  )
+
   return (
     <SemiNav
       mode='horizontal'
       header={{
         // logo: <img src="https://sf6-cdn-tos.douyinstatic.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/webcast_logo.svg" />,
-        text: (
-          <Title heading={5} link onClick={() => history.push(PathName.HOME)}>
-            {blogName}
-          </Title>
-        ),
+        text: header,
       }}
-      footer={
-        isLogin ? (
-          <Dropdown position='bottomRight' menu={dropdownMenu}>
-            <Avatar
-              alt={userInfo?.userName}
-              size='small'
-              src={userInfo?.avatarUrl}
-              style={{ marginRight: 12 }}
-            />
-          </Dropdown>
-        ) : (
-          <ButtonGroup>
-            <Button theme='solid' onClick={() => history.push(PathName.LOGIN)}>
-              登录
-            </Button>
-            <Button onClick={() => history.push(PathName.REGISTER)}>注册</Button>
-          </ButtonGroup>
-        )
-      }
+      footer={footer}
       {...props}
     />
   )
