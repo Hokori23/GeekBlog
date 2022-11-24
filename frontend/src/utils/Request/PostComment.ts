@@ -1,5 +1,5 @@
 import { Request } from '.'
-import { User } from './User'
+import { User, WithAuthor } from './User'
 import { Restful, _Restful } from './type'
 
 const baseUrl = '/api/post-comment'
@@ -20,11 +20,9 @@ export interface PostComment {
   readonly updatedAt: Date
 }
 
-export interface PostCommentWithAuthor extends PostComment {
-  author?: User
-}
+export type AssociatedPostComment = WithAuthor<PostComment>
 
-export interface FormattedPostComment extends PostCommentWithAuthor {
+export interface FormattedPostComment extends AssociatedPostComment {
   children?: FormattedPostComment[]
   parent?: FormattedPostComment
 }
@@ -38,7 +36,7 @@ export const Create = async (comment: Partial<PostComment>) => {
 }
 
 export const Retrieve__PID = async (pid: number) => {
-  return await Request<Restful<PostComment[]>>({
+  return await Request<Restful<AssociatedPostComment[]>>({
     method: 'GET',
     data: {
       pid,

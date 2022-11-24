@@ -3,6 +3,7 @@ import { RootModel } from './models'
 import { LS_KEYS } from './utils/const'
 import Request from './utils/Request'
 import { Option } from './utils/Request/Option'
+import { CodeDictionary } from './utils/Request/type'
 import { User } from './utils/Request/User'
 import { computeDOMHeight, ls } from './utils/tools'
 
@@ -72,7 +73,7 @@ export const common = createModel<RootModel>()({
         if (state.common.isLogin) {
           // 当本地为已登录状态时，向后端确认此状态是否合法
           const res = await Request.User.Check()
-          if (res?.code !== 0) {
+          if (res?.data?.code !== CodeDictionary.SUCCESS) {
             common.logOut()
           }
         }

@@ -1,6 +1,7 @@
 import { Request } from '.'
 import { Restful, _Restful } from './type'
 import { store } from '@/store'
+import { AxiosResponse } from 'axios'
 
 const baseUrl = '/api/user'
 
@@ -51,6 +52,8 @@ export interface LoggedInUser extends User {
 export interface RegisterUser extends User {
   captcha: string
 }
+
+export type WithAuthor<T> = T & { author: User }
 
 export const Init = async (user: Partial<User>) => {
   return await Request<Restful<User>>({
@@ -149,8 +152,9 @@ export const SendCaptcha = async (data: {
  * 检查登陆状态
  */
 export const Check = async () => {
-  return await Request<_Restful>({
+  return await Request<AxiosResponse<_Restful>>({
     method: 'POST',
     url: `${baseUrl}/check`,
+    silent: true,
   })
 }

@@ -1,20 +1,21 @@
 import React, { useMemo } from 'react'
-import { Divider, Space, Tooltip, Typography } from '@douyinfe/semi-ui'
-import { PostWithAuthor } from '@/utils/Request/Post'
+import { Divider, Space, TagGroup, Tooltip, Typography } from '@douyinfe/semi-ui'
+import { AssociatedPost } from '@/utils/Request/Post'
 import styles from './index.module.scss'
 import { setUpYunImg } from '@/utils/tools'
 import classnames from 'classnames'
 import { formatDistanceToNow, format } from 'date-fns'
 import { zhCN } from 'date-fns/locale'
+import { TagGroupProps, TagProps } from '@douyinfe/semi-ui/lib/es/tag'
 
 const { Title, Text } = Typography
 
 interface BannerProps {
-  post: PostWithAuthor
+  post: AssociatedPost
 }
 
 const Banner = React.memo<BannerProps>(({ post }) => {
-  const { title, coverUrl, author, createdAt, pageViews, postComments } = post
+  const { title, coverUrl, author, createdAt, pageViews, postComments, tags } = post
 
   const { _createdAtReadable, _createdAtDistance } = useMemo(
     () => ({
@@ -25,6 +26,16 @@ const Banner = React.memo<BannerProps>(({ post }) => {
       }),
     }),
     [createdAt],
+  )
+  const tagList: TagGroupProps<TagProps>['tagList'] = useMemo(
+    () =>
+      // TODO: 适配Semi
+      tags?.map(({ name, iconColor }) => ({
+        type: coverUrl ? 'solid' : 'ghost',
+        children: name,
+        // color: iconColor,
+      })),
+    [tags],
   )
 
   return (
@@ -41,18 +52,30 @@ const Banner = React.memo<BannerProps>(({ post }) => {
         })}
       >
         <Title style={{ marginBottom: 16, fontSize: 48, fontWeight: 500 }}>{title}</Title>
-        <Space style={{ marginBottom: 8 }}>
+        <Space>
           <Text link>{author.userName}</Text>
           <Divider layout='vertical' />
           <Text>访问数: {pageViews}</Text>
           <Divider layout='vertical' />
           <Text>评论数: {postComments?.length || 0}</Text>
         </Space>
-        <Space>
+        <Space style={{ marginTop: 8 }}>
           <Tooltip content={_createdAtDistance} position='right'>
             <Text>发布时间: {_createdAtReadable}</Text>
           </Tooltip>
         </Space>
+        {Boolean(tagList?.length) && (
+          <Space style={{ marginTop: 8 }}>
+            <TagGroup
+              key='tags'
+              showPopover
+              maxTagCount={3}
+              tagList={tagList}
+              size='large'
+              style={{ marginLeft: 8 }}
+            />
+          </Space>
+        )}
       </figure>
     </header>
   )

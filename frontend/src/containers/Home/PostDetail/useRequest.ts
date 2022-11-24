@@ -1,10 +1,28 @@
 import { Notification } from '@douyinfe/semi-ui'
 import { useRequest } from 'ahooks'
 import { Request } from '@/utils'
+import { CodeDictionary } from '@/utils/Request/type'
+import { useSelector } from 'react-redux'
+import { RootState, store } from '@/store'
 
-export default ({ id, onSave }: { id: number; onSave: () => void }) => {
-  const getPostService = useRequest(() => Request.Post.Retrieve(Number(id)))
-  const post = getPostService.data?.data
+export default ({
+  id,
+  onSave,
+  onDelete,
+}: {
+  id: number
+  onSave: () => void
+  onDelete: () => void
+}) => {
+  const { post } = useSelector((state: RootState) => state.postDetail)
+  const dispatch = useSelector(() => store.dispatch.postDetail)
+
+  const getPostService = useRequest(async () => {
+    const res = await Request.Post.Retrieve(Number(id))
+    if (res?.code === CodeDictionary.SUCCESS) {
+      dispatch.setPost(res.data)
+    }
+  })
   const editPostService = useRequest(
     async (content = '') => {
       const tags = post?.tags.map((v) => v.id) || []
@@ -17,10 +35,11 @@ export default ({ id, onSave }: { id: number; onSave: () => void }) => {
         post: newPost,
         tids: tags,
       })
-      if (res?.code === 0) {
+      if (res?.code === CodeDictionary.SUCCESS) {
         Notification.success({
           content: '保存成功',
         })
+        dispatch.setPost(res.data)
         onSave()
       }
     },
@@ -28,12 +47,25 @@ export default ({ id, onSave }: { id: number; onSave: () => void }) => {
       manual: true,
     },
   )
-  const deletePostService = useRequest(async () => {
-    const res = await Request.Post.Delete__Admin
-  })
+  const deletePostService = useRequest(
+    async () => {
+      const res = await Request.Post.Delete__Admin(post!.id!)
+      if (res?.code === CodeDictionary.SUCCESS) {
+        Notification.success({
+          content: '删除成功',
+        })
+        onDelete()
+      }
+    },
+    {
+      manual: true,
+    },
+  )
 
   return {
     getPostService,
     editPostService,
+    deletePostService,
+    post,
   }
 }

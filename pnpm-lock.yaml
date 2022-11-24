@@ -112,8 +112,7 @@ importers:
       '@commitlint/config-conventional': ^16.2.1
       '@douyinfe/semi-icons': ^2.22.3
       '@douyinfe/semi-illustrations': ^2.23.1
-      '@douyinfe/semi-ui': ^2.22.3
-      '@jsdevtools/rehype-url-inspector': ^2.0.2
+      '@douyinfe/semi-ui': ^2.23.3
       '@milkdown/core': ^6.5.2
       '@milkdown/plugin-clipboard': ^6.5.2
       '@milkdown/plugin-cursor': ^6.5.2
@@ -173,8 +172,7 @@ importers:
     dependencies:
       '@douyinfe/semi-icons': registry.npmmirror.com/@douyinfe/semi-icons/2.22.3_react@17.0.1
       '@douyinfe/semi-illustrations': registry.npmmirror.com/@douyinfe/semi-illustrations/2.23.1_react@17.0.1
-      '@douyinfe/semi-ui': registry.npmmirror.com/@douyinfe/semi-ui/2.22.3_react-dom@17.0.1+react@17.0.1
-      '@jsdevtools/rehype-url-inspector': registry.npmmirror.com/@jsdevtools/rehype-url-inspector/2.0.2
+      '@douyinfe/semi-ui': registry.npmmirror.com/@douyinfe/semi-ui/2.23.3_react-dom@17.0.1+react@17.0.1
       '@milkdown/core': registry.npmmirror.com/@milkdown/core/6.5.2_746a1cbc3f7b566372bcd18ab43ceff3
       '@milkdown/plugin-clipboard': registry.npmmirror.com/@milkdown/plugin-clipboard/6.5.2_900b3f4933f38d6e43654cfb26455fba
       '@milkdown/plugin-cursor': registry.npmmirror.com/@milkdown/plugin-cursor/6.5.2_900b3f4933f38d6e43654cfb26455fba
@@ -521,7 +519,7 @@ packages:
     version: 7.19.0
     engines: {node: '>=6.9.0'}
     dependencies:
-      regenerator-runtime: registry.npmmirror.com/regenerator-runtime/0.13.9
+      regenerator-runtime: registry.npmmirror.com/regenerator-runtime/0.13.10
 
   registry.npmmirror.com/@babel/runtime/7.20.0:
     resolution: {integrity: sha512-NDYdls71fTXoU8TZHfbBWg7DiZfNzClcKui/+kyi6ppD2L1qnWW3VV6CjtaBXSUGGhiTWJ6ereOIkUvenif66Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@babel/runtime/-/runtime-7.20.0.tgz}
@@ -808,20 +806,20 @@ packages:
     engines: {node: '>=4.0.0'}
     dev: false
 
-  registry.npmmirror.com/@douyinfe/semi-animation-react/2.22.3:
-    resolution: {integrity: sha512-Z4LHjpYjOKyRMqAtV/6fXZSBO3IU6mQll4jbj8YWqFFd6MOFWTYAeq2lOX3tOKl4o3m1C6cvW3Hc5C87btBPWg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-animation-react/-/semi-animation-react-2.22.3.tgz}
+  registry.npmmirror.com/@douyinfe/semi-animation-react/2.23.3:
+    resolution: {integrity: sha512-UOI1HA5Yb8lqYDt3NLPvq50MGIA6BqgcHsvZzBR4SQBvNde7vHziEu9qIYPqASXWIcQjV9qhRlDiYagP2t1r7A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-animation-react/-/semi-animation-react-2.23.3.tgz}
     name: '@douyinfe/semi-animation-react'
-    version: 2.22.3
+    version: 2.23.3
     dependencies:
       '@douyinfe/semi-animation': registry.npmmirror.com/@douyinfe/semi-animation/2.12.0
-      '@douyinfe/semi-animation-styled': registry.npmmirror.com/@douyinfe/semi-animation-styled/2.22.3
+      '@douyinfe/semi-animation-styled': registry.npmmirror.com/@douyinfe/semi-animation-styled/2.23.3
       classnames: registry.npmmirror.com/classnames/2.3.2
     dev: false
 
-  registry.npmmirror.com/@douyinfe/semi-animation-styled/2.22.3:
-    resolution: {integrity: sha512-KjnlXBuOB/TzpEFgu6Bn609h6cAu/FJ3mwVnGWrvvf5as6CZrx/y26/dEB2DaJinsvsGTqU3Jx6RsiJsQUNWcQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-animation-styled/-/semi-animation-styled-2.22.3.tgz}
+  registry.npmmirror.com/@douyinfe/semi-animation-styled/2.23.3:
+    resolution: {integrity: sha512-+fuOGXTdMra2avCH/rqluihAT6b8Q3elu4QeVfNVoMR2zv5Yjr0QTh9nJrrhOY1BSba9h+O+TYNcVpj7zwgEng==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-animation-styled/-/semi-animation-styled-2.23.3.tgz}
     name: '@douyinfe/semi-animation-styled'
-    version: 2.22.3
+    version: 2.23.3
     dev: false
 
   registry.npmmirror.com/@douyinfe/semi-animation/2.12.0:
@@ -833,10 +831,10 @@ packages:
       bezier-easing: registry.npmmirror.com/bezier-easing/2.1.0
     dev: false
 
-  registry.npmmirror.com/@douyinfe/semi-foundation/2.22.3:
-    resolution: {integrity: sha512-KkJ3P6+E3Ri4qBhpluVVoTzMTjTj+ASK0G5ZZNsdQ/93BzgWcHP55fsh/aGHPfX3LehiJpC11bII1gYEu3DHtw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-foundation/-/semi-foundation-2.22.3.tgz}
+  registry.npmmirror.com/@douyinfe/semi-foundation/2.23.3:
+    resolution: {integrity: sha512-jSlcBO/lc06M7l4KXb1EIOfTDL14ay6vmMstFI9mm+lbKlWtZE/Y3uCTsSeP+/MxrWmtXueevqFz4VKrhJGnOw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-foundation/-/semi-foundation-2.23.3.tgz}
     name: '@douyinfe/semi-foundation'
-    version: 2.22.3
+    version: 2.23.3
     dependencies:
       '@douyinfe/semi-animation': registry.npmmirror.com/@douyinfe/semi-animation/2.12.0
       async-validator: registry.npmmirror.com/async-validator/3.5.2
@@ -853,6 +851,18 @@ packages:
     id: registry.npmmirror.com/@douyinfe/semi-icons/2.22.3
     name: '@douyinfe/semi-icons'
     version: 2.22.3
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      classnames: registry.npmmirror.com/classnames/2.3.2
+      react: registry.npmmirror.com/react/17.0.1
+    dev: false
+
+  registry.npmmirror.com/@douyinfe/semi-icons/2.23.3_react@17.0.1:
+    resolution: {integrity: sha512-LxmZ3vkKy9UZ8bYnSiGKUxPm+QRpkht0eTqndfw1+6Tq60TgmZXaPEnYfIDDDVi8UQdQgv12Mb2Ee4BQDUr5Sg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-icons/-/semi-icons-2.23.3.tgz}
+    id: registry.npmmirror.com/@douyinfe/semi-icons/2.23.3
+    name: '@douyinfe/semi-icons'
+    version: 2.23.3
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
@@ -883,29 +893,29 @@ packages:
       react: registry.npmmirror.com/react/17.0.1
     dev: false
 
-  registry.npmmirror.com/@douyinfe/semi-theme-default/2.22.3:
-    resolution: {integrity: sha512-7lOUXVQXhANqWPegF2fg/RjAAAikDni0/CNgxhtORh9aEPe0EPo0CtAuSpuCC1Nu8gGse2cNnWnNFqarWcuEAQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-theme-default/-/semi-theme-default-2.22.3.tgz}
+  registry.npmmirror.com/@douyinfe/semi-theme-default/2.23.3:
+    resolution: {integrity: sha512-dZzvqjuZ2kAIDVpgcb37yGXIVZB4/xhnabyxCJy7IFio2ZHwTOEbwuqDNrluYhQjPf5XMymlfm2DWzmCT3pS1w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-theme-default/-/semi-theme-default-2.23.3.tgz}
     name: '@douyinfe/semi-theme-default'
-    version: 2.22.3
+    version: 2.23.3
     dependencies:
       glob: registry.npmmirror.com/glob/7.2.3
     dev: false
 
-  registry.npmmirror.com/@douyinfe/semi-ui/2.22.3_react-dom@17.0.1+react@17.0.1:
-    resolution: {integrity: sha512-ODpRRQ1BniWEI6Rbgi/Ahc25myIKklrYXgGTWU2ZnUVvQApcKot5I0kFfzxnDaXZnj5WjbIrKKziGIw+08LdEg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-ui/-/semi-ui-2.22.3.tgz}
-    id: registry.npmmirror.com/@douyinfe/semi-ui/2.22.3
+  registry.npmmirror.com/@douyinfe/semi-ui/2.23.3_react-dom@17.0.1+react@17.0.1:
+    resolution: {integrity: sha512-tccjQnlMbnQChc9x9FlyzRgpYZFe4cpJZnser9rW4XAZxv1IEaGLRM3d7Md1cJcTfuZCiGpiDzR84Pw6ifBAfw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-ui/-/semi-ui-2.23.3.tgz}
+    id: registry.npmmirror.com/@douyinfe/semi-ui/2.23.3
     name: '@douyinfe/semi-ui'
-    version: 2.22.3
+    version: 2.23.3
     peerDependencies:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
     dependencies:
       '@douyinfe/semi-animation': registry.npmmirror.com/@douyinfe/semi-animation/2.12.0
-      '@douyinfe/semi-animation-react': registry.npmmirror.com/@douyinfe/semi-animation-react/2.22.3
-      '@douyinfe/semi-foundation': registry.npmmirror.com/@douyinfe/semi-foundation/2.22.3
-      '@douyinfe/semi-icons': registry.npmmirror.com/@douyinfe/semi-icons/2.22.3_react@17.0.1
+      '@douyinfe/semi-animation-react': registry.npmmirror.com/@douyinfe/semi-animation-react/2.23.3
+      '@douyinfe/semi-foundation': registry.npmmirror.com/@douyinfe/semi-foundation/2.23.3
+      '@douyinfe/semi-icons': registry.npmmirror.com/@douyinfe/semi-icons/2.23.3_react@17.0.1
       '@douyinfe/semi-illustrations': registry.npmmirror.com/@douyinfe/semi-illustrations/2.15.0_react@17.0.1
-      '@douyinfe/semi-theme-default': registry.npmmirror.com/@douyinfe/semi-theme-default/2.22.3
+      '@douyinfe/semi-theme-default': registry.npmmirror.com/@douyinfe/semi-theme-default/2.23.3
       async-validator: registry.npmmirror.com/async-validator/3.5.2
       classnames: registry.npmmirror.com/classnames/2.3.2
       copy-text-to-clipboard: registry.npmmirror.com/copy-text-to-clipboard/2.2.0
@@ -1161,16 +1171,6 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': registry.npmmirror.com/@jridgewell/resolve-uri/3.1.0
       '@jridgewell/sourcemap-codec': registry.npmmirror.com/@jridgewell/sourcemap-codec/1.4.14
-
-  registry.npmmirror.com/@jsdevtools/rehype-url-inspector/2.0.2:
-    resolution: {integrity: sha512-iQL2lb+nOoT+5jFz1nfOa3oBJPF2JyBtPQgGmrRhxLT3QZAGIMLz/mh/9mUmk7FfKF5NB8xq0KoLn5F4/QHpyA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@jsdevtools/rehype-url-inspector/-/rehype-url-inspector-2.0.2.tgz}
-    name: '@jsdevtools/rehype-url-inspector'
-    version: 2.0.2
-    engines: {node: '>=10'}
-    dependencies:
-      url-regex: registry.npmmirror.com/url-regex/5.0.0
-      vfile: registry.npmmirror.com/vfile/4.2.1
-    dev: false
 
   registry.npmmirror.com/@milkdown/core/6.5.2_746a1cbc3f7b566372bcd18ab43ceff3:
     resolution: {integrity: sha512-SkF9cm687xqFyI+4h1Uj9O2tG1u0ufAvroIID9WABOj21dA4B7MC3tZ95Or8zqZgyGlz9T5KltnBoiW7AqrG8g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@milkdown/core/-/core-6.5.2.tgz}
@@ -5287,13 +5287,6 @@ packages:
       loose-envify: registry.npmmirror.com/loose-envify/1.4.0
     dev: false
 
-  registry.npmmirror.com/ip-regex/4.3.0:
-    resolution: {integrity: sha512-B9ZWJxHHOHUhUjCPrMpLD4xEq35bUTClHM1S6CBU5ixQnkZmwipwgc96vAd7AAGM9TGHvJR+Uss+/Ak6UphK+Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/ip-regex/-/ip-regex-4.3.0.tgz}
-    name: ip-regex
-    version: 4.3.0
-    engines: {node: '>=8'}
-    dev: false
-
   registry.npmmirror.com/ipaddr.js/1.9.1:
     resolution: {integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz}
     name: ipaddr.js
@@ -8233,12 +8226,6 @@ packages:
     resolution: {integrity: sha512-KepLsg4dU12hryUO7bp/axHAKvwGOCV0sGloQtpagJ12ai+ojVDqkeGSiRX1zlq+kjIMZ1t7gpze+26QqtdGqw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/regenerator-runtime/-/regenerator-runtime-0.13.10.tgz}
     name: regenerator-runtime
     version: 0.13.10
-    dev: false
-
-  registry.npmmirror.com/regenerator-runtime/0.13.9:
-    resolution: {integrity: sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/regenerator-runtime/-/regenerator-runtime-0.13.9.tgz}
-    name: regenerator-runtime
-    version: 0.13.9
 
   registry.npmmirror.com/regexp.prototype.flags/1.4.3:
     resolution: {integrity: sha512-fjggEOO3slI6Wvgjwflkc4NFRCTZAu5CnNfBd5qOMYhWdn67nJBBu34/TkD++eeFmd8C9r9jfXJ27+nSiRkSUA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/regexp.prototype.flags/-/regexp.prototype.flags-1.4.3.tgz}
@@ -9133,13 +9120,6 @@ packages:
     version: 1.0.3
     dev: false
 
-  registry.npmmirror.com/tlds/1.233.0:
-    resolution: {integrity: sha512-K05dY1r4lkXk+eE/j2UqHhGWp1bFn+17eYcJP7OepkmI3obLOgan3ZIpmml++wZ4LTIx4r9var373ztO2xb27A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/tlds/-/tlds-1.233.0.tgz}
-    name: tlds
-    version: 1.233.0
-    hasBin: true
-    dev: false
-
   registry.npmmirror.com/to-fast-properties/2.0.0:
     resolution: {integrity: sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/to-fast-properties/-/to-fast-properties-2.0.0.tgz}
     name: to-fast-properties
@@ -9544,14 +9524,6 @@ packages:
       '@types/unist': registry.npmmirror.com/@types/unist/2.0.6
     dev: false
 
-  registry.npmmirror.com/unist-util-stringify-position/2.0.3:
-    resolution: {integrity: sha512-3faScn5I+hy9VleOq/qNbAd6pAx7iH5jYBMS9I1HgQVijz/4mv5Bvw5iw1sC/90CODiKo81G/ps8AJrISn687g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/unist-util-stringify-position/-/unist-util-stringify-position-2.0.3.tgz}
-    name: unist-util-stringify-position
-    version: 2.0.3
-    dependencies:
-      '@types/unist': registry.npmmirror.com/@types/unist/2.0.6
-    dev: false
-
   registry.npmmirror.com/unist-util-stringify-position/3.0.2:
     resolution: {integrity: sha512-7A6eiDCs9UtjcwZOcCpM4aPII3bAAGv13E96IkawkOAW0OhH+yRxtY0lzo8KiHpzEMfH7Q+FizUmwp8Iqy5EWg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/unist-util-stringify-position/-/unist-util-stringify-position-3.0.2.tgz}
     name: unist-util-stringify-position
@@ -9620,16 +9592,6 @@ packages:
     dependencies:
       punycode: registry.npmmirror.com/punycode/2.1.1
     dev: true
-
-  registry.npmmirror.com/url-regex/5.0.0:
-    resolution: {integrity: sha512-O08GjTiAFNsSlrUWfqF1jH0H1W3m35ZyadHrGv5krdnmPPoxP27oDTqux/579PtaroiSGm5yma6KT1mHFH6Y/g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/url-regex/-/url-regex-5.0.0.tgz}
-    name: url-regex
-    version: 5.0.0
-    engines: {node: '>=8'}
-    dependencies:
-      ip-regex: registry.npmmirror.com/ip-regex/4.3.0
-      tlds: registry.npmmirror.com/tlds/1.233.0
-    dev: false
 
   registry.npmmirror.com/util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/util-deprecate/-/util-deprecate-1.0.2.tgz}
@@ -9712,15 +9674,6 @@ packages:
     engines: {node: '>= 0.8'}
     dev: false
 
-  registry.npmmirror.com/vfile-message/2.0.4:
-    resolution: {integrity: sha512-DjssxRGkMvifUOJre00juHoP9DPWuzjxKuMDrhNbk2TdaYYBNMStsNhEOt3idrtI12VQYM/1+iM0KOzXi4pxwQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vfile-message/-/vfile-message-2.0.4.tgz}
-    name: vfile-message
-    version: 2.0.4
-    dependencies:
-      '@types/unist': registry.npmmirror.com/@types/unist/2.0.6
-      unist-util-stringify-position: registry.npmmirror.com/unist-util-stringify-position/2.0.3
-    dev: false
-
   registry.npmmirror.com/vfile-message/3.1.2:
     resolution: {integrity: sha512-QjSNP6Yxzyycd4SVOtmKKyTsSvClqBPJcd00Z0zuPj3hOIjg0rUPG6DbFGPvUKRgYyaIWLPKpuEclcuvb3H8qA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vfile-message/-/vfile-message-3.1.2.tgz}
     name: vfile-message
@@ -9728,17 +9681,6 @@ packages:
     dependencies:
       '@types/unist': registry.npmmirror.com/@types/unist/2.0.6
       unist-util-stringify-position: registry.npmmirror.com/unist-util-stringify-position/3.0.2
-    dev: false
-
-  registry.npmmirror.com/vfile/4.2.1:
-    resolution: {integrity: sha512-O6AE4OskCG5S1emQ/4gl8zK586RqA3srz3nfK/Viy0UPToBc5Trp9BVFb1u0CjsKrAWwnpr4ifM/KBXPWwJbCA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vfile/-/vfile-4.2.1.tgz}
-    name: vfile
-    version: 4.2.1
-    dependencies:
-      '@types/unist': registry.npmmirror.com/@types/unist/2.0.6
-      is-buffer: registry.npmmirror.com/is-buffer/2.0.5
-      unist-util-stringify-position: registry.npmmirror.com/unist-util-stringify-position/2.0.3
-      vfile-message: registry.npmmirror.com/vfile-message/2.0.4
     dev: false
 
   registry.npmmirror.com/vfile/5.3.5:

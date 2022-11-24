@@ -1,0 +1,23 @@
+.action {
+  :global {
+    .semi-badge-count {
+      right: 5px;
+      top: 5px;
+      pointer-events: none;
+    }
+  }
+}
+.btn {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  &__disabled {
+    pointer-events: none;
+    &:hover {
+      background-color: inherit;
+    }
+    &:active {
+      background-color: inherit;
+    }
+  }
+}

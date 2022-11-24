@@ -68,7 +68,7 @@ const Login = React.memo<RouteComponentProps & RouteConfig>(({ location, history
           登录
         </Title>
       </Row>
-      <Form
+      <Form<Partial<User>>
         wrapperCol={{ span: 18 }}
         labelCol={{ span: 3 }}
         ref={formRef}

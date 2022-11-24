@@ -21,6 +21,7 @@ import PostDetailAdmin from '@/containers/Admin/PostDetailAdmin'
 import MomentDetailAdmin from '@/containers/Admin/MomentDetailAdmin'
 import UserDetailAdmin from '@/containers/Admin/UserDetailAdmin'
 import System from '@/containers/Admin/System'
+import HomeDetail from '@/containers/Home/PostDetail'
 import { WithRouterProps } from 'react-router'
 
 export enum PathName {
@@ -221,6 +222,7 @@ export const routes: RouteConfig[] = [
         path: PathName.HOME_DETAIL,
         menuKey: PathName.HOME,
         component: lazy(() => import('@/containers/Home/PostDetail')),
+        // component: HomeDetail,
         routeProps: {
           exact: true,
         },

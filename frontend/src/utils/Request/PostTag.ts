@@ -13,6 +13,10 @@ export interface PostTag {
   readonly updatedAt?: Date
 }
 
+export type WithPostTags<T> = T & {
+  tags: PostTag[]
+}
+
 export const Create = async (tag: Partial<PostTag>) => {
   return await Request<Restful<PostTag>>({
     method: 'POST',
