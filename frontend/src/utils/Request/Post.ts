@@ -1,8 +1,8 @@
 import { Request } from '.'
 import { PostComment } from './PostComment'
-import { PostTag } from './PostTag'
+import { PostTag, WithPostTags } from './PostTag'
 import { Restful, _Restful } from './type'
-import { User } from './User'
+import { WithAuthor } from './User'
 
 const baseUrl = '/api/post'
 
@@ -39,20 +39,14 @@ export interface Post {
   readonly updatedAt: Date
 }
 
-export interface PostWithTags extends Post {
-  tags: PostTag[]
-}
+export type AssociatedPost = WithAuthor<WithPostTags<Post>>
 
 export interface EditedPost extends Post {
   tags: Array<number | undefined>
 }
 
-export interface PostWithAuthor extends PostWithTags {
-  author: User
-}
-
 export interface Posts {
-  posts: PostWithAuthor[]
+  posts: AssociatedPost[]
   total: number
 }
 
@@ -63,7 +57,7 @@ export const Create = async ({
   post: Partial<EditedPost>
   tids: Array<number | undefined>
 }) => {
-  return await Request<Restful<PostWithTags>>({
+  return await Request<Restful<AssociatedPost>>({
     method: 'POST',
     data: { post, tids },
     url: `${baseUrl}/create`,
@@ -71,7 +65,7 @@ export const Create = async ({
 }
 
 export const Retrieve = async (id: number) => {
-  return await Request<Restful<PostWithAuthor>>({
+  return await Request<Restful<AssociatedPost>>({
     method: 'GET',
     params: {
       id,
@@ -81,7 +75,7 @@ export const Retrieve = async (id: number) => {
 }
 
 export const Retrieve__Admin = async (id: number) => {
-  return await Request<Restful<PostWithAuthor>>({
+  return await Request<Restful<AssociatedPost>>({
     method: 'GET',
     params: {
       id,
@@ -159,7 +153,7 @@ export const Edit = async ({
   post: Partial<EditedPost>
   tids: Array<number | undefined>
 }) => {
-  return await Request<Restful<PostWithTags>>({
+  return await Request<Restful<AssociatedPost>>({
     method: 'POST',
     data: { post, tids },
     url: `${baseUrl}/edit`,
@@ -173,7 +167,7 @@ export const Edit__Admin = async ({
   post: Partial<EditedPost>
   tids: Array<number | undefined>
 }) => {
-  return await Request<Restful<PostWithTags>>({
+  return await Request<Restful<AssociatedPost>>({
     method: 'POST',
     data: { post, tids },
     url: `${baseUrl}/edit-admin`,

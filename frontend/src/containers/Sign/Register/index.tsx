@@ -95,10 +95,10 @@ const Register = React.memo<RouteComponentProps & RouteConfig>(({ location, hist
           登录
         </Title>
       </Row>
-      <Form
+      <Form<Partial<User>>
+        ref={formRef}
         wrapperCol={{ span: 18 }}
         labelCol={{ span: 6 }}
-        ref={formRef}
         labelPosition='left'
         autoScrollToError={{ behavior: 'smooth' }}
         disabled={registerService.loading || needRedirect}

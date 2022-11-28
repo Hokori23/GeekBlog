@@ -1,33 +1,35 @@
 import React, { FC, useMemo, useRef, useState } from 'react'
-import { Button, Col, Row, ButtonGroup, Popconfirm, Modal } from '@douyinfe/semi-ui'
+import { Button, Col, Row, ButtonGroup, Popconfirm, Modal, Divider } from '@douyinfe/semi-ui'
 import { RouteComponentProps } from 'react-router-dom'
-import { RouteConfig } from '@/routes'
+import { PathName, RouteConfig } from '@/routes'
 import useUrlParams from '@/hooks/useUrlParams'
 import styles from './index.module.scss'
 import useAuth from '@/hooks/useAuth'
 import useRequest from './useRequest'
+import { IconAlertTriangle } from '@douyinfe/semi-icons'
+import { useMobileSize } from '@/hooks/useScreenSize'
+import classnames from 'classnames'
 
 // components
 import ScrollTop from '@/components/ScrollTop'
 import Spin from '@/components/Spin'
 import Banner from './Banner'
+import Action from './Action'
+import CommentBox from './CommentBox'
 import Markdown, { EditorHandler } from '@/components/Markdown/Editor'
-import { IconAlertTriangle } from '@douyinfe/semi-icons'
-import { useMobileSize } from '@/hooks/useScreenSize'
-import classnames from 'classnames'
 
-const PostDetail: FC<RouteComponentProps & RouteConfig> = (props) => {
+const PostDetail: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
   const { urlParams } = useUrlParams<{ id: string }>()
   const isMobileSize = useMobileSize()
   const { id } = urlParams
   const { isAdmin } = useAuth()
   const [isEdit, setIsEdit] = useState(false)
 
-  const { getPostService, editPostService } = useRequest({
+  const { getPostService, editPostService, deletePostService, post } = useRequest({
     id: Number(id),
     onSave: () => setIsEdit(false),
+    onDelete: () => history.push(PathName.HOME),
   })
-  const post = getPostService.data?.data
 
   const markdownRef = useRef<EditorHandler | null>(null)
   const Content = useMemo(
@@ -97,7 +99,7 @@ const PostDetail: FC<RouteComponentProps & RouteConfig> = (props) => {
               <IconAlertTriangle style={{ color: 'var(--semi-color-danger)' }} size='extra-large' />
             }
             position='leftTop'
-            onConfirm={() => {}}
+            onConfirm={deletePostService.run}
           >
             <Button theme='light' type='danger'>
               删除
@@ -116,24 +118,32 @@ const PostDetail: FC<RouteComponentProps & RouteConfig> = (props) => {
             <Spin />
           ) : (
             post && (
-              <Row type='flex' justify='center'>
-                <Banner post={post} />
-                {/* TODO: 标签编辑 */}
-                {/* TODO: 高级设置 */}
-                <Col span={24} xl={18} xxl={16} style={{ position: 'relative' }}>
-                  {isAdmin && (
-                    <ButtonGroup
-                      className={classnames({
-                        [styles['action-btns']]: true,
-                        [styles['action-btns__edit']]: isEdit,
-                      })}
-                    >
-                      {EditGroupButton}
-                    </ButtonGroup>
-                  )}
-                  {Content}
-                </Col>
-              </Row>
+              <>
+                <Row type='flex' justify='center'>
+                  <Banner post={post} />
+                  {/* TODO: 标签编辑 */}
+                  {/* TODO: 高级设置 */}
+                  <Col span={24} xl={18} xxl={16} style={{ position: 'relative' }}>
+                    {isAdmin && (
+                      <ButtonGroup
+                        className={classnames({
+                          [styles['action-btns']]: true,
+                          [styles['action-btns__edit']]: isEdit,
+                        })}
+                      >
+                        {EditGroupButton}
+                      </ButtonGroup>
+                    )}
+                    {Content}
+                  </Col>
+                </Row>
+                <Divider className={styles.divider} />
+                <Action post={post} />
+                <CommentBox post={post} />
+
+                {/* TODO: 访问量等 */}
+                {/* TODO: 评论区 */}
+              </>
             )
           )}
         </Col>

@@ -10,8 +10,7 @@
 	"dependencies": {
 		"@douyinfe/semi-icons": "^2.22.3",
 		"@douyinfe/semi-illustrations": "^2.23.1",
-		"@douyinfe/semi-ui": "^2.22.3",
-		"@jsdevtools/rehype-url-inspector": "^2.0.2",
+		"@douyinfe/semi-ui": "^2.23.3",
 		"@milkdown/core": "^6.5.2",
 		"@milkdown/plugin-clipboard": "^6.5.2",
 		"@milkdown/plugin-cursor": "^6.5.2",
@@ -63,7 +62,6 @@
 		"@typescript-eslint/parser": "^5.21.0",
 		"@vitejs/plugin-react": "^1.3.0",
 		"dotenv": "^16.0.0",
-		"husky": "^4.3.8",
 		"lint-staged": "^12.5.0",
 		"prettier": "^2.6.2",
 		"prosemirror-model": "^1.18.1",
@@ -72,13 +70,6 @@
 		"typescript": "4.5.2",
 		"vite": "^2.9.5",
 		"vite-plugin-externals": "^0.5.0"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged",
-			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS || (node ../.scripts/pre_commit.cjs && exit 8)",
-			"post-merge": "sh ../.scripts/update_dependencies.sh"
-		}
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx,mjs,mjsx,cjs,cjsx}": [
