@@ -21,12 +21,11 @@ const LOADING_SVG = [
 ]
 const loadingSvgLength = LOADING_SVG.length
 
-interface PageLoadingProps {
-  style?: React.CSSProperties
+interface PageLoadingProps extends React.HTMLAttributes<HTMLDivElement> {
   show?: boolean
 }
 
-const PageLoading = React.memo<PageLoadingProps>(({ style, show = true }) => {
+const PageLoading = React.memo<PageLoadingProps>(({ style, show = true, ...props }) => {
   const [svgIdx] = useState(~~((Math.random() + 1) * LOADING_SVG.length) % loadingSvgLength)
   const { ref: animationDOM } = useAnimation(LOADING_SVG[svgIdx])
 
@@ -35,6 +34,7 @@ const PageLoading = React.memo<PageLoadingProps>(({ style, show = true }) => {
       className={classnames(styles.loading, {
         [styles['loading-hidden']]: !show,
       })}
+      {...props}
     >
       <div className={styles.loadingAnimation} ref={animationDOM} style={style} />
     </div>

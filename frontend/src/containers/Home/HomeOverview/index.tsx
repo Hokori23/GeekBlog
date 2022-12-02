@@ -1,5 +1,4 @@
 import React, { FC, useMemo } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
 import { PathName, RouteConfig } from '@/routes'
 import { usePostOverview } from '@/hooks/usePostOverview'
 import Pagination from '@/components/Pagination'
@@ -7,8 +6,10 @@ import { Col, List, Row, Typography } from '@douyinfe/semi-ui'
 import PostOverviewItem from '@/components/PostOverviewItem'
 import styles from './index.module.scss'
 import ScrollTop from '@/components/ScrollTop'
+import { useNavigate } from 'react-router'
 
-const HomeOverview: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
+const HomeOverview = React.memo(() => {
+  const navigate = useNavigate()
   const { loading, posts, pagination } = usePostOverview({ postTypes: [] })
 
   const paginationComponent = useMemo(
@@ -34,7 +35,7 @@ const HomeOverview: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
             renderItem={(post) => (
               <PostOverviewItem
                 post={post}
-                onClick={() => history.push(`${PathName.HOME_DETAIL}?id=${post.id}`)}
+                onClick={() => navigate(`${PathName.HOME_DETAIL}?id=${post.id}`)}
               />
             )}
             emptyContent={<Typography.Title>暂无文章或说说</Typography.Title>}
@@ -45,5 +46,5 @@ const HomeOverview: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
       <ScrollTop />
     </>
   )
-}
-export default React.memo(HomeOverview)
+})
+export default HomeOverview

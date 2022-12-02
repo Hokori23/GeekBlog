@@ -6,20 +6,20 @@ import { useSelector } from 'react-redux'
 import { store } from '@/store'
 import useInit from '@/hooks/useInit'
 import { RouteName, routesMap } from '@/routes'
-import { withRouter } from 'react-router-dom'
 import { PathName } from '@/routes'
 
 // Components
 import Nav from '../components/Nav'
 import Footer from '../components/Footer'
 import PageLoading from '@/components/PageLoading'
-import { LayoutProps } from '../types'
 import ErrorBoundary from '@/components/ErrorBoundary'
+import { Outlet, useLocation, useNavigate } from 'react-router'
 
 const { Header, Sider, Content } = Layout
 
-const MainLayout = React.memo<LayoutProps>(({ Component, ...props }) => {
-  const { location, history } = props
+const MainLayout = React.memo(() => {
+  const navigate = useNavigate()
+  const location = useLocation()
   const isMobileSize = useMobileSize()
   const [collapsed, setCollapsed] = useState(isMobileSize)
 
@@ -55,7 +55,9 @@ const MainLayout = React.memo<LayoutProps>(({ Component, ...props }) => {
 
   useEffect(() => {
     if (location.pathname === PathName._HOME) {
-      history.replace(PathName.HOME)
+      navigate(PathName.HOME, {
+        replace: true,
+      })
     }
     dispatch.checkLogin(null) // 判断登陆态合法性
   }, [])
@@ -77,7 +79,7 @@ const MainLayout = React.memo<LayoutProps>(({ Component, ...props }) => {
             style={{ maxWidth: 220, height: '100%' }}
             isCollapsed={collapsed}
             onClick={({ itemKey }) =>
-              history.push(menu.find((menuItem) => menuItem.itemKey === itemKey)?.path as string)
+              navigate(menu.find((menuItem) => menuItem.itemKey === itemKey)?.path as string)
             }
             onCollapseChange={setCollapsed}
             items={menu}
@@ -91,7 +93,7 @@ const MainLayout = React.memo<LayoutProps>(({ Component, ...props }) => {
           <ErrorBoundary>
             <Suspense fallback={<PageLoading />}>
               <div id='right-content' style={{ height: 'calc(100vh - 60px)', overflowY: 'auto' }}>
-                <Component {...props} />
+                <Outlet />
                 <Footer />
               </div>
             </Suspense>
@@ -102,4 +104,4 @@ const MainLayout = React.memo<LayoutProps>(({ Component, ...props }) => {
   )
 })
 
-export default withRouter(MainLayout)
+export default MainLayout

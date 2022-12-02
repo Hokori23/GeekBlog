@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
-import { PathName, RouteConfig } from '@/routes'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { PathName } from '@/routes'
 import { Button, Col, Form, Modal, Row, Typography, Toast } from '@douyinfe/semi-ui'
 import { useRequest } from 'ahooks'
 import { Request } from '@/utils'
@@ -22,7 +22,10 @@ import React from 'react'
 
 const { Title, Text } = Typography
 
-const Register = React.memo<RouteComponentProps & RouteConfig>(({ location, history }) => {
+const Register = React.memo(() => {
+  const location = useLocation()
+  const navigate = useNavigate()
+
   const formRef = useRef<Form>(null)
   const { isLogin } = useSelector((state: RootState) => state.common)
   const dispatch = useSelector(() => store.dispatch.common)
@@ -80,7 +83,10 @@ const Register = React.memo<RouteComponentProps & RouteConfig>(({ location, hist
       Toast.info({
         duration: 1,
         content: '已登录，正在跳转到首页',
-        onClose: () => history.replace(`${PathName.HOME}`),
+        onClose: () =>
+          navigate(`${PathName.HOME}`, {
+            replace: true,
+          }),
       })
     }
     return () => {
@@ -243,7 +249,7 @@ const Register = React.memo<RouteComponentProps & RouteConfig>(({ location, hist
           </Col>
         </Row>
         <Row type='flex' justify='center' style={{ marginTop: 12 }}>
-          <Text link onClick={() => history.push(PathName.LOGIN)}>
+          <Text link onClick={() => navigate(PathName.LOGIN)}>
             前往登录
             <IconArrowRight />
           </Text>

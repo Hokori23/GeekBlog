@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
-import { PathName, RouteConfig } from '@/routes'
+import { PathName } from '@/routes'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Button, Col, Form, Modal, Row, Typography, Toast } from '@douyinfe/semi-ui'
 import { useRequest } from 'ahooks'
 import { Request } from '@/utils'
@@ -11,7 +11,9 @@ import { RootState, store } from '@/store'
 
 const { Title, Text } = Typography
 
-const Login = React.memo<RouteComponentProps & RouteConfig>(({ location, history }) => {
+const Login = React.memo(() => {
+  const location = useLocation()
+  const navigate = useNavigate()
   const formRef = useRef<Form>(null)
   const { isLogin } = useSelector((state: RootState) => state.common)
   const dispatch = useSelector(() => store.dispatch.common)
@@ -35,7 +37,9 @@ const Login = React.memo<RouteComponentProps & RouteConfig>(({ location, history
             closable: false,
             afterClose: () => {
               dispatch.login()
-              history.replace(`${PathName.HOME}`)
+              navigate(`${PathName.HOME}`, {
+                replace: true,
+              })
             },
             hasCancel: false,
           })
@@ -53,7 +57,10 @@ const Login = React.memo<RouteComponentProps & RouteConfig>(({ location, history
       Toast.info({
         duration: 1,
         content: '已登录，正在跳转到首页',
-        onClose: () => history.replace(`${PathName.HOME}`),
+        onClose: () =>
+          navigate(`${PathName.HOME}`, {
+            replace: true,
+          }),
       })
     }
     return () => {
@@ -130,7 +137,7 @@ const Login = React.memo<RouteComponentProps & RouteConfig>(({ location, history
           </Col>
         </Row>
         <Row type='flex' justify='center' style={{ marginTop: 12 }}>
-          <Text link onClick={() => history.push(PathName.REGISTER)}>
+          <Text link onClick={() => navigate(PathName.REGISTER)}>
             还没有账号，前往注册
             <IconArrowRight />
           </Text>

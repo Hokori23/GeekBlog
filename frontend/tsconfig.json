@@ -20,7 +20,7 @@
       "@/*": ["./src/*"],
       "*": ["./@types/*"]
     },
-    "types": ["vite/client", "node"],
+    "types": ["vite/client", "node", "react-dom/experimental"],
     "plugins": [{ "name": "ts-css-modules-vite-plugin" }]
   },
   "include": ["src"],

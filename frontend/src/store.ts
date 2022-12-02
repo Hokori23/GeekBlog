@@ -2,17 +2,9 @@
 
 import { init, RematchDispatch, RematchRootState } from '@rematch/core'
 import { models, RootModel } from './models'
-import { connectRouter, routerMiddleware } from 'connected-react-router'
 import immerPlugin from '@rematch/immer'
 import selectPlugin from '@rematch/select'
-import { createBrowserHistory } from 'history'
 // import { adminReducer } from 'react-admin'
-
-export const history = createBrowserHistory({
-  basename: import.meta.env.BASE_URL,
-})
-// https://marmelab.com/react-admin/CustomApp.html
-const reducers = { router: connectRouter(history) /** admin: adminReducer **/ }
 
 export const store = init<RootModel>({
   models,
@@ -21,8 +13,6 @@ export const store = init<RootModel>({
   // 不然成功集成
   // https://github.com/rematch/rematch/issues/409#issuecomment-545766805
   redux: {
-    reducers,
-    middlewares: [routerMiddleware(history)],
     devtoolOptions: {},
   },
 })

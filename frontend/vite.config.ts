@@ -20,6 +20,7 @@ export default defineConfig({
     },
   },
   server: {
+    host: 'localhost',
     proxy: {
       '/api': {
         target: 'https://life.hokori.online/api',

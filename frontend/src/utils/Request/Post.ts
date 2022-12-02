@@ -1,6 +1,6 @@
 import { Request } from '.'
 import { PostComment } from './PostComment'
-import { PostTag, WithPostTags } from './PostTag'
+import { WithPostTags } from './PostTag'
 import { Restful, _Restful } from './type'
 import { WithAuthor } from './User'
 

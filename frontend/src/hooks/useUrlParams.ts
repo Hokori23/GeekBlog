@@ -1,6 +1,6 @@
 import qs from 'qs'
 import { useCallback, useMemo, useRef } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { isNil } from 'lodash-es'
 import { getUrlParams } from '@/utils/tools'
 
@@ -23,7 +23,7 @@ export type GetUrlParamsFn = <T extends Record<string | number | symbol, any> = 
   searchStr?: string,
 ) => T
 
-const useUrlParams = <T>(
+const useUrlParams = <T extends Record<string | number | symbol, any> = any>(
   { autoMergeUrlParams, initUrlParams, format, convert, replace }: UrlParamsOptions<T> = {
     autoMergeUrlParams: true,
     replace: true,
@@ -43,7 +43,7 @@ const useUrlParams = <T>(
   const initUrlParamsRef = useRef(urlParams)
 
   // 更新url参数
-  const history = useHistory()
+  const navigate = useNavigate()
   const setUrlParams: UrlParamsInstance<T>['setUrlParams'] = useCallback(
     (params, state, hash) => {
       const _params = format ? format(params) || {} : params
@@ -54,7 +54,10 @@ const useUrlParams = <T>(
           }
         : { ..._params }
       const newSearch = `?${qs.stringify(newParams)}${isNil(hash) ? window.location.hash : hash}`
-      replace ? history.replace(newSearch, state) : history.push(newSearch, state)
+      navigate(newSearch, {
+        replace,
+        state,
+      })
     },
     [format, autoMergeUrlParams, history, replace],
   )

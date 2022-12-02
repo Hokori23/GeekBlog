@@ -1,5 +1,4 @@
 import React, { FC, useMemo } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
 import { PathName, RouteConfig } from '@/routes'
 import { usePostOverview } from '@/hooks/usePostOverview'
 import Pagination from '@/components/Pagination'
@@ -8,8 +7,10 @@ import PostOverviewItem from '@/components/PostOverviewItem'
 import styles from './index.module.scss'
 import ScrollTop from '@/components/ScrollTop'
 import { PostType } from '@/utils/Request/Post'
+import { useNavigate } from 'react-router'
 
-const PostOverview: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
+const PostOverview = React.memo(() => {
+  const navigate = useNavigate()
   const { loading, posts, pagination } = usePostOverview({
     postTypes: [PostType.POST, PostType.LANDSCAPE],
   })
@@ -37,7 +38,7 @@ const PostOverview: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
             renderItem={(post) => (
               <PostOverviewItem
                 post={post}
-                onClick={() => history.push(`${PathName.POST_DETAIL}?id=${post.id}`)}
+                onClick={() => navigate(`${PathName.POST_DETAIL}?id=${post.id}`)}
               />
             )}
             emptyContent={<Typography.Title>暂无文章</Typography.Title>}
@@ -48,5 +49,6 @@ const PostOverview: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
       <ScrollTop />
     </>
   )
-}
-export default React.memo(PostOverview)
+})
+
+export default PostOverview

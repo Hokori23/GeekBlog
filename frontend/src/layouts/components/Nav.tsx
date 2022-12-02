@@ -14,14 +14,14 @@ import { useSelector } from 'react-redux'
 import { RootState, store } from '@/store'
 import { PathName, RouteName } from '@/routes'
 import { Group } from '@/utils/Request/User'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import useAuth from '@/hooks/useAuth'
 
 const { Title } = Typography
 
 const Nav = React.memo<SemiNavProps>((props) => {
   const location = useLocation()
-  const history = useHistory()
+  const navigate = useNavigate()
   const state = useSelector((state: RootState) => state.common)
   const dispatch = useSelector(() => store.dispatch.common)
 
@@ -48,11 +48,11 @@ const Nav = React.memo<SemiNavProps>((props) => {
 
   const header = useMemo(
     () => (
-      <Title heading={5} link onClick={() => history.push(PathName.HOME)}>
+      <Title heading={5} link onClick={() => navigate(PathName.HOME)}>
         {blogName}
       </Title>
     ),
-    [blogName, history],
+    [blogName, navigate],
   )
 
   const dropdownMenu = useMemo(() => {
@@ -62,18 +62,18 @@ const Nav = React.memo<SemiNavProps>((props) => {
             node: 'item',
             name: RouteName.ADMIN,
             active: inAdminPage,
-            onClick: () => history.push(PathName.ADMIN),
+            onClick: () => navigate(PathName.ADMIN),
           }
         : {
             node: 'item',
             name: RouteName.HOME,
             active: !inAdminPage,
-            onClick: () => history.push(PathName.HOME),
+            onClick: () => navigate(PathName.HOME),
           },
       {
         node: 'item',
         name: RouteName.USER,
-        onClick: () => history.push(PathName.USER),
+        onClick: () => navigate(PathName.USER),
       },
       {
         node: 'divider',
@@ -100,10 +100,10 @@ const Nav = React.memo<SemiNavProps>((props) => {
         </Dropdown>
       ) : (
         <ButtonGroup>
-          <Button theme='solid' onClick={() => history.push(PathName.LOGIN)}>
+          <Button theme='solid' onClick={() => navigate(PathName.LOGIN)}>
             登录
           </Button>
-          <Button onClick={() => history.push(PathName.REGISTER)}>注册</Button>
+          <Button onClick={() => navigate(PathName.REGISTER)}>注册</Button>
         </ButtonGroup>
       ),
     [isLogin],

@@ -1,5 +1,4 @@
-import { lazy, FunctionComponent, ComponentClass } from 'react'
-import { RouteComponentProps, RouteProps } from 'react-router-dom'
+import { lazy, FunctionComponent, ComponentClass, LazyExoticComponent } from 'react'
 import BlankLayout from '@/layouts/BlankLayout'
 import SignLayout from '@/layouts/SignLayout'
 import { LayoutProps } from '@/layouts/types'
@@ -22,7 +21,8 @@ import MomentDetailAdmin from '@/containers/Admin/MomentDetailAdmin'
 import UserDetailAdmin from '@/containers/Admin/UserDetailAdmin'
 import System from '@/containers/Admin/System'
 import HomeDetail from '@/containers/Home/PostDetail'
-import { WithRouterProps } from 'react-router'
+import MainLayout from './layouts/MainLayout'
+import Spin from './components/Spin'
 
 export enum PathName {
   DEMO = '/demo',
@@ -85,7 +85,7 @@ export enum RouteName {
 export const routes: RouteConfig[] = [
   // {
   //   path: PathName.DEMO,
-  //   component: Demo,
+  //   element: Demo,
   //   routeProps: {
   //     exact: true,
   //   },
@@ -93,193 +93,172 @@ export const routes: RouteConfig[] = [
   {
     path: PathName.INIT,
     menuKey: PathName.INIT,
-    component: lazy(() => import('@/containers/Init')),
-    layout: BlankLayout,
-    routeProps: {
-      exact: true,
-    },
+    element: BlankLayout,
+    children: [
+      {
+        path: PathName.INIT,
+        menuKey: PathName.INIT,
+        isLazy: true,
+        element: lazy(() => import('@/containers/Init')),
+      },
+    ],
   },
   {
     path: PathName.SIGN,
     menuKey: PathName.SIGN,
-    component: lazy(() => import('@/containers/Sign')),
-    layout: SignLayout,
-    routeProps: {
-      exact: true,
-    },
-  },
-  {
-    path: PathName.SIGN,
-    menuKey: PathName.SIGN,
-    component: lazy(() => import('@/containers/Sign')),
-    layout: SignLayout,
-    routes: [
+    element: SignLayout,
+    childFallback: Spin,
+    children: [
       {
         path: PathName.LOGIN,
+        isLazy: true,
         menuKey: PathName.LOGIN,
-        component: lazy(() => import('@/containers/Sign/Login')),
-        routeProps: {
-          exact: true,
-        },
+        element: lazy(() => import('@/containers/Sign/Login')),
       },
       {
         path: PathName.REGISTER,
+        isLazy: true,
         menuKey: PathName.REGISTER,
-        component: lazy(() => import('@/containers/Sign/Register')),
-        routeProps: {
-          exact: true,
-        },
+        element: lazy(() => import('@/containers/Sign/Register')),
       },
       {
         path: PathName._NOT_FOUND_PAGE,
+        isLazy: true,
         menuKey: PathName.NOT_FOUND_PAGE,
-        component: lazy(() => import('@/containers/Redirect404')),
+        element: lazy(() => import('@/containers/NotFoundPage')),
       },
     ],
   },
   // {
   //   path: PathName.ADMIN,
-  //   component: Admin,
+  //   element: Admin,
   //   routeProps: {
   //     exact: true,
   //   },
   // },
   // {
   //   path: PathName.ADMIN,
-  //   component: Admin,
+  //   element: Admin,
   //   routes: [
   //     {
   //       path: PathName.POST_TAG_ADMIN,
-  //       component: PostTagAdmin,
+  //       element: PostTagAdmin,
   //       routeProps: {
   //         exact: true,
   //       },
   //     },
   //     {
   //       path: PathName.MOMENT_DETAIL_ADMIN,
-  //       component: MomentDetailAdmin,
+  //       element: MomentDetailAdmin,
   //     },
   //     {
   //       path: PathName._MOMENT_DETAIL_ADMIN,
-  //       component: MomentDetailAdmin,
+  //       element: MomentDetailAdmin,
   //     },
   //     {
   //       path: PathName.POST_DETAIL_ADMIN,
-  //       component: PostDetailAdmin,
+  //       element: PostDetailAdmin,
   //     },
   //     {
   //       path: PathName._POST_DETAIL_ADMIN,
-  //       component: PostDetailAdmin,
+  //       element: PostDetailAdmin,
   //     },
   //     {
   //       path: PathName.USER_DETAIL_ADMIN,
-  //       component: UserDetailAdmin,
+  //       element: UserDetailAdmin,
   //     },
   //     {
   //       path: PathName.POST_ADMIN,
-  //       component: PostAdmin,
+  //       element: PostAdmin,
   //     },
   //     {
   //       path: PathName.MOMENT_ADMIN,
-  //       component: MomentAdmin,
+  //       element: MomentAdmin,
   //     },
   //     {
   //       path: PathName.USER_ADMIN,
-  //       component: UserAdmin,
+  //       element: UserAdmin,
   //     },
   //     {
   //       path: PathName.SYSTEM,
-  //       component: System,
+  //       element: System,
   //     },
   //     {
   //       path: PathName._NOT_FOUND_PAGE,
-  //       component: NotFoundPage,
+  //       element: NotFoundPage,
   //     },
   //   ],
   // },
   {
     path: PathName._HOME,
     menuKey: PathName.HOME,
-    component: lazy(() => import('@/containers/Home')),
-    routeProps: {
-      exact: true,
-    },
-  },
-  {
-    path: PathName._HOME,
-    menuKey: PathName.HOME,
-    component: lazy(() => import('@/containers/Home')),
-    routes: [
+    element: MainLayout,
+    children: [
       {
         path: PathName.HOME,
         menuKey: PathName.HOME,
-        component: lazy(() => import('@/containers/Home/HomeOverview')),
-        routeProps: {
-          exact: true,
-        },
+        isLazy: true,
+        element: lazy(() => import('@/containers/Home/HomeOverview')),
       },
       {
         path: PathName.HOME_DETAIL,
         menuKey: PathName.HOME,
-        component: lazy(() => import('@/containers/Home/PostDetail')),
-        // component: HomeDetail,
-        routeProps: {
-          exact: true,
-        },
+        isLazy: true,
+        element: lazy(() => import('@/containers/Home/PostDetail')),
+        // element: HomeDetail,
       },
       {
         path: PathName.POST_OVERVIEW,
         menuKey: PathName.POST_OVERVIEW,
-        component: lazy(() => import('@/containers/Home/PostOverview')),
-        routeProps: {
-          exact: true,
-        },
+        isLazy: true,
+        element: lazy(() => import('@/containers/Home/PostOverview')),
       },
       {
         path: PathName.POST_DETAIL,
         menuKey: PathName.POST_OVERVIEW,
-        component: lazy(() => import('@/containers/Home/PostDetail')),
-        routeProps: {
-          exact: true,
-        },
+        isLazy: true,
+        element: lazy(() => import('@/containers/Home/PostDetail')),
       },
       // {
       //   path: PathName.MOMENT_OVERVIEW,
-      //   component: MomentOverview,
+      //   element: MomentOverview,
       // },
       // {
       //   path: PathName.POST_TAG_OVERVIEW,
-      //   component: PostTagOverview,
+      //   element: PostTagOverview,
       // },
       // {
       //   path: PathName.POST_TAG,
-      //   component: PostTag,
+      //   element: PostTag,
       // },
       // {
       //   path: PathName.USER_DETAIL,
-      //   component: UserDetail,
+      //   element: UserDetail,
       // },
       // {
       //   path: PathName.USER,
-      //   component: User,
+      //   element: User,
       // },
       {
         path: PathName._NOT_FOUND_PAGE,
         menuKey: PathName.NOT_FOUND_PAGE,
-        component: lazy(() => import('@/containers/NotFoundPage')),
+        isLazy: true,
+        element: lazy(() => import('@/containers/NotFoundPage')),
       },
     ],
   },
   {
     path: PathName._NOT_FOUND_PAGE,
     menuKey: PathName.NOT_FOUND_PAGE,
-    component: lazy(() => import('@/containers/NotFoundPage')),
+    isLazy: true,
+    element: lazy(() => import('@/containers/NotFoundPage')),
   },
-  {
-    path: PathName.NOT_FOUND_PAGE,
-    menuKey: PathName.NOT_FOUND_PAGE,
-    component: lazy(() => import('@/containers/NotFoundPage')),
-  },
+  // {
+  //   path: PathName.NOT_FOUND_PAGE,
+  //   menuKey: PathName.NOT_FOUND_PAGE,
+  //   isLazy: true,
+  //   element: lazy(() => import('@/containers/NotFoundPage')),
+  // },
 ]
 
 const genRoutesMap = (routes: RouteConfig[]) => {
@@ -291,12 +270,12 @@ const genRoutesMap = (routes: RouteConfig[]) => {
     }
   > = {}
   const recur = (routes: RouteConfig[]) => {
-    routes.forEach(({ path, menuKey, routes }) => {
+    routes.forEach(({ path, menuKey, children }) => {
       routesMap[path] = {
         path,
         menuKey,
       }
-      routes && recur(routes)
+      children && recur(children)
     })
   }
   recur(routes)
@@ -311,13 +290,10 @@ export interface RouteConfig {
   /* 侧边栏Item激活Key */
   menuKey: string
   /* 需要渲染的组件 */
-  component: ComponentClass<any> | FunctionComponent<any>
-  layout?:
-    | ComponentClass<LayoutProps>
-    | FunctionComponent<LayoutProps>
-    | WithRouterProps<FunctionComponent<LayoutProps>>
-    | WithRouterProps<FunctionComponent<LayoutProps>>
+  isLazy?: boolean
+  element: ComponentClass<any> | FunctionComponent<any> | LazyExoticComponent<any>
+  childFallback?: ComponentClass<any> | FunctionComponent<any>
+  layout?: ComponentClass<LayoutProps> | FunctionComponent<LayoutProps>
   /* 子路由 */
-  routes?: RouteConfig[]
-  routeProps?: RouteProps
+  children?: RouteConfig[]
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import { Empty } from '@douyinfe/semi-ui'
 import { IllustrationConstruction } from '@douyinfe/semi-illustrations'
 
@@ -6,7 +6,7 @@ interface ErrorBoundaryProps {
   fallback?: (...args: any[]) => any
 }
 export default class ErrorBoundary extends React.Component<
-  ErrorBoundaryProps,
+  PropsWithChildren<ErrorBoundaryProps>,
   {
     errorInfo: any
   }

@@ -1,7 +1,7 @@
 import React, { FC, useMemo, useRef, useState } from 'react'
 import { Button, Col, Row, ButtonGroup, Popconfirm, Modal, Divider } from '@douyinfe/semi-ui'
-import { RouteComponentProps } from 'react-router-dom'
-import { PathName, RouteConfig } from '@/routes'
+import { useNavigate } from 'react-router-dom'
+import { PathName } from '@/routes'
 import useUrlParams from '@/hooks/useUrlParams'
 import styles from './index.module.scss'
 import useAuth from '@/hooks/useAuth'
@@ -18,7 +18,8 @@ import Action from './Action'
 import CommentBox from './CommentBox'
 import Markdown, { EditorHandler } from '@/components/Markdown/Editor'
 
-const PostDetail: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
+const PostDetail = React.memo(() => {
+  const navigate = useNavigate()
   const { urlParams } = useUrlParams<{ id: string }>()
   const isMobileSize = useMobileSize()
   const { id } = urlParams
@@ -28,7 +29,7 @@ const PostDetail: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
   const { getPostService, editPostService, deletePostService, post } = useRequest({
     id: Number(id),
     onSave: () => setIsEdit(false),
-    onDelete: () => history.push(PathName.HOME),
+    onDelete: () => navigate(PathName.HOME),
   })
 
   const markdownRef = useRef<EditorHandler | null>(null)
@@ -151,5 +152,5 @@ const PostDetail: FC<RouteComponentProps & RouteConfig> = ({ history }) => {
       <ScrollTop />
     </>
   )
-}
-export default React.memo(PostDetail)
+})
+export default PostDetail

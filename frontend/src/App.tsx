@@ -1,53 +1,39 @@
-import { FC } from 'react'
-import { Route, Switch, BrowserRouter } from 'react-router-dom'
-import { routes } from './routes'
-import { history } from '@/store'
-import { ConnectedRouter } from 'connected-react-router'
-import NotFoundPage from '@/containers/NotFoundPage'
-import MainLayout from '@/layouts/MainLayout'
+import { ComponentClass, FC, FunctionComponent, Suspense } from 'react'
+import { BrowserRouter, useRoutes, RouteObject } from 'react-router-dom'
+import { RouteConfig, routes } from './routes'
 import { AliveScope } from 'react-activation'
 import './App.scss'
+import PageLoading from './components/PageLoading'
 
-const Routes: FC = () => {
-  return (
-    <Switch>
-      {routes.map(
-        ({
-          path,
-          routeProps,
-          routes,
-          component: Component,
-          layout: Layout = MainLayout as any,
-        }) => (
-          <Route
-            key={path}
-            {...routeProps}
-            path={path}
-            render={(props: any) => <Layout Component={Component} {...props} routes={routes} />}
-          />
-        ),
-      )}
-    </Switch>
-  )
+const syncRouter = (
+  routes?: RouteConfig[],
+  Fallback?: ComponentClass<any> | FunctionComponent<any>,
+): RouteObject[] => {
+  if (!routes?.length) {
+    return []
+  }
+  return routes.map((route) => ({
+    ...route,
+    element: route.isLazy ? (
+      <Suspense fallback={Fallback ? <Fallback /> : <PageLoading />}>
+        <route.element />
+      </Suspense>
+    ) : (
+      <route.element />
+    ),
+    children: route.children?.length ? syncRouter(route.children, route.childFallback) : [],
+  }))
 }
+
+const Router = () => useRoutes(syncRouter(routes))
 
 const App: FC = () => {
   return (
     <div className='App'>
       <BrowserRouter>
-        <ConnectedRouter history={history}>
-          {/**
-           * 404页面兜底
-           * <https://blog.csdn.net/grepets/article/details/96393575>}
-           */}
-          <AliveScope>
-            <Route
-              render={({ location }) =>
-                (location as any)?.state?.is404 ? <NotFoundPage /> : <Routes />
-              }
-            />
-          </AliveScope>
-        </ConnectedRouter>
+        <AliveScope>
+          <Router />
+        </AliveScope>
       </BrowserRouter>
     </div>
   )

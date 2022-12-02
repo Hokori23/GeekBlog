@@ -3,7 +3,7 @@ import { PostType, Toggle } from '@/utils/Request/Post'
 import { useMemo } from 'react'
 import { isDef, scrollIntoTop } from '@/utils/tools'
 import { PathName } from '@/routes'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useRequest } from 'ahooks'
 import useUrlParams from '@/hooks/useUrlParams'
 import { PaginationProps } from '@douyinfe/semi-ui/lib/es/pagination'
@@ -17,7 +17,7 @@ interface PostOverviewForm {
 
 export const usePostOverview = ({ postTypes }: { postTypes: PostType[] }) => {
   const location = useLocation()
-  const history = useHistory()
+  const navigate = useNavigate()
   const defaultFormValues = useMemo(
     () => ({
       page: 1,
@@ -40,7 +40,9 @@ export const usePostOverview = ({ postTypes }: { postTypes: PostType[] }) => {
         scrollIntoTop()
         if (data.total && isDef(maxPage) && page > maxPage) {
           // 无效路由参数
-          history.replace(PathName.NOT_FOUND_PAGE)
+          navigate(PathName.NOT_FOUND_PAGE, {
+            replace: true,
+          })
         }
         return {
           posts: data.posts || [],
