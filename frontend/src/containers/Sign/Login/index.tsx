@@ -139,7 +139,6 @@ const Login = React.memo(() => {
         <Row type='flex' justify='center' style={{ marginTop: 12 }}>
           <Text link onClick={() => navigate(PathName.REGISTER)}>
             还没有账号，前往注册
-            <IconArrowRight />
           </Text>
         </Row>
       </Form>

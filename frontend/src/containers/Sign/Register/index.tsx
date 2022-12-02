@@ -6,7 +6,6 @@ import { useRequest } from 'ahooks'
 import { Request } from '@/utils'
 import { Gender, GenderCN, User } from '@/utils/Request/User'
 import {
-  IconArrowRight,
   IconKey,
   IconLock,
   IconMail,
@@ -19,6 +18,7 @@ import {
 import { useSelector } from 'react-redux'
 import { RootState, store } from '@/store'
 import React from 'react'
+import isEmail from 'validator/lib/isEmail'
 
 const { Title, Text } = Typography
 
@@ -95,10 +95,10 @@ const Register = React.memo(() => {
   }, [isLogin])
 
   return (
-    <div id='LoginContainer'>
+    <div id='RegisterContainer'>
       <Row type='flex' justify='center'>
         <Title heading={1} type='primary'>
-          登录
+          注册
         </Title>
       </Row>
       <Form<Partial<User>>
@@ -188,8 +188,12 @@ const Register = React.memo(() => {
           rules={[
             { required: true, message: '邮箱不能为空' },
             {
-              validator: (_, value) =>
-                /^[a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/.test(value),
+              validator: (_, value) => {
+                try {
+                  return isEmail(value)
+                } catch {}
+                return false
+              },
               message: '邮箱格式错误',
             },
           ]}
@@ -251,7 +255,6 @@ const Register = React.memo(() => {
         <Row type='flex' justify='center' style={{ marginTop: 12 }}>
           <Text link onClick={() => navigate(PathName.LOGIN)}>
             前往登录
-            <IconArrowRight />
           </Text>
         </Row>
       </Form>

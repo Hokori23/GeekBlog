@@ -19,7 +19,7 @@ export default ({
 
   const getPostService = useRequest(async () => {
     const res = await Request.Post.Retrieve(Number(id))
-    if (res?.code === CodeDictionary.SUCCESS) {
+    if (res?.code === CodeDictionary.SUCCESS && res?.data) {
       dispatch.setPost(res.data)
     }
   })
@@ -35,9 +35,9 @@ export default ({
         post: newPost,
         tids: tags,
       })
-      if (res?.code === CodeDictionary.SUCCESS) {
+      if (res?.code === CodeDictionary.SUCCESS && res?.data) {
         Notification.success({
-          content: '保存成功',
+          content: res.message,
         })
         dispatch.setPost(res.data)
         onSave()
@@ -52,7 +52,7 @@ export default ({
       const res = await Request.Post.Delete__Admin(post!.id!)
       if (res?.code === CodeDictionary.SUCCESS) {
         Notification.success({
-          content: '删除成功',
+          content: res.message,
         })
         onDelete()
       }

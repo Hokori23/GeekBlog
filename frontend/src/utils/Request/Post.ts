@@ -1,5 +1,5 @@
 import { Request } from '.'
-import { PostComment } from './PostComment'
+import { AssociatedPostComment } from './PostComment'
 import { WithPostTags } from './PostTag'
 import { Restful, _Restful } from './type'
 import { WithAuthor } from './User'
@@ -33,7 +33,7 @@ export interface Post {
   dislikesCount: number
   pageViews: number
 
-  postComments?: PostComment[]
+  postComments?: AssociatedPostComment[]
 
   readonly createdAt: Date
   readonly updatedAt: Date

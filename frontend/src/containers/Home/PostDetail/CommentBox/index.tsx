@@ -1,15 +1,85 @@
-import React, { useRef } from 'react'
-import { Avatar, Button, Card, Col, Form, Row } from '@douyinfe/semi-ui'
-import { Input } from '@douyinfe/semi-ui/lib/es/input'
+import React, { useCallback, useRef } from 'react'
+import {
+  Avatar,
+  Button,
+  Card,
+  Col,
+  Form,
+  Row,
+  Typography,
+  Notification,
+  Divider,
+} from '@douyinfe/semi-ui'
 import { PostComment } from '@/utils/Request/PostComment'
-import { IconEdit, IconGlobeStroke, IconMail } from '@douyinfe/semi-icons'
+import { IconGlobeStroke, IconMail } from '@douyinfe/semi-icons'
 import { useSelector } from 'react-redux'
-import { RootState } from '@/store'
+import { RootState, store } from '@/store'
 import styles from './index.module.scss'
+import { useNavigate } from 'react-router'
+import { PathName } from '@/routes'
+import { useRequest } from 'ahooks'
+import { Request } from '@/utils'
+import { CodeDictionary } from '@/utils/Request/type'
+import isURL from 'validator/lib/isUrl'
+import isEmail from 'validator/lib/isEmail'
+import { AssociatedPost } from '@/utils/Request/Post'
 
-const CommentBox = React.memo(() => {
-  const formRef = useRef<Form>(null)
+const { Text, Title } = Typography
+
+type FormValues = Pick<PostComment, 'pid' | 'uid' | 'content' | 'email' | 'url'>
+
+interface CommentBoxProps {
+  post: AssociatedPost
+}
+
+const CommentBox = React.memo<CommentBoxProps>(({ post }) => {
+  const formRef = useRef<Form<FormValues>>(null)
+  const navigate = useNavigate()
   const { isLogin, userInfo } = useSelector((state: RootState) => state.common)
+  const dispatch = useSelector(() => store.dispatch.postDetail)
+  const getFormApi = () => formRef.current?.formApi
+
+  const { run, loading } = useRequest(
+    async (postComment: Partial<PostComment>) => {
+      try {
+        if (!post) {
+          // TODO 上报错误
+          console.error('Post不存在')
+          return
+        }
+        await getFormApi()?.validate()
+        const res = await Request.PostComment.Create(postComment)
+        if (res?.code === CodeDictionary.SUCCESS && res?.data) {
+          dispatch.setPost({
+            ...post,
+            postComments: [...(post?.postComments || []), res.data],
+          })
+          Notification.success({ content: res.message })
+          getFormApi()?.reset()
+        }
+      } catch {}
+    },
+    {
+      manual: true,
+    },
+  )
+
+  const getPostComment = useCallback(() => {
+    const formValues = getFormApi()?.getValues?.() || {}
+
+    const { id: uid, email, url } = userInfo || {}
+    const extraUserInfo = {
+      uid: uid || 2, // 评论用户id, 2 代表未注册用户
+      email,
+      url,
+    }
+
+    return {
+      ...formValues,
+      pid: post?.id,
+      ...(isLogin ? extraUserInfo : { uid: 2 }),
+    }
+  }, [getFormApi, userInfo, isLogin])
 
   return (
     <Row type='flex' justify='center' style={{ marginBottom: 20 }}>
@@ -17,40 +87,59 @@ const CommentBox = React.memo(() => {
         <Card
           className={styles.card}
           title='添加新评论'
-          headerExtraContent='前往登录账号'
-          actions={[
-            // eslint-disable-next-line react/jsx-key
-            <Button>发送</Button>,
-          ]}
+          headerExtraContent={
+            !isLogin && (
+              <Row type='flex' justify='center'>
+                <Text className={styles.link} link onClick={() => navigate(PathName.LOGIN)}>
+                  {/* TODO: 登录后跳回此处 */}
+                  <Title heading={6}>前往登录账号</Title>
+                </Text>
+              </Row>
+            )
+          }
+          // actions={[
+          //   // eslint-disable-next-line react/jsx-key
+          //   <Row type='flex' justify='end'>
+          //     <Button theme='solid' onClick={() => run(getPostComment())} loading={loading}>
+          //       发送
+          //     </Button>
+          //   </Row>,
+          // ]}
+          footer={
+            <>
+              <Divider />
+              <Row type='flex' justify='end' style={{ marginTop: 10 }}>
+                <Button theme='solid' onClick={() => run(getPostComment())} loading={loading}>
+                  发送
+                </Button>
+              </Row>
+            </>
+          }
         >
-          <Form<Partial<PostComment>>
+          <Form<FormValues>
             ref={formRef}
-            wrapperCol={{ span: 18 }}
-            labelCol={{ span: 4 }}
+            wrapperCol={{ span: isLogin ? 22 : 18 }}
+            labelCol={{ span: isLogin ? 2 : 4 }}
             labelPosition='left'
+            disabled={loading}
           >
-            {isLogin ? (
-              <Avatar
-                alt={userInfo?.userName}
-                size='small'
-                src={userInfo?.avatarUrl}
-                style={{ marginRight: 12 }}
-              />
-            ) : (
+            {!isLogin && (
               <>
                 <Form.Input
                   field='email'
                   label='邮箱'
                   prefix={<IconMail />}
                   showClear
-                  trigger={['blur', 'change']}
+                  trigger={['change']}
                   rules={[
                     { required: true, message: '邮箱不能为空' },
                     {
-                      validator: (_, value) =>
-                        /^[a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/.test(
-                          value,
-                        ),
+                      validator: (_, value) => {
+                        try {
+                          return isEmail(value)
+                        } catch {}
+                        return false
+                      },
                       message: '邮箱格式错误',
                     },
                   ]}
@@ -58,16 +147,18 @@ const CommentBox = React.memo(() => {
                 <Form.Input
                   field='url'
                   label='个人网站'
-                  addonBefore={<IconGlobeStroke />}
-                  prefix='https://'
+                  prefix={<IconGlobeStroke />}
+                  // prefix='https://'
                   showClear
-                  trigger={['blur', 'change']}
+                  trigger={['change']}
                   rules={[
                     {
-                      validator: (_, value) =>
-                        /(https?:)\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/.test(
-                          value,
-                        ),
+                      validator: (_, value) => {
+                        try {
+                          return isURL(value)
+                        } catch {}
+                        return false
+                      },
                       message: '网站格式不合法',
                     },
                   ]}
@@ -76,11 +167,21 @@ const CommentBox = React.memo(() => {
             )}
             <Form.TextArea
               field='content'
-              label='评论内容'
+              label={
+                isLogin && (
+                  <Avatar
+                    alt={userInfo?.userName}
+                    size='small'
+                    src={userInfo?.avatarUrl}
+                    style={{ marginRight: 12 }}
+                  />
+                )
+              }
               autosize
               rows={3}
               showClear
-              trigger={['blur', 'change']}
+              placeholder='快来留下你的评论吧'
+              trigger={['change']}
               rules={[{ required: true, message: '评论不能为空' }]}
             />
           </Form>

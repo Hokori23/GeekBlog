@@ -13,7 +13,6 @@ import { NavProps as SemiNavProps } from '@douyinfe/semi-ui/lib/es/navigation'
 import { useSelector } from 'react-redux'
 import { RootState, store } from '@/store'
 import { PathName, RouteName } from '@/routes'
-import { Group } from '@/utils/Request/User'
 import { useNavigate, useLocation } from 'react-router-dom'
 import useAuth from '@/hooks/useAuth'
 
@@ -31,6 +30,7 @@ const Nav = React.memo<SemiNavProps>((props) => {
     () => location.pathname.startsWith(PathName.ADMIN),
     [location.pathname],
   )
+  const inUserPage = useMemo(() => location.pathname.startsWith(PathName.USER), [location.pathname])
   const blogName = useMemo(
     () => state.blogConfig?.find((v) => v.module === 'system' && v.key === 'blogName')?.value,
     [state.blogConfig],
@@ -62,18 +62,19 @@ const Nav = React.memo<SemiNavProps>((props) => {
             node: 'item',
             name: RouteName.ADMIN,
             active: inAdminPage,
-            onClick: () => navigate(PathName.ADMIN),
+            onClick: () => !inAdminPage && navigate(PathName.ADMIN),
           }
         : {
             node: 'item',
             name: RouteName.HOME,
             active: !inAdminPage,
-            onClick: () => navigate(PathName.HOME),
+            onClick: () => inAdminPage && navigate(PathName.HOME),
           },
       {
         node: 'item',
+        active: inUserPage,
         name: RouteName.USER,
-        onClick: () => navigate(PathName.USER),
+        onClick: () => !inUserPage && navigate(PathName.USER),
       },
       {
         node: 'divider',
@@ -85,7 +86,7 @@ const Nav = React.memo<SemiNavProps>((props) => {
       },
     ]
     return menu
-  }, [])
+  }, [isAdmin, inUserPage, inAdminPage])
 
   const footer = useMemo(
     () =>

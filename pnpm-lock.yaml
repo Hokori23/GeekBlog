@@ -135,6 +135,7 @@ importers:
       '@types/react-dom': 18.0.9
       '@types/react-redux': ^7.1.24
       '@types/react-router-dom': ^5.3.3
+      '@types/validator': ^13.1.0
       '@typescript-eslint/eslint-plugin': ^5.21.0
       '@typescript-eslint/parser': ^5.21.0
       '@vitejs/plugin-react': ^1.3.0
@@ -164,6 +165,7 @@ importers:
       sass: ^1.55.0
       ts-css-modules-vite-plugin: ^1.0.18
       typescript: 4.5.2
+      validator: ^13.7.0
       vite: ^2.9.5
       vite-plugin-externals: ^0.5.0
     dependencies:
@@ -207,6 +209,7 @@ importers:
       react-router: registry.npmmirror.com/react-router/6.4.3_react@18.2.0
       react-router-dom: registry.npmmirror.com/react-router-dom/6.4.3_biqbaboplfbrettd7655fr4n2y
       redux: registry.npmmirror.com/redux/4.2.0
+      validator: registry.npmmirror.com/validator/13.7.0
     devDependencies:
       '@commitlint/cli': registry.npmmirror.com/@commitlint/cli/16.3.0
       '@commitlint/config-conventional': registry.npmmirror.com/@commitlint/config-conventional/16.2.4
@@ -216,6 +219,7 @@ importers:
       '@types/react-dom': registry.npmmirror.com/@types/react-dom/18.0.9
       '@types/react-redux': registry.npmmirror.com/@types/react-redux/7.1.24
       '@types/react-router-dom': registry.npmmirror.com/@types/react-router-dom/5.3.3
+      '@types/validator': registry.npmmirror.com/@types/validator/13.7.6
       '@typescript-eslint/eslint-plugin': registry.npmmirror.com/@typescript-eslint/eslint-plugin/5.38.0_e7fypnd6tw4ufao5fseg5x2dee
       '@typescript-eslint/parser': registry.npmmirror.com/@typescript-eslint/parser/5.38.0_dpa7uizbmzieeglukxjacichfa
       '@vitejs/plugin-react': registry.npmmirror.com/@vitejs/plugin-react/1.3.2

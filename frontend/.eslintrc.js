@@ -20,6 +20,7 @@ module.exports = {
   rules: {
     // 自定义你的规则
     '@typescript-eslint/no-duplicate-enum-values': 0,
+    'max-nested-callbacks': 0,
   },
   settings: {
     react: {

@@ -1,5 +1,5 @@
 import { Request } from '.'
-import { User, WithAuthor } from './User'
+import { WithAuthor } from './User'
 import { Restful, _Restful } from './type'
 
 const baseUrl = '/api/post-comment'
@@ -28,7 +28,8 @@ export interface FormattedPostComment extends AssociatedPostComment {
 }
 
 export const Create = async (comment: Partial<PostComment>) => {
-  return await Request<Restful<PostComment>>({
+  return await Request<Restful<AssociatedPostComment>>({
+    // TODO 这里后端要传一个带author的commentList
     method: 'POST',
     data: comment,
     url: `${baseUrl}/create`,
@@ -46,6 +47,7 @@ export const Retrieve__PID = async (pid: number) => {
 }
 
 export const Delete = async (id: number) => {
+  // TODO: 后端应该给一个新的comment列表
   return await Request<_Restful>({
     method: 'POST',
     data: { id },

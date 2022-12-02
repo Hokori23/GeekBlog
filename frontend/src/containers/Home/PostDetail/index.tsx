@@ -16,6 +16,7 @@ import Spin from '@/components/Spin'
 import Banner from './Banner'
 import Action from './Action'
 import CommentBox from './CommentBox'
+import CommentList from './CommentList'
 import Markdown, { EditorHandler } from '@/components/Markdown/Editor'
 
 const PostDetail = React.memo(() => {
@@ -141,8 +142,8 @@ const PostDetail = React.memo(() => {
                 <Divider className={styles.divider} />
                 <Action post={post} />
                 <CommentBox post={post} />
+                <CommentList postComments={post.postComments} />
 
-                {/* TODO: 访问量等 */}
                 {/* TODO: 评论区 */}
               </>
             )
