@@ -15,7 +15,6 @@ interface CommentActionProps {
 }
 
 const CommentAction = React.memo<CommentActionProps>(({ comment }) => {
-  console.log({ comment })
   const { isLogin, userInfo } = useSelector((state: RootState) => state.common)
   const { post } = useSelector((state: RootState) => state.postDetail)
   const dispatch = useSelector(() => store.dispatch.postDetail)

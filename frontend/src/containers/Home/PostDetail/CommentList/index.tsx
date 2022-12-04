@@ -77,7 +77,7 @@ const CommentItem = React.memo<CommentItemProps>(({ level = 0, ...comment }) => 
                   </Text>
                 </Text>
               )}
-              <Text>{comment.content}</Text>
+              <Text style={{ whiteSpace: 'pre-wrap' }}>{comment.content}</Text>
             </Row>
             <Paragraph size='small'>
               {formatDistanceToNow(new Date(comment.createdAt), {

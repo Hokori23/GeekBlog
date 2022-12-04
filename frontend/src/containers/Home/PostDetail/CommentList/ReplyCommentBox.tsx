@@ -15,7 +15,7 @@ import {
   Typography,
   Notification,
 } from '@douyinfe/semi-ui'
-import useRequest from 'ahooks/lib/useRequest'
+import { useRequest } from 'ahooks'
 import React, { useCallback, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
