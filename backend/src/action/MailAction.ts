@@ -13,7 +13,7 @@ const Create = async (mail: Mail, t?: Transaction): Promise<Mail> => {
 /**
  * 遍历邮箱信息
  */
-const Retrieve__All = async (): Promise<Mail[]> => {
+const RetrieveAll = async (): Promise<Mail[]> => {
   return await Mail.findAll()
 }
 
@@ -21,7 +21,7 @@ const Retrieve__All = async (): Promise<Mail[]> => {
  * 通过uid查询邮箱信息
  * @param { number } uid
  */
-const Retrieve__UID = async (uid: number): Promise<Mail | null> => {
+const RetrieveByUID = async (uid: number): Promise<Mail | null> => {
   return await Mail.findOne({
     where: {
       uid,
@@ -52,8 +52,8 @@ const Delete = async (id: number): Promise<number> => {
 
 export default {
   Create,
-  Retrieve__All,
-  Retrieve__UID,
+  RetrieveAll,
+  RetrieveByUID,
   Update,
   Delete,
 }

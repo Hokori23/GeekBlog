@@ -35,10 +35,7 @@ const Update = async (oldTag: PostTag, newTag: PostTag): Promise<PostTag> => {
  * @param { string } param
  * @param { string } value
  */
-const Retrieve = async (
-  key: string,
-  value: string | number,
-): Promise<PostTag | null> => {
+const Retrieve = async (key: string, value: string | number): Promise<PostTag | null> => {
   return await PostTag.findOne({
     where: {
       [`${key}`]: value,
@@ -52,7 +49,7 @@ const Retrieve = async (
  * @param { string } value
  * @param { number } id
  */
-const Retrieve__Exclude__ID = async (
+const RetrieveExcludeID = async (
   key: string,
   value: string | number,
   id: number,
@@ -70,7 +67,7 @@ const Retrieve__Exclude__ID = async (
 /**
  * 查询所有标签
  */
-const Retrieve__All = async (): Promise<PostTag[]> => {
+const RetrieveAll = async (): Promise<PostTag[]> => {
   return await PostTag.findAll()
 }
 
@@ -80,11 +77,7 @@ const Retrieve__All = async (): Promise<PostTag[]> => {
  * @param { number } limit
  * @param { boolean } isASC // 升序
  */
-const Retrieve__Page = async (
-  offset: number,
-  limit: number,
-  isASC = false,
-): Promise<PostTag[]> => {
+const RetrieveInPage = async (offset: number, limit: number, isASC = false): Promise<PostTag[]> => {
   return await PostTag.findAll({
     offset,
     limit,
@@ -92,7 +85,7 @@ const Retrieve__Page = async (
   })
 }
 
-const Count__Page = async (): Promise<number> => {
+const CountPages = async (): Promise<number> => {
   return await PostTag.count()
 }
 
@@ -101,8 +94,8 @@ export default {
   Delete,
   Update,
   Retrieve,
-  Retrieve__Exclude__ID,
-  Retrieve__All,
-  Retrieve__Page,
-  Count__Page,
+  RetrieveExcludeID,
+  RetrieveAll,
+  RetrieveInPage,
+  CountPages,
 }

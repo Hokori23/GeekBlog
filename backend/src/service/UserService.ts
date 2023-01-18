@@ -40,7 +40,7 @@ const checkCaptcha = (updateTime: any, rawOptions: Option[]): CheckCaptchaResult
 const Init = async (user: User): Promise<Restful> => {
   const t = await sequelize.transaction()
   try {
-    const existedUser = await Action.Retrieve__All__Safely()
+    const existedUser = await Action.RetrieveAllSafely()
     if (existedUser.length) {
       return new Restful(
         CodeDictionary.INIT_ERROR__USERACCOUNT_EXISTED,
@@ -78,7 +78,7 @@ const Init = async (user: User): Promise<Restful> => {
 const Register = async (user: User, captcha: string): Promise<Restful> => {
   const t = await sequelize.transaction()
   try {
-    const existedUsers = await Action.Retrieve__All__Safely()
+    const existedUsers = await Action.RetrieveAllSafely()
     if (!existedUsers.length) {
       return new Restful(
         CodeDictionary.REGISTER_ERROR__NOT_INIT,
@@ -97,7 +97,7 @@ const Register = async (user: User, captcha: string): Promise<Restful> => {
 
     const [existedMailCaptcha, rawOptions] = await Promise.all([
       MailCaptchaAction.Retrieve(user.email),
-      OptionAction.Retrieve__All(),
+      OptionAction.RetrieveAll(),
     ])
     if (isUndef(existedMailCaptcha)) {
       return new Restful(CodeDictionary.REGISTER_ERROR__NO_CAPTCHA, '没有相应激活码信息')
@@ -164,9 +164,9 @@ const Login = async (userAccount: string, password: string): Promise<Restful> =>
  * 通过id查询单个用户
  * @param { number } id
  */
-const Retrieve__ID = async (id: number): Promise<Restful> => {
+const RetrieveByID = async (id: number): Promise<Restful> => {
   try {
-    const user = await Action.Retrieve__Safely('id', id)
+    const user = await Action.RetrieveSafely('id', id)
     if (isUndef(user)) {
       return new Restful(CodeDictionary.RETRIEVE_ERROR__USER_NON_EXISTED, '用户不存在')
     }
@@ -179,9 +179,9 @@ const Retrieve__ID = async (id: number): Promise<Restful> => {
 /**
  * 遍历用户
  */
-const Retrieve__All = async (): Promise<Restful> => {
+const RetrieveAll = async (): Promise<Restful> => {
   try {
-    const users = await Action.Retrieve__All__Safely()
+    const users = await Action.RetrieveAllSafely()
     return new Restful(CodeDictionary.SUCCESS, '查询成功', users)
   } catch (e: any) {
     return new Restful(CodeDictionary.COMMON_ERROR, `查询失败, ${String(e.message)}`)
@@ -214,7 +214,7 @@ const Edit = async (user: any): Promise<Restful> => {
 /**
  * 编辑用户
  */
-const Edit__Admin = async (user: User, operatorGroup: Group): Promise<Restful> => {
+const EditByAdmin = async (user: User, operatorGroup: Group): Promise<Restful> => {
   try {
     const existedUser = await Action.Retrieve('id', user.id as number)
     if (isUndef(existedUser)) {
@@ -260,7 +260,7 @@ const Delete = async (id: string): Promise<Restful> => {
 /**
  * 删除用户
  */
-const Delete__Admin = async (id: string, operatorGroup: Group): Promise<Restful> => {
+const DeleteByAdmin = async (id: string, operatorGroup: Group): Promise<Restful> => {
   try {
     const existedUser = await Action.Retrieve('id', Number(id))
     if (isUndef(existedUser)) {
@@ -282,10 +282,10 @@ export default {
   Init,
   Register,
   Login,
-  Retrieve__ID,
-  Retrieve__All,
+  RetrieveByID,
+  RetrieveAll,
   Edit,
-  Edit__Admin,
+  EditByAdmin,
   Delete,
-  Delete__Admin,
+  DeleteByAdmin,
 }

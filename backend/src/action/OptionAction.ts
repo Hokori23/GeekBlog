@@ -61,7 +61,7 @@ const Retrieve = async (options: Option[]): Promise<Option[]> => {
 /**
  * 查询全部
  */
-const Retrieve__All = async (): Promise<Option[]> => {
+const RetrieveAll = async (): Promise<Option[]> => {
   return await Option.findAll()
 }
 
@@ -102,7 +102,7 @@ const Delete__All = async (t?: Transaction): Promise<void> => {
  * @param { string } email_expiredTime_$
  */
 export const Init = async () => {
-  const existedOptions = await Retrieve__All()
+  const existedOptions = await RetrieveAll()
   if (existedOptions.length) return
   const options: OptionAttributes[] = [
     {
@@ -150,7 +150,7 @@ export default {
   CreateBulk,
   CreateBulk__Update,
   Retrieve,
-  Retrieve__All,
+  RetrieveAll,
   Update,
   Delete,
   Delete__All,

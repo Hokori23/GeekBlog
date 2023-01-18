@@ -6,10 +6,7 @@ import { Op, Transaction } from 'sequelize'
  * @param { PostComment } comment
  * @param { Transaction } t?
  */
-const Create = async (
-  comment: PostComment,
-  t?: Transaction,
-): Promise<PostComment> => {
+const Create = async (comment: PostComment, t?: Transaction): Promise<PostComment> => {
   return await comment.save({ transaction: t })
 }
 
@@ -17,7 +14,7 @@ const Create = async (
  * 通过ID查询评论
  * @param id
  */
-const Retrieve__ID = async (id: number): Promise<PostComment | null> => {
+const RetrieveByID = async (id: number): Promise<PostComment | null> => {
   return await PostComment.findOne({
     where: {
       id,
@@ -29,7 +26,7 @@ const Retrieve__ID = async (id: number): Promise<PostComment | null> => {
  * 通过PID查询评论
  * @param pid
  */
-const Retrieve__PID = async (pid: number): Promise<PostComment[]> => {
+const RetrieveByPID = async (pid: number): Promise<PostComment[]> => {
   return await PostComment.findAll({
     where: {
       pid,
@@ -72,7 +69,7 @@ const Delete = async (id: number, pid?: number): Promise<number> => {
 
 export default {
   Create,
-  Retrieve__ID,
-  Retrieve__PID,
+  RetrieveByID,
+  RetrieveByPID,
   Delete,
 }

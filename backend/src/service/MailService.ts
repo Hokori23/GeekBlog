@@ -8,9 +8,9 @@ import { isUndef, Restful } from '@utils'
  * 通过uid查询邮箱信息
  * @param { string } uid
  */
-const Retrieve__UID = async (uid: string): Promise<Restful> => {
+const RetrieveByUID = async (uid: string): Promise<Restful> => {
   try {
-    const mail = await Action.Retrieve__UID(Number(uid))
+    const mail = await Action.RetrieveByUID(Number(uid))
     if (isUndef(mail)) {
       return new Restful(CodeDictionary.EMAIL_ERROR__NON_EXISTED, '邮箱设置信息不存在')
     }
@@ -26,7 +26,7 @@ const Retrieve__UID = async (uid: string): Promise<Restful> => {
  */
 const Edit = async (mail: Mail): Promise<Restful> => {
   try {
-    const existedMail = await Action.Retrieve__UID(mail.uid)
+    const existedMail = await Action.RetrieveByUID(mail.uid)
     if (isUndef(existedMail)) {
       return new Restful(CodeDictionary.EMAIL_ERROR__NON_EXISTED, '邮箱设置信息不存在')
     }
@@ -41,10 +41,10 @@ const Edit = async (mail: Mail): Promise<Restful> => {
  * 编辑邮箱信息
  * @param { Mail } mail
  */
-const Edit__Admin = async (mail: Mail, operatorGroup: Group): Promise<Restful> => {
+const EditByAdmin = async (mail: Mail, operatorGroup: Group): Promise<Restful> => {
   try {
     const [existedMail, existedUser] = await Promise.all([
-      Action.Retrieve__UID(mail.uid),
+      Action.RetrieveByUID(mail.uid),
       UserAction.Retrieve('id', mail.uid),
     ])
     if (isUndef(existedMail) || isUndef(existedUser)) {
@@ -61,7 +61,7 @@ const Edit__Admin = async (mail: Mail, operatorGroup: Group): Promise<Restful> =
 }
 
 export default {
-  Retrieve__UID,
+  RetrieveByUID,
   Edit,
-  Edit__Admin,
+  EditByAdmin,
 }

@@ -6,7 +6,7 @@ import { User, Option } from '@models'
 import { isUndef } from '@utils'
 
 export const getBlogConfig = async (): Promise<BlogConfig> => {
-  const tasks = [UserAction.Retrieve__Super_Admin(), OptionAction.Retrieve__All()]
+  const tasks = [UserAction.RetrieveSuperAdmin(), OptionAction.RetrieveAll()]
   const values = await Promise.all(tasks as any)
   const superAdmin = values[0] as User | null
   if (isUndef(superAdmin)) {

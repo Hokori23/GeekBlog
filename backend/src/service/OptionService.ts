@@ -25,7 +25,7 @@ const Save = async (options: Option[]): Promise<Restful> => {
  */
 const Retrieve = async (): Promise<Restful> => {
   try {
-    const options = await Action.Retrieve__All()
+    const options = await Action.RetrieveAll()
     return new Restful(CodeDictionary.SUCCESS, '查询设置成功', options)
   } catch (e: any) {
     return new Restful(CodeDictionary.COMMON_ERROR, `查询设置失败, ${String(e.message)}`)

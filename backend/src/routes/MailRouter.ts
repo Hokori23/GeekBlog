@@ -1,9 +1,9 @@
-import EXPRESS from 'express';
-import { MailService as Service } from '@service';
-import { checkIntegrity, isUndef, Restful } from '@utils';
-import { CodeDictionary } from '@const';
+import EXPRESS from 'express'
+import { MailService as Service } from '@service'
+import { checkIntegrity, isUndef, Restful } from '@utils'
+import { CodeDictionary } from '@const'
 
-const mailRouter = EXPRESS.Router();
+const mailRouter = EXPRESS.Router()
 
 /**
  * 查询设置
@@ -11,36 +11,36 @@ const mailRouter = EXPRESS.Router();
  */
 mailRouter.get('/retrieve', async (req: any, res, next) => {
   if (isUndef(req.auth.id)) {
-    res.status(200).json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'));
-    return next();
+    res.status(200).json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'))
+    return next()
   }
   try {
-    res.status(200).json(await Service.Retrieve__UID(req.auth.id as string));
+    res.status(200).json(await Service.RetrieveByUID(req.auth.id as string))
   } catch (e) {
     // TODO: 进行邮件提醒
-    res.status(500).end();
+    res.status(500).end()
   }
-  next();
-});
+  next()
+})
 
 /**
  * 查询设置
  * @path /retrieve-admin
  */
 mailRouter.get('/retrieve-admin', async (req, res, next) => {
-  const { uid } = req.query;
+  const { uid } = req.query
   if (isUndef(uid)) {
-    res.status(200).json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'));
-    return next();
+    res.status(200).json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'))
+    return next()
   }
   try {
-    res.status(200).json(await Service.Retrieve__UID(uid as string));
+    res.status(200).json(await Service.RetrieveByUID(uid as string))
   } catch (e) {
     // TODO: 进行邮件提醒
-    res.status(500).end();
+    res.status(500).end()
   }
-  next();
-});
+  next()
+})
 
 /**
  * 编辑邮箱设置信息
@@ -51,22 +51,20 @@ mailRouter.post('/edit', async (req: any, res, next) => {
   try {
     // 只能编辑自己账户的设置
     if (req.auth.id !== req.body.uid) {
-      res.status(403).end();
-      return next();
+      res.status(403).end()
+      return next()
     }
     if (!checkIntegrity(req.body, ['id', 'uid', 'isSubscribed'])) {
-      res
-        .status(200)
-        .json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'));
-      return next();
+      res.status(200).json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'))
+      return next()
     }
-    res.status(200).json(await Service.Edit(req.body));
+    res.status(200).json(await Service.Edit(req.body))
   } catch (e) {
     // TODO: 进行邮件提醒
-    res.status(500).end();
+    res.status(500).end()
   }
-  next();
-});
+  next()
+})
 
 /**
  * 编辑邮箱设置信息
@@ -76,17 +74,15 @@ mailRouter.post('/edit', async (req: any, res, next) => {
 mailRouter.post('/edit-admin', async (req: any, res, next) => {
   try {
     if (!checkIntegrity(req.body, ['id', 'uid', 'isSubscribed'])) {
-      res
-        .status(200)
-        .json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'));
-      return next();
+      res.status(200).json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'))
+      return next()
     }
-    res.status(200).json(await Service.Edit__Admin(req.body, req.auth.group));
+    res.status(200).json(await Service.EditByAdmin(req.body, req.auth.group))
   } catch (e) {
     // TODO: 进行邮件提醒
-    res.status(500).end();
+    res.status(500).end()
   }
-  next();
-});
+  next()
+})
 
-export default mailRouter;
+export default mailRouter

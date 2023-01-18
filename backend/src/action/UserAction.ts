@@ -33,7 +33,7 @@ const Create = async (user: User, t?: Transaction): Promise<User> => {
 /**
  * 获取超级管理员
  */
-const Retrieve__Super_Admin = async (): Promise<User | null> => {
+const RetrieveSuperAdmin = async (): Promise<User | null> => {
   return await User.findOne({
     where: {
       group: Group.SUPER_ADMIN,
@@ -46,10 +46,7 @@ const Retrieve__Super_Admin = async (): Promise<User | null> => {
  * @param { string } param
  * @param { string } value
  */
-const Retrieve = async (
-  key: string,
-  value: string | number,
-): Promise<User | null> => {
+const Retrieve = async (key: string, value: string | number): Promise<User | null> => {
   return await User.findOne({
     where: {
       [`${key}`]: value,
@@ -62,10 +59,7 @@ const Retrieve = async (
  * @param { string } param
  * @param { string } value
  */
-const Retrieve__Safely = async (
-  key: string,
-  value: string | number,
-): Promise<User | null> => {
+const RetrieveSafely = async (key: string, value: string | number): Promise<User | null> => {
   return await User.findOne({
     attributes: {
       exclude: ['password'],
@@ -79,7 +73,7 @@ const Retrieve__Safely = async (
 /**
  * 遍历用户（不含密码）
  */
-const Retrieve__All__Safely = async (): Promise<User[]> => {
+const RetrieveAllSafely = async (): Promise<User[]> => {
   return await User.findAll({
     attributes: {
       exclude: ['password'],
@@ -90,7 +84,7 @@ const Retrieve__All__Safely = async (): Promise<User[]> => {
 /**
  * 遍历已订阅用户
  */
-const Retrieve__All__Subscribed = async (): Promise<User[]> => {
+const RetrieveAllSubscribed = async (): Promise<User[]> => {
   return await User.findAll({
     attributes: {
       exclude: ['password'],
@@ -130,11 +124,11 @@ const Delete = async (id: number): Promise<number> => {
 
 export default {
   Create,
-  Retrieve__Super_Admin,
+  RetrieveSuperAdmin,
   Retrieve,
-  Retrieve__Safely,
-  Retrieve__All__Safely,
-  Retrieve__All__Subscribed,
+  RetrieveSafely,
+  RetrieveAllSafely,
+  RetrieveAllSubscribed,
   Update,
   Delete,
 }

@@ -1,4 +1,4 @@
-import { PostCommentAction as Action, PostAction, UserAction } from 'action'
+import { PostCommentAction as Action, PostAction, UserAction, PostCommentAction } from 'action'
 import { User } from 'models'
 import { PostCommentWithAuthor } from 'models/PostComment'
 import { Restful, isUndef, isDef } from 'utils'
@@ -14,7 +14,7 @@ import sequelize from '@database'
 const Create = async (comment: PostCommentWithAuthor): Promise<Restful> => {
   const t = await sequelize.transaction()
   try {
-    const existedPost = await PostAction.Retrieve__ID(comment.pid)
+    const existedPost = await PostAction.RetrieveByID(comment.pid)
     if (isUndef(existedPost)) {
       return new Restful(CodeDictionary.SERVICE_ERROR__COMMENT_POST_NON_EXISTED, '该帖子已不存在')
     }
@@ -63,7 +63,7 @@ const Create = async (comment: PostCommentWithAuthor): Promise<Restful> => {
       const blogConfig = await getBlogConfig()
       const title = `你在 [${blogConfig.blogName}] 的评论有了新的回复！`
 
-      // 设置评论名称，未注册则为邮箱
+      // 设置评论名称，未注册则为邮箱 TODO: 脏逻辑想办法去掉
       const senderName = _comment.uid === 0 ? _comment.email : existedUser!.userName
 
       // const replyCommentSet = new Set()
@@ -105,16 +105,17 @@ const Create = async (comment: PostCommentWithAuthor): Promise<Restful> => {
     }
 
     await t.commit()
-    return new Restful(CodeDictionary.SUCCESS, '发表评论成功', _comment.toJSON())
+    const resComment = await Action.RetrieveByID(_comment.id)
+    return new Restful(CodeDictionary.SUCCESS, '发表评论成功', resComment!.toJSON())
   } catch (e: any) {
     await t.rollback()
     return new Restful(CodeDictionary.COMMON_ERROR, `发表评论失败, ${String(e.message)}`)
   }
 }
 
-const Retrieve__PID = async (pid: number): Promise<Restful> => {
+const RetrieveByPID = async (pid: number): Promise<Restful> => {
   try {
-    const comments = await Action.Retrieve__PID(pid)
+    const comments = await Action.RetrieveByPID(pid)
     return new Restful(CodeDictionary.SUCCESS, '查询成功', comments)
   } catch (e: any) {
     return new Restful(CodeDictionary.COMMON_ERROR, `查询评论失败, ${String(e.message)}`)
@@ -127,7 +128,7 @@ const Retrieve__PID = async (pid: number): Promise<Restful> => {
  */
 const Delete = async (id: number): Promise<Restful> => {
   try {
-    const existedComment = await Action.Retrieve__ID(id)
+    const existedComment = await Action.RetrieveByID(id)
     if (isUndef(existedComment)) {
       return new Restful(CodeDictionary.SERVICE_ERROR__COMMENT_NON_EXISTED, '此评论已不存在')
     }
@@ -146,7 +147,7 @@ const Delete = async (id: number): Promise<Restful> => {
  */
 const Like = async (id: number): Promise<Restful> => {
   try {
-    const existedComment = await Action.Retrieve__ID(id)
+    const existedComment = await Action.RetrieveByID(id)
     if (isUndef(existedComment)) {
       return new Restful(CodeDictionary.SERVICE_ERROR__COMMENT_NON_EXISTED, '此评论已不存在')
     }
@@ -163,7 +164,7 @@ const Like = async (id: number): Promise<Restful> => {
  */
 const Dislike = async (id: number): Promise<Restful> => {
   try {
-    const existedComment = await Action.Retrieve__ID(id)
+    const existedComment = await Action.RetrieveByID(id)
     if (isUndef(existedComment)) {
       return new Restful(CodeDictionary.SERVICE_ERROR__COMMENT_NON_EXISTED, '此评论已不存在')
     }
@@ -176,7 +177,7 @@ const Dislike = async (id: number): Promise<Restful> => {
 
 export default {
   Create,
-  Retrieve__PID,
+  RetrieveByPID,
   Delete,
   Like,
   Dislike,

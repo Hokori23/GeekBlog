@@ -97,11 +97,11 @@ userRouter.get('/retrieve', async (req, res, next) => {
   const { id } = req.query
   try {
     if (isUndef(id)) {
-      res.status(200).json(await Service.Retrieve__All())
+      res.status(200).json(await Service.RetrieveAll())
     } else if (isNaN(id)) {
       res.status(200).json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'))
     } else {
-      res.status(200).json(await Service.Retrieve__ID(Number(id)))
+      res.status(200).json(await Service.RetrieveByID(Number(id)))
     }
   } catch (e) {
     // 进行邮件提醒
@@ -145,7 +145,7 @@ userRouter.post('/edit-admin', async (req: any, res, next) => {
       res.status(200).json(new Restful(CodeDictionary.PARAMS_ERROR, '参数错误'))
       return next()
     }
-    res.status(200).json(await Service.Edit__Admin(req.body as User, req.auth.group))
+    res.status(200).json(await Service.EditByAdmin(req.body as User, req.auth.group))
   } catch (e) {
     // TODO: 进行邮件提醒
     res.status(500).end()
@@ -188,7 +188,7 @@ userRouter.post('/delete-admin', async (req: any, res, next) => {
         .status(200)
         .json(new Restful(CodeDictionary.DELETE_ERROR__USER_ADMIN, '不能删除超级管理员账号'))
     } else {
-      res.status(200).json(await Service.Delete__Admin(id, req.auth.group))
+      res.status(200).json(await Service.DeleteByAdmin(id, req.auth.group))
     }
   } catch (e) {
     // TODO: 进行邮件提醒

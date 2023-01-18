@@ -10,7 +10,7 @@ import { getBlogConfig } from '@mailer/template/utils'
 const BoardCastNewPost = async (postTitle: string, newPostUrl: string) => {
   const [blogConfig, subscribedUsers] = await Promise.all([
     getBlogConfig(),
-    UserAction.Retrieve__All__Subscribed(),
+    UserAction.RetrieveAllSubscribed(),
   ])
   const attributes: BroadcastMailsAttribute[] = await Promise.all(
     subscribedUsers.map(async (user) => {
@@ -92,13 +92,13 @@ const Create = async (post: Post, tids: number[]): Promise<Restful> => {
  * 通过id查询某个帖子
  * @param { number } id
  */
-const Retrieve__ID = async (
+const RetrieveByID = async (
   id: number,
   showDrafts: boolean,
   showHidden: boolean,
 ): Promise<Restful> => {
   try {
-    const post = await Action.Retrieve__ID(id, showDrafts, showHidden)
+    const post = await Action.RetrieveByID(id, showDrafts, showHidden)
     if (isUndef(post)) {
       return new Restful(CodeDictionary.RETRIEVE_ERROR__POST_NON_EXISTED, '帖子不存在')
     }
@@ -119,7 +119,7 @@ const Retrieve__ID = async (
  * @param { boolean } showHidden = false
  * @param { string } isASC = '0'
  */
-const Retrieve__Page = async (
+const RetrieveInPage = async (
   page: string,
   capacity: string,
   postTypes?: PostType[],
@@ -129,7 +129,7 @@ const Retrieve__Page = async (
 ): Promise<Restful> => {
   try {
     const values = await Promise.all([
-      Action.Retrieve__Page(
+      Action.RetrieveInPage(
         (Number(page) - 1) * Number(capacity),
         Number(capacity),
         postTypes,
@@ -137,7 +137,7 @@ const Retrieve__Page = async (
         showHidden,
         isASC === '1',
       ),
-      Action.Count__Page(postTypes, showDrafts, showHidden),
+      Action.CountPages(postTypes, showDrafts, showHidden),
     ])
     const result = {
       posts: values[0],
@@ -159,7 +159,7 @@ const Retrieve__Page = async (
  * @param { boolean } showHidden = false
  * @param { string } isASC = '0'
  */
-const Retrieve__Page_Tag = async (
+const RetrieveInPageByTag = async (
   page: string,
   capacity: string,
   tids: string[],
@@ -170,7 +170,7 @@ const Retrieve__Page_Tag = async (
   try {
     const postTypes = [PostType.LANDSCAPE, PostType.POST, PostType.PAGE]
     const values = await Promise.all([
-      Action.Retrieve__Page_Tag(
+      Action.RetrieveInPageByTag(
         (Number(page) - 1) * Number(capacity),
         Number(capacity),
         postTypes,
@@ -179,7 +179,7 @@ const Retrieve__Page_Tag = async (
         showHidden,
         isASC === '1',
       ),
-      Action.Count__Page_Tag(
+      Action.CountPagesByTag(
         postTypes,
         showDrafts,
         showHidden,
@@ -204,7 +204,7 @@ const Retrieve__Page_Tag = async (
 const Edit = async (post: any, tids: number[]): Promise<Restful> => {
   const t = await database.transaction()
   try {
-    const existedPost = await Action.Retrieve__ID(post.id as number, true, true)
+    const existedPost = await Action.RetrieveByID(post.id as number, true, true)
     if (isUndef(existedPost)) {
       return new Restful(CodeDictionary.RETRIEVE_ERROR__POST_NON_EXISTED, '帖子不存在')
     }
@@ -274,7 +274,7 @@ const Edit = async (post: any, tids: number[]): Promise<Restful> => {
  */
 const Delete = async (id: string, uid: string): Promise<Restful> => {
   try {
-    const existedPost = await Action.Retrieve__ID(Number(id))
+    const existedPost = await Action.RetrieveByID(Number(id))
     if (isUndef(existedPost)) {
       return new Restful(CodeDictionary.RETRIEVE_ERROR__POST_NON_EXISTED, '帖子不存在')
     }
@@ -295,9 +295,9 @@ const Delete = async (id: string, uid: string): Promise<Restful> => {
  * @param { string } id
  * @param { string } uid
  */
-const Delete__Admin = async (id: string): Promise<Restful> => {
+const DeleteByAdmin = async (id: string): Promise<Restful> => {
   try {
-    const existedPost = await Action.Retrieve__ID(Number(id))
+    const existedPost = await Action.RetrieveByID(Number(id))
     if (isUndef(existedPost)) {
       return new Restful(CodeDictionary.RETRIEVE_ERROR__POST_NON_EXISTED, '帖子不存在')
     }
@@ -316,7 +316,7 @@ const Delete__Admin = async (id: string): Promise<Restful> => {
  */
 const Like = async (id: number): Promise<Restful> => {
   try {
-    const existedPost = await Action.Retrieve__ID(id)
+    const existedPost = await Action.RetrieveByID(id)
     if (isUndef(existedPost)) {
       return new Restful(CodeDictionary.RETRIEVE_ERROR__POST_NON_EXISTED, '此帖子已不存在')
     }
@@ -333,7 +333,7 @@ const Like = async (id: number): Promise<Restful> => {
  */
 const Dislike = async (id: number): Promise<Restful> => {
   try {
-    const existedPost = await Action.Retrieve__ID(id)
+    const existedPost = await Action.RetrieveByID(id)
     if (isUndef(existedPost)) {
       return new Restful(CodeDictionary.RETRIEVE_ERROR__POST_NON_EXISTED, '此帖子已不存在')
     }
@@ -346,12 +346,12 @@ const Dislike = async (id: number): Promise<Restful> => {
 
 export default {
   Create,
-  Retrieve__ID,
-  Retrieve__Page,
-  Retrieve__Page_Tag,
+  RetrieveByID,
+  RetrieveInPage,
+  RetrieveInPageByTag,
   Edit,
   Delete,
-  Delete__Admin,
+  DeleteByAdmin,
   Like,
   Dislike,
 }

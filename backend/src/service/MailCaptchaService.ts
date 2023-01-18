@@ -38,7 +38,7 @@ const Activate = async (user: User): Promise<Restful> => {
     }
 
     // 获取系统设置
-    const rawOptions = await OptionAction.Retrieve__All()
+    const rawOptions = await OptionAction.RetrieveAll()
     const formattedOption: Partial<FormattedOption> = {}
     rawOptions.forEach((v) => {
       if (isUndef(formattedOption[v.module])) formattedOption[v.module] = {}

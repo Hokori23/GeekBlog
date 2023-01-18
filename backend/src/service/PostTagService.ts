@@ -30,7 +30,7 @@ const Create = async (tag: PostTag): Promise<Restful> => {
 /**
  * 通过slug查询标签
  */
-const Retrieve__Slug = async (slug: string): Promise<Restful> => {
+const RetrieveBySlug = async (slug: string): Promise<Restful> => {
   try {
     const tag = await Action.Retrieve('slug', slug)
     if (isUndef(tag)) {
@@ -45,9 +45,9 @@ const Retrieve__Slug = async (slug: string): Promise<Restful> => {
 /**
  * 查询所有标签
  */
-const Retrieve__All = async (): Promise<Restful> => {
+const RetrieveAll = async (): Promise<Restful> => {
   try {
-    const tags = await Action.Retrieve__All()
+    const tags = await Action.RetrieveAll()
     return new Restful(CodeDictionary.SUCCESS, '查询成功', tags)
   } catch (e: any) {
     return new Restful(CodeDictionary.COMMON_ERROR, `查询失败, ${String(e.message)}`)
@@ -61,8 +61,8 @@ const Retrieve__All = async (): Promise<Restful> => {
 const Edit = async (tag: PostTag): Promise<Restful> => {
   try {
     const tasks: Array<Promise<any>> = [
-      Action.Retrieve__Exclude__ID('name', tag.name, tag.id as number),
-      Action.Retrieve__Exclude__ID('slug', tag.slug, tag.id as number),
+      Action.RetrieveExcludeID('name', tag.name, tag.id as number),
+      Action.RetrieveExcludeID('slug', tag.slug, tag.id as number),
     ]
     const values = await Promise.all(tasks)
     if (isDef(values[0])) {
@@ -103,8 +103,8 @@ const Delete = async (id: number): Promise<Restful> => {
 
 export default {
   Create,
-  Retrieve__Slug,
-  Retrieve__All,
+  RetrieveBySlug,
+  RetrieveAll,
   Edit,
   Delete,
 }

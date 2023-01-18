@@ -18,11 +18,7 @@ const Create = async (post: Post, t?: Transaction): Promise<Post> => {
  * @param { Post } newPost
  * @param { Transaction } t?
  */
-const Update = async (
-  oldPost: Post,
-  newPost: Post,
-  t?: Transaction,
-): Promise<Post> => {
+const Update = async (oldPost: Post, newPost: Post, t?: Transaction): Promise<Post> => {
   return await Object.assign(oldPost, newPost).save({ transaction: t })
 }
 
@@ -32,7 +28,7 @@ const Update = async (
  * @param { boolean } showDrafts = false
  * @param { boolean } isHidden = false
  */
-const Retrieve__ID = async (
+const RetrieveByID = async (
   id: number,
   showDrafts = false,
   showHidden = false,
@@ -88,7 +84,7 @@ const Retrieve__ID = async (
  * @param { boolean } showHidden = false
  * @param { boolean } isASC = false // 升序
  */
-const Retrieve__Page = async (
+const RetrieveInPage = async (
   offset: number,
   limit: number,
   postTypes: PostType[] = [],
@@ -142,7 +138,7 @@ const Retrieve__Page = async (
  * @param { boolean } showHidden = false
  * @param { boolean } isASC = false // 升序
  */
-const Retrieve__Page_Tag = async (
+const RetrieveInPageByTag = async (
   offset: number,
   limit: number,
   postTypes: PostType[] = [],
@@ -199,7 +195,7 @@ const Retrieve__Page_Tag = async (
   })
 }
 
-const Count__Page = async (
+const CountPages = async (
   postTypes: PostType[] = [],
   showDrafts = false,
   showHidden = false,
@@ -221,7 +217,7 @@ const Count__Page = async (
   })
 }
 
-const Count__Page_Tag = async (
+const CountPagesByTag = async (
   postTypes: PostType[] = [],
   showDrafts = false,
   showHidden = false,
@@ -272,10 +268,10 @@ const Delete = async (id: number, t?: Transaction): Promise<number> => {
 export default {
   Create,
   Update,
-  Retrieve__ID,
-  Retrieve__Page,
-  Retrieve__Page_Tag,
-  Count__Page,
-  Count__Page_Tag,
+  RetrieveByID,
+  RetrieveInPage,
+  RetrieveInPageByTag,
+  CountPages,
+  CountPagesByTag,
   Delete,
 }
