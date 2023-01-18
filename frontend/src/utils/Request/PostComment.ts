@@ -36,7 +36,7 @@ export const Create = async (comment: Partial<PostComment>) => {
   })
 }
 
-export const Retrieve__PID = async (pid: number) => {
+export const RetrieveByPID = async (pid: number) => {
   return await Request<Restful<AssociatedPostComment[]>>({
     method: 'GET',
     data: {

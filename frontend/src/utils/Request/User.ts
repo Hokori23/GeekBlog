@@ -113,7 +113,7 @@ export const Edit = async (user: Partial<User>) => {
   return data.data
 }
 
-export const Edit__Admin = async (user: Partial<User>) => {
+export const EditByAdmin = async (user: Partial<User>) => {
   return await Request<Restful<User>>({
     method: 'POST',
     url: `${baseUrl}/edit-admin`,
@@ -128,7 +128,7 @@ export const Delete = async () => {
   })
 }
 
-export const Delete__Admin = async (id: number) => {
+export const DeleteByAdmin = async (id: number) => {
   return await Request<_Restful>({
     method: 'POST',
     data: { id },

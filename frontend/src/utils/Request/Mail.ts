@@ -18,7 +18,7 @@ export const Retrieve = async () => {
   })
 }
 
-export const Retrieve__Admin = async (uid: number) => {
+export const RetrieveByAdmin = async (uid: number) => {
   return await Request<Restful<Mail>>({
     method: 'GET',
     url: `${baseUrl}/retrieve-admin`,
@@ -36,7 +36,7 @@ export const Edit = async (mail: Partial<Mail>) => {
   })
 }
 
-export const Edit__Admin = async (mail: Partial<Mail>) => {
+export const EditByAdmin = async (mail: Partial<Mail>) => {
   return await Request<Restful<Mail>>({
     method: 'POST',
     url: `${baseUrl}/edit-admin`,

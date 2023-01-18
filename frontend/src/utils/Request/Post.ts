@@ -74,7 +74,7 @@ export const Retrieve = async (id: number) => {
   })
 }
 
-export const Retrieve__Admin = async (id: number) => {
+export const RetrieveByAdmin = async (id: number) => {
   return await Request<Restful<AssociatedPost>>({
     method: 'GET',
     params: {
@@ -160,7 +160,7 @@ export const Edit = async ({
   })
 }
 
-export const Edit__Admin = async ({
+export const EditByAdmin = async ({
   post,
   tids,
 }: {
@@ -184,7 +184,7 @@ export const Delete = async (id: number) => {
   })
 }
 
-export const Delete__Admin = async (id: number) => {
+export const DeleteByAdmin = async (id: number) => {
   return await Request<_Restful>({
     method: 'POST',
     data: {

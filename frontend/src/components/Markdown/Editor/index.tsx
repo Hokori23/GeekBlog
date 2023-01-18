@@ -24,7 +24,7 @@ import ErrorBoundary from '@/components/ErrorBoundary'
 import { tooltip } from '@milkdown/plugin-tooltip'
 import { history } from '@milkdown/plugin-history'
 import { clipboard } from '@milkdown/plugin-clipboard'
-import { emoji } from '@milkdown/plugin-emoji'
+// import { emoji } from '@milkdown/plugin-emoji' // 资源在国外, 不好用
 import { cursor } from '@milkdown/plugin-cursor'
 import { menu, menuPlugin } from '@milkdown/plugin-menu'
 import { indent } from '@milkdown/plugin-indent'
@@ -63,28 +63,30 @@ const MilkdownEditor = React.memo(
           .configure(heading, { view: renderReact(Title) })
           .configure(hr, { view: renderReact(Hr) })
 
-        return Editor.make()
-          .config((ctx) => {
-            ctx.set(rootCtx, root)
-            ctx.set(editorViewOptionsCtx, { editable: () => !readOnlyRef.current })
-            defaultValue && ctx.set(defaultValueCtx, defaultValue)
-          })
-          .use(nord)
-          .use(nodes)
-          .use(menu.configure(menuPlugin, {}))
-          .use(tooltip)
-          .use(history)
-          .use(prism)
-          .use(clipboard)
-          .use(emoji)
-          .use(cursor)
-          .use(indent)
-          .use(
-            upload.configure(uploadPlugin, {
-              uploader,
-              enableHtmlFileUploader: true,
-            }),
-          )
+        return (
+          Editor.make()
+            .config((ctx) => {
+              ctx.set(rootCtx, root)
+              ctx.set(editorViewOptionsCtx, { editable: () => !readOnlyRef.current })
+              defaultValue && ctx.set(defaultValueCtx, defaultValue)
+            })
+            .use(nord)
+            .use(nodes)
+            .use(menu.configure(menuPlugin, {}))
+            .use(tooltip)
+            .use(history)
+            .use(prism)
+            .use(clipboard)
+            // .use(emoji)
+            .use(cursor)
+            .use(indent)
+            .use(
+              upload.configure(uploadPlugin, {
+                uploader,
+                enableHtmlFileUploader: true,
+              }),
+            )
+        )
       })
 
       const editorInstance = editor.editor.current

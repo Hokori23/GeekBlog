@@ -31,7 +31,7 @@ export default ({
         content,
         tags,
       }
-      const res = await Request.Post.Edit__Admin({
+      const res = await Request.Post.EditByAdmin({
         post: newPost,
         tids: tags,
       })
@@ -49,7 +49,7 @@ export default ({
   )
   const deletePostService = useRequest(
     async () => {
-      const res = await Request.Post.Delete__Admin(post!.id!)
+      const res = await Request.Post.DeleteByAdmin(post!.id!)
       if (res?.code === CodeDictionary.SUCCESS) {
         Notification.success({
           content: res.message,
