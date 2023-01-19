@@ -4,7 +4,30 @@ import { PaginationProps } from '@douyinfe/semi-ui/lib/es/pagination'
 import classnames from 'classnames'
 import styles from './index.module.scss'
 
-const Pagination = React.memo<PaginationProps>(({ className, style, ...props }) => {
+const Pagination = React.memo<
+  PaginationProps & {
+    showText?: boolean
+  }
+>(({ className, style, showText, ...props }) => {
+  if (!showText) {
+    return (
+      <div
+        className={classnames(className, styles.pagination, 'semi-table-pagination-outer')}
+        style={{
+          justifyContent: 'center',
+          ...style,
+        }}
+      >
+        <SemiPagination
+          {...props}
+          style={{
+            marginTop: 16,
+            textAlign: 'right',
+          }}
+        />
+      </div>
+    )
+  }
   return (
     <div
       className={classnames(className, styles.pagination, 'semi-table-pagination-outer')}

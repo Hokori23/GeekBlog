@@ -7,21 +7,28 @@ import PostOverviewItem from '@/components/PostOverviewItem'
 import styles from './index.module.scss'
 import ScrollTop from '@/components/ScrollTop'
 import { useNavigate } from 'react-router'
+import { useDesktopSize } from '@/hooks/useScreenSize'
 
 const HomeOverview = React.memo(() => {
   const navigate = useNavigate()
   const { loading, posts, pagination } = usePostOverview({ postTypes: [] })
 
+  const isDesktopSize = useDesktopSize()
+
   const paginationComponent = useMemo(
     () =>
       Boolean(posts?.length) && (
         <Row type='flex' justify='center'>
-          <Col span={20} xl={12} xxl={14}>
-            <Pagination {...pagination} style={{ padding: '0 12px', boxSizing: 'border-box' }} />
+          <Col span={24} xl={12} xxl={14}>
+            <Pagination
+              {...pagination}
+              showText={isDesktopSize}
+              style={{ boxSizing: 'border-box' }}
+            />
           </Col>
         </Row>
       ),
-    [posts?.length, pagination],
+    [posts?.length, pagination, isDesktopSize],
   )
 
   return (
