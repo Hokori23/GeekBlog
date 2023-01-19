@@ -25,4 +25,21 @@
       content: '' !important;
     }
   }
+  &--mobile {
+    :global {
+      .semi-card-header {
+        padding: 8px 16px !important;
+      }
+      .semi-card-body {
+        padding: 8px 16px !important;
+        padding-bottom: 0 !important;
+      }
+      .semi-card-footer {
+        padding: 0 10px 8px 10px;
+      }
+      .semi-form-vertical .semi-form-field {
+        padding-bottom: 0 !important;
+      }
+    }
+  }
 }

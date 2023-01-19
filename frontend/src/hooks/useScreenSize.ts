@@ -10,4 +10,4 @@ configResponsive({
 })
 
 export const useMobileSize = () => !useResponsive().lg
-export const useDeskTopSize = () => useResponsive().lg
+export const useDesktopSize = () => useResponsive().lg

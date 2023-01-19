@@ -3,7 +3,60 @@
   .editor {
     padding-top: 32px !important;
     & > *:first-child {
-      margin-top: 0;
+      margin-top: 0 !important;
+    }
+    .list-item {
+      &[data-list-type='bullet'] > .list-item_label {
+        font-size: 16px !important;
+        font-weight: normal !important;
+      }
+      &_label {
+        font-weight: bold !important;
+        color: #3370ff !important;
+        height: 20px !important;
+        width: 20px !important;
+        line-height: 28px !important;
+        margin-right: 4px !important;
+      }
+    }
+    .strike-through {
+      text-decoration-color: var(--semi-color-text-0) !important;
+    }
+    li::marker {
+      display: initial !important;
+      unicode-bidi: isolate;
+      font-variant-numeric: tabular-nums;
+      text-transform: none;
+      text-indent: 0px !important;
+      text-align: start !important;
+      text-align-last: start !important;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .editor {
+      & > * {
+        margin: 16px 0 !important;
+      }
+      .list-item {
+        &[data-list-type='bullet'] > .list-item_label {
+          font-size: 14px !important;
+          font-weight: normal !important;
+        }
+        &_label {
+          height: 18px !important;
+          width: 18px !important;
+          line-height: 22px !important;
+        }
+      }
+      h3 {
+        font-size: 24px !important;
+        line-height: 32px !important;
+      }
+      p {
+        font-size: 14px !important;
+        line-height: 20px !important;
+      }
     }
   }
 }

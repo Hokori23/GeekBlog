@@ -57,7 +57,7 @@ const Banner = React.memo<BannerProps>(({ post }) => {
           [styles['bannerTextWrapper--noBg']]: !coverUrl,
         })}
       >
-        <Title style={{ marginBottom: 16, fontSize: 48, fontWeight: 500 }}>{title}</Title>
+        <Title className={styles.title}>{title}</Title>
         <Space>
           <Text link>{author.userName}</Text>
           <Divider layout='vertical' />

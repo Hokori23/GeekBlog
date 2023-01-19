@@ -16,13 +16,14 @@ import {
   Notification,
 } from '@douyinfe/semi-ui'
 import { useRequest } from 'ahooks'
-import React, { useCallback, useRef } from 'react'
+import React, { useCallback, useMemo, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import isEmail from 'validator/lib/isEmail'
 import isURL from 'validator/lib/isURL'
 import styles from './index.module.scss'
 import { Request } from '@/utils'
+import { useMobileSize } from '@/hooks/useScreenSize'
 
 type FormValues = Pick<
   PostComment,
@@ -85,12 +86,26 @@ const ReplyCommentBox = React.memo<ReplyCommentBoxProps>(({ show }) => {
     }
   }, [getFormApi, userInfo, isLogin])
 
+  const isMobileSize = useMobileSize()
+  const { wrapperCol, labelCol } = useMemo(() => {
+    if (!isMobileSize) {
+      return {
+        wrapperCol: isLogin ? 22 : 18,
+        labelCol: isLogin ? 2 : 4,
+      }
+    }
+    return {
+      wrapperCol: 20,
+      labelCol: 4,
+    }
+  }, [isMobileSize])
+
   if (!show) {
     return null
   }
 
   return (
-    <List.Item>
+    <List.Item style={{ padding: 8 }}>
       <Row type='flex' justify='center' style={{ width: '100%' }}>
         <Col span={24}>
           <Card
@@ -127,8 +142,8 @@ const ReplyCommentBox = React.memo<ReplyCommentBoxProps>(({ show }) => {
           >
             <Form<FormValues>
               ref={formRef}
-              wrapperCol={{ span: isLogin ? 22 : 18 }}
-              labelCol={{ span: isLogin ? 2 : 4 }}
+              wrapperCol={{ span: wrapperCol }}
+              labelCol={{ span: labelCol }}
               labelPosition='left'
               disabled={loading}
             >

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react'
+import React, { useCallback, useMemo, useRef } from 'react'
 import {
   Avatar,
   Button,
@@ -23,6 +23,8 @@ import { CodeDictionary } from '@/utils/Request/type'
 import isURL from 'validator/lib/isUrl'
 import isEmail from 'validator/lib/isEmail'
 import { AssociatedPost } from '@/utils/Request/Post'
+import { useMobileSize } from '@/hooks/useScreenSize'
+import classnames from 'classnames'
 
 const { Text, Title } = Typography
 
@@ -81,11 +83,27 @@ const CommentBox = React.memo<CommentBoxProps>(({ post }) => {
     }
   }, [getFormApi, userInfo, isLogin])
 
+  const isMobileSize = useMobileSize()
+  const { wrapperCol, labelCol } = useMemo(() => {
+    if (!isMobileSize) {
+      return {
+        wrapperCol: isLogin ? 22 : 18,
+        labelCol: isLogin ? 2 : 4,
+      }
+    }
+    return {
+      wrapperCol: 20,
+      labelCol: 4,
+    }
+  }, [isMobileSize])
+
   return (
     <Row type='flex' justify='center' style={{ marginBottom: 20 }}>
-      <Col span={18} xl={14} xxl={12} style={{ position: 'relative' }}>
+      <Col span={23} md={18} xl={14} xxl={12} style={{ position: 'relative' }}>
         <Card
-          className={styles.card}
+          className={classnames(styles.card, {
+            [styles['card--mobile']]: isMobileSize,
+          })}
           title='添加新评论'
           headerExtraContent={
             !isLogin && (
@@ -97,19 +115,16 @@ const CommentBox = React.memo<CommentBoxProps>(({ post }) => {
               </Row>
             )
           }
-          // actions={[
-          //   // eslint-disable-next-line react/jsx-key
-          //   <Row type='flex' justify='end'>
-          //     <Button theme='solid' onClick={() => run(getPostComment())} loading={loading}>
-          //       发送
-          //     </Button>
-          //   </Row>,
-          // ]}
           footer={
             <>
-              <Divider />
+              {!isMobileSize && <Divider />}
               <Row type='flex' justify='end' style={{ marginTop: 10 }}>
-                <Button theme='solid' onClick={() => run(getPostComment())} loading={loading}>
+                <Button
+                  theme='solid'
+                  size={isMobileSize ? 'small' : 'default'}
+                  onClick={() => run(getPostComment())}
+                  loading={loading}
+                >
                   发送
                 </Button>
               </Row>
@@ -118,8 +133,8 @@ const CommentBox = React.memo<CommentBoxProps>(({ post }) => {
         >
           <Form<FormValues>
             ref={formRef}
-            wrapperCol={{ span: isLogin ? 22 : 18 }}
-            labelCol={{ span: isLogin ? 2 : 4 }}
+            wrapperCol={{ span: wrapperCol }}
+            labelCol={{ span: labelCol }}
             labelPosition='left'
             disabled={loading}
           >

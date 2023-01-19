@@ -31,7 +31,7 @@ import { indent } from '@milkdown/plugin-indent'
 import { upload, uploadPlugin } from '@milkdown/plugin-upload'
 import uploader from './uploader'
 
-import './index.scss'
+import './code.scss'
 import 'material-icons/iconfont/material-icons.css'
 
 interface EditorProps

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { AssociatedPostComment } from '@/utils/Request/PostComment'
 import { Button, ButtonGroup, Dropdown, Popconfirm, SplitButtonGroup } from '@douyinfe/semi-ui'
 import useAuth from '@/hooks/useAuth'
@@ -9,6 +9,7 @@ import { PostComment } from '@/utils/Request'
 import { CodeDictionary } from '@/utils/Request/type'
 import { IconAlertTriangle, IconDelete, IconTreeTriangleDown } from '@douyinfe/semi-icons'
 import { menu } from '@milkdown/plugin-menu'
+import { useDesktopSize } from '@/hooks/useScreenSize'
 
 interface CommentActionProps {
   comment: AssociatedPostComment
@@ -46,9 +47,17 @@ const CommentAction = React.memo<CommentActionProps>(({ comment }) => {
     },
   )
 
+  const isDesktopSize = useDesktopSize()
+  const buttonSize = useMemo(() => (isDesktopSize ? 'default' : 'small'), [isDesktopSize])
+
   return (
     <SplitButtonGroup>
-      <Button type='primary' theme='solid' onClick={() => dispatch.setReplyCommentBox(comment)}>
+      <Button
+        type='primary'
+        theme='solid'
+        size={buttonSize}
+        onClick={() => dispatch.setReplyCommentBox(comment)}
+      >
         回复
       </Button>
       {isAdmin && (
@@ -96,6 +105,7 @@ const CommentAction = React.memo<CommentActionProps>(({ comment }) => {
                 : { padding: '8px 4px' }
             }
             theme='solid'
+            size={buttonSize}
             icon={<IconTreeTriangleDown />}
           />
         </Dropdown>

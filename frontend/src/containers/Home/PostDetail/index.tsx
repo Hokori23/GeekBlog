@@ -34,6 +34,7 @@ const PostDetail = React.memo(() => {
   })
 
   const markdownRef = useRef<EditorHandler | null>(null)
+
   const Content = useMemo(
     () => (
       <Markdown
@@ -48,12 +49,15 @@ const PostDetail = React.memo(() => {
     [post?.content, isEdit],
   )
 
+  const buttonSize = isMobileSize ? 'small' : 'default'
+
   const EditGroupButton = useMemo(() => {
     if (isEdit) {
       return (
         <>
           <Button
             theme='solid'
+            size={buttonSize}
             loading={editPostService.loading}
             disabled={!isAdmin}
             onClick={() => editPostService.run(markdownRef.current?.getValue() || '')}
@@ -61,6 +65,7 @@ const PostDetail = React.memo(() => {
             保存
           </Button>
           <Button
+            size={buttonSize}
             disabled={editPostService.loading || !isAdmin}
             onClick={() => {
               markdownRef.current?.refresh()
@@ -75,15 +80,17 @@ const PostDetail = React.memo(() => {
 
     return (
       <>
-        <Button theme='solid' onClick={() => setIsEdit(true)}>
+        <Button size={buttonSize} theme='solid' onClick={() => setIsEdit(true)}>
           编辑
         </Button>
         {isMobileSize ? (
           <Button
+            size={buttonSize}
             theme='light'
             type='danger'
             onClick={() =>
               Modal.error({
+                size: 'full-width',
                 title: '确定要删除此文章？',
                 content: '此修改将不可逆',
                 onOk: () => {},
@@ -103,14 +110,14 @@ const PostDetail = React.memo(() => {
             position='leftTop'
             onConfirm={deletePostService.run}
           >
-            <Button theme='light' type='danger'>
+            <Button size={buttonSize} theme='light' type='danger'>
               删除
             </Button>
           </Popconfirm>
         )}
       </>
     )
-  }, [isAdmin, isEdit, isMobileSize, getPostService.loading, editPostService.loading])
+  }, [isAdmin, isEdit, isMobileSize, getPostService.loading, editPostService.loading, buttonSize])
 
   return (
     <>

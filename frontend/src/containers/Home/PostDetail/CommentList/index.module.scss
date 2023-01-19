@@ -26,3 +26,33 @@
     }
   }
 }
+
+.commentItem {
+  &--desktop,
+  &--mobile {
+    :global {
+      .semi-list-item-body,
+      .semi-list-item-body-main {
+        width: 100%;
+      }
+    }
+  }
+  &--desktop {
+    .content {
+      margin-bottom: 4px;
+    }
+  }
+  &--mobile {
+    .main {
+      display: flex;
+      flex-direction: column;
+    }
+    .avatar {
+      margin-right: 8px;
+      margin-bottom: 4px;
+    }
+    .content {
+      margin: 4px 0 8px 4px;
+    }
+  }
+}

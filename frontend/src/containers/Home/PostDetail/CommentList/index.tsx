@@ -8,6 +8,8 @@ import { isNil } from 'lodash-es'
 import { RootState } from '@/store'
 import { useSelector } from 'react-redux'
 import ReplyCommentBox from './ReplyCommentBox'
+import { useDesktopSize } from '@/hooks/useScreenSize'
+import styles from './index.module.scss'
 
 const { Title, Text, Paragraph } = Typography
 
@@ -47,27 +49,92 @@ const CommentItem = React.memo<CommentItemProps>(({ level = 0, ...comment }) => 
   const parentName = comment.parent?.author?.userName || comment.parent?.email
   const { replyComment } = useSelector((state: RootState) => state.postDetail)
   const [isInitReplyComment, setIsInitReplyComment] = useState(false) // 懒加载评论组件
+
+  const isDesktopSize = useDesktopSize()
+
   useEffect(() => {
     if (replyComment?.id === comment.id) {
       setIsInitReplyComment(true)
     }
   }, [replyComment])
 
+  // PC分辨率
+  if (isDesktopSize) {
+    return (
+      <>
+        <List.Item
+          className={styles['commentItem--desktop']}
+          style={{
+            paddingLeft: level > 0 ? 12 + 68 : 12, // 非根级评论进行缩进
+          }}
+          header={
+            <Avatar alt={name} src={comment.author?.avatarUrl}>
+              {name.slice(0, 2)}
+            </Avatar>
+          }
+          main={
+            <div>
+              <Title heading={6}>{name}</Title>
+              <Row type='flex' align='middle' className={styles.content}>
+                {comment.parent && (
+                  <Text type='tertiary' component='div' style={{ marginRight: 4 }}>
+                    回复
+                    {/* TODO: 如果回复对象是注册用户, 可以跳转到用户页面 */}
+                    <Text link={!!comment.parent?.author} type='primary'>
+                      @{parentName}
+                    </Text>
+                  </Text>
+                )}
+                <Text style={{ whiteSpace: 'pre-wrap' }}>{comment.content}</Text>
+              </Row>
+              <Paragraph size='small'>
+                {formatDistanceToNow(new Date(comment.createdAt), {
+                  locale: zhCN,
+                  addSuffix: true,
+                })}
+              </Paragraph>
+            </div>
+          }
+          extra={<CommentAction comment={comment} />}
+        />
+        {isInitReplyComment && <ReplyCommentBox show={replyComment?.id === comment.id} />}
+        {comment.children?.map((_comment) => (
+          <CommentItem key={_comment.id} level={level + 1} {..._comment} />
+        ))}
+      </>
+    )
+  }
+
+  // 移动端分辨率
   return (
     <>
       <List.Item
+        className={styles['commentItem--mobile']}
         style={{
           paddingLeft: level > 0 ? 12 + 68 : 12, // 非根级评论进行缩进
         }}
-        header={
-          <Avatar alt={name} src={comment.author?.avatarUrl}>
-            {name.slice(0, 2)}
-          </Avatar>
-        }
         main={
-          <div>
-            <Title heading={6}>{name}</Title>
-            <Row type='flex' align='middle' style={{ marginBottom: 4 }}>
+          <div className={styles.main}>
+            <Row type='flex' align='middle'>
+              <Avatar
+                className={styles.avatar}
+                size='small'
+                alt={name}
+                src={comment.author?.avatarUrl}
+              >
+                {name.slice(0, 2)}
+              </Avatar>
+              <Text strong={true}>
+                {name}
+                <Paragraph size='small' style={{ fontWeight: 400 }}>
+                  {formatDistanceToNow(new Date(comment.createdAt), {
+                    locale: zhCN,
+                    addSuffix: true,
+                  })}
+                </Paragraph>
+              </Text>
+            </Row>
+            <Row type='flex' align='middle' className={styles.content}>
               {comment.parent && (
                 <Text type='tertiary' component='div' style={{ marginRight: 4 }}>
                   回复
@@ -79,15 +146,11 @@ const CommentItem = React.memo<CommentItemProps>(({ level = 0, ...comment }) => 
               )}
               <Text style={{ whiteSpace: 'pre-wrap' }}>{comment.content}</Text>
             </Row>
-            <Paragraph size='small'>
-              {formatDistanceToNow(new Date(comment.createdAt), {
-                locale: zhCN,
-                addSuffix: true,
-              })}
-            </Paragraph>
+            <Row type='flex' style={{ flexDirection: 'column' }} align='bottom'>
+              <CommentAction comment={comment} />
+            </Row>
           </div>
         }
-        extra={<CommentAction comment={comment} />}
       />
       {isInitReplyComment && <ReplyCommentBox show={replyComment?.id === comment.id} />}
       {comment.children?.map((_comment) => (
@@ -142,7 +205,7 @@ const CommentList = React.memo<CommentListProps>(({ postComments }) => {
 
   return (
     <Row type='flex' justify='center' style={{ marginBottom: 20 }}>
-      <Col span={18} xl={14} xxl={12} style={{ position: 'relative' }}>
+      <Col sm={23} lg={20} xl={14} xxl={12} style={{ position: 'relative' }}>
         <List
           dataSource={formatPostComments || []}
           renderItem={(comment) => <CommentItem {...comment} />}
