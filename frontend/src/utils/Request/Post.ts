@@ -160,13 +160,12 @@ export const Edit = async ({
   })
 }
 
-export const EditByAdmin = async ({
-  post,
-  tids,
-}: {
+export interface EditByAdminRequest {
   post: Partial<EditedPost>
   tids: Array<number | undefined>
-}) => {
+}
+
+export const EditByAdmin = async ({ post, tids }: EditByAdminRequest) => {
   return await Request<Restful<AssociatedPost>>({
     method: 'POST',
     data: { post, tids },

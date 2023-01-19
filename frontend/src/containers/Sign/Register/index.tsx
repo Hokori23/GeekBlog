@@ -31,8 +31,7 @@ const Register = React.memo(() => {
   const dispatch = useSelector(() => store.dispatch.common)
   const needRedirect = location.pathname === PathName.LOGIN && isLogin
 
-  const [modalTimer, setModalTimer] = useState<NodeJS.Timeout | null>()
-
+  const [modalTimer, setModalTimer] = useState<number | null>()
   const registerService = useRequest(
     async (user: Partial<User>) => {
       try {

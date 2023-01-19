@@ -8,9 +8,9 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@douyinfe/semi-icons": "^2.22.3",
-		"@douyinfe/semi-illustrations": "^2.23.1",
-		"@douyinfe/semi-ui": "^2.23.3",
+		"@douyinfe/semi-icons": "^2.28.0",
+		"@douyinfe/semi-illustrations": "^2.28.0",
+		"@douyinfe/semi-ui": "^2.28.0",
 		"@milkdown/core": "^6.5.2",
 		"@milkdown/plugin-clipboard": "^6.5.2",
 		"@milkdown/plugin-cursor": "^6.5.2",
@@ -55,6 +55,7 @@
 		"@commitlint/config-conventional": "^16.2.1",
 		"@types/classnames": "^2.3.1",
 		"@types/lodash-es": "^4.17.6",
+		"@types/qs": "^6.9.7",
 		"@types/react": "18.0.25",
 		"@types/react-dom": "18.0.9",
 		"@types/react-redux": "^7.1.24",

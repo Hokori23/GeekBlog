@@ -35,6 +35,7 @@
 
   @media screen and (max-width: 768px) {
     .editor {
+      padding: 16px 12px !important;
       & > * {
         margin: 16px 0 !important;
       }

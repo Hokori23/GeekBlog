@@ -21,7 +21,7 @@ const MainLayout = React.memo(() => {
   const navigate = useNavigate()
   const location = useLocation()
   const isMobileSize = useMobileSize()
-  const [collapsed, setCollapsed] = useState(isMobileSize)
+  const [collapsed, setCollapsed] = useState(false)
 
   const dispatch = useSelector(() => store.dispatch.common)
   const { getBlogConfigService } = useInit()
@@ -62,10 +62,6 @@ const MainLayout = React.memo(() => {
     dispatch.checkLogin(null) // 判断登陆态合法性
   }, [])
 
-  useEffect(() => {
-    setCollapsed(isMobileSize)
-  }, [isMobileSize])
-
   return (
     <Layout className='layout'>
       <Header>
@@ -74,19 +70,21 @@ const MainLayout = React.memo(() => {
 
       <Layout>
         <Sider>
-          <SemiNav
-            selectedKeys={[routesMap[location.pathname]?.menuKey]}
-            style={{ maxWidth: 220, height: '100%' }}
-            isCollapsed={collapsed}
-            onClick={({ itemKey }) =>
-              navigate(menu.find((menuItem) => menuItem.itemKey === itemKey)?.path as string)
-            }
-            onCollapseChange={setCollapsed}
-            items={menu}
-            footer={{
-              collapseButton: true,
-            }}
-          />
+          {!isMobileSize && (
+            <SemiNav
+              selectedKeys={[routesMap[location.pathname]?.menuKey]}
+              style={{ maxWidth: 220, height: '100%' }}
+              isCollapsed={collapsed}
+              onClick={({ itemKey }) =>
+                navigate(menu.find((menuItem) => menuItem.itemKey === itemKey)?.path as string)
+              }
+              onCollapseChange={setCollapsed}
+              items={menu}
+              footer={{
+                collapseButton: true,
+              }}
+            />
+          )}
         </Sider>
         <Content style={{ position: 'relative' }}>
           <PageLoading show={getBlogConfigService.loading} />

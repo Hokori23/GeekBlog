@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import { Notification, Modal } from '@douyinfe/semi-ui'
+import { Notification } from '@douyinfe/semi-ui'
 import { store } from '@/store'
 import { REQUEST_WHITE_LIST } from '../const'
 import { Restful } from './type'
@@ -16,7 +16,7 @@ const isWhiteUrl = (url: string) => {
   return !REQUEST_WHITE_LIST.every((reg) => !reg.test(url))
 }
 
-interface EnhanceAxiosRequestConfig extends AxiosRequestConfig {
+export interface EnhanceAxiosRequestConfig extends AxiosRequestConfig {
   silent?: boolean
   noCancel?: boolean
 }

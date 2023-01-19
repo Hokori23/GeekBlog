@@ -110,9 +110,9 @@ importers:
     specifiers:
       '@commitlint/cli': ^16.2.3
       '@commitlint/config-conventional': ^16.2.1
-      '@douyinfe/semi-icons': ^2.22.3
-      '@douyinfe/semi-illustrations': ^2.23.1
-      '@douyinfe/semi-ui': ^2.23.3
+      '@douyinfe/semi-icons': ^2.28.0
+      '@douyinfe/semi-illustrations': ^2.28.0
+      '@douyinfe/semi-ui': ^2.28.0
       '@milkdown/core': ^6.5.2
       '@milkdown/plugin-clipboard': ^6.5.2
       '@milkdown/plugin-cursor': ^6.5.2
@@ -133,6 +133,7 @@ importers:
       '@rematch/select': ^3.1.2
       '@types/classnames': ^2.3.1
       '@types/lodash-es': ^4.17.6
+      '@types/qs': ^6.9.7
       '@types/react': 18.0.25
       '@types/react-dom': 18.0.9
       '@types/react-redux': ^7.1.24
@@ -171,9 +172,9 @@ importers:
       vite: ^2.9.5
       vite-plugin-externals: ^0.5.0
     dependencies:
-      '@douyinfe/semi-icons': registry.npmmirror.com/@douyinfe/semi-icons/2.22.3_react@18.2.0
-      '@douyinfe/semi-illustrations': registry.npmmirror.com/@douyinfe/semi-illustrations/2.23.1_react@18.2.0
-      '@douyinfe/semi-ui': registry.npmmirror.com/@douyinfe/semi-ui/2.23.3_biqbaboplfbrettd7655fr4n2y
+      '@douyinfe/semi-icons': registry.npmmirror.com/@douyinfe/semi-icons/2.28.0_react@18.2.0
+      '@douyinfe/semi-illustrations': registry.npmmirror.com/@douyinfe/semi-illustrations/2.28.0_react@18.2.0
+      '@douyinfe/semi-ui': registry.npmmirror.com/@douyinfe/semi-ui/2.28.0_biqbaboplfbrettd7655fr4n2y
       '@milkdown/core': registry.npmmirror.com/@milkdown/core/6.5.2_orvbzpb7pnlgg4v42gfliphp6m
       '@milkdown/plugin-clipboard': registry.npmmirror.com/@milkdown/plugin-clipboard/6.5.2_saft6sjt6ogw4q3fjt5smrk7xi
       '@milkdown/plugin-cursor': registry.npmmirror.com/@milkdown/plugin-cursor/6.5.2_saft6sjt6ogw4q3fjt5smrk7xi
@@ -217,6 +218,7 @@ importers:
       '@commitlint/config-conventional': registry.npmmirror.com/@commitlint/config-conventional/16.2.4
       '@types/classnames': registry.npmmirror.com/@types/classnames/2.3.1
       '@types/lodash-es': registry.npmmirror.com/@types/lodash-es/4.17.6
+      '@types/qs': registry.npmmirror.com/@types/qs/6.9.7
       '@types/react': registry.npmmirror.com/@types/react/18.0.25
       '@types/react-dom': registry.npmmirror.com/@types/react-dom/18.0.9
       '@types/react-redux': registry.npmmirror.com/@types/react-redux/7.1.24
@@ -799,20 +801,20 @@ packages:
     engines: {node: '>=4.0.0'}
     dev: false
 
-  registry.npmmirror.com/@douyinfe/semi-animation-react/2.23.3:
-    resolution: {integrity: sha512-UOI1HA5Yb8lqYDt3NLPvq50MGIA6BqgcHsvZzBR4SQBvNde7vHziEu9qIYPqASXWIcQjV9qhRlDiYagP2t1r7A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-animation-react/-/semi-animation-react-2.23.3.tgz}
+  registry.npmmirror.com/@douyinfe/semi-animation-react/2.28.0:
+    resolution: {integrity: sha512-KFcwQvjri8uuMWyKGj7tw08Xch0ZfHo5gPBmgC7R1T7WD/nEgZ7iXzLATcO+mKhIbwSSovsBInEwfLHUtoC07w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-animation-react/-/semi-animation-react-2.28.0.tgz}
     name: '@douyinfe/semi-animation-react'
-    version: 2.23.3
+    version: 2.28.0
     dependencies:
       '@douyinfe/semi-animation': registry.npmmirror.com/@douyinfe/semi-animation/2.12.0
-      '@douyinfe/semi-animation-styled': registry.npmmirror.com/@douyinfe/semi-animation-styled/2.23.3
+      '@douyinfe/semi-animation-styled': registry.npmmirror.com/@douyinfe/semi-animation-styled/2.23.2
       classnames: registry.npmmirror.com/classnames/2.3.2
     dev: false
 
-  registry.npmmirror.com/@douyinfe/semi-animation-styled/2.23.3:
-    resolution: {integrity: sha512-+fuOGXTdMra2avCH/rqluihAT6b8Q3elu4QeVfNVoMR2zv5Yjr0QTh9nJrrhOY1BSba9h+O+TYNcVpj7zwgEng==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-animation-styled/-/semi-animation-styled-2.23.3.tgz}
+  registry.npmmirror.com/@douyinfe/semi-animation-styled/2.23.2:
+    resolution: {integrity: sha512-cKaA1yGHPF76Rx7EZDZicj+1oX1su2wnqb/UGFOTquAwqWmkTfgQ+EKxCd/N704WH+RtmGf4xbrJKpBvvcEdSQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-animation-styled/-/semi-animation-styled-2.23.2.tgz}
     name: '@douyinfe/semi-animation-styled'
-    version: 2.23.3
+    version: 2.23.2
     dev: false
 
   registry.npmmirror.com/@douyinfe/semi-animation/2.12.0:
@@ -824,10 +826,18 @@ packages:
       bezier-easing: registry.npmmirror.com/bezier-easing/2.1.0
     dev: false
 
-  registry.npmmirror.com/@douyinfe/semi-foundation/2.23.3:
-    resolution: {integrity: sha512-jSlcBO/lc06M7l4KXb1EIOfTDL14ay6vmMstFI9mm+lbKlWtZE/Y3uCTsSeP+/MxrWmtXueevqFz4VKrhJGnOw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-foundation/-/semi-foundation-2.23.3.tgz}
+  registry.npmmirror.com/@douyinfe/semi-animation/2.28.0:
+    resolution: {integrity: sha512-aUbNpOylc5dVrwLTle6BOeFP6+8ee/MxuoBI8TVTNmJFf+e2iMRhTgckZ5kdDiYP8H8N5ihUxvvQk71VGX9Vcg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-animation/-/semi-animation-2.28.0.tgz}
+    name: '@douyinfe/semi-animation'
+    version: 2.28.0
+    dependencies:
+      bezier-easing: registry.npmmirror.com/bezier-easing/2.1.0
+    dev: false
+
+  registry.npmmirror.com/@douyinfe/semi-foundation/2.28.0:
+    resolution: {integrity: sha512-hoGAdbv/nMWCPnlDDHSppb1cbgvUO0Pv4+M9f8WXz/9+xAXCQ3sKN75ZQoDQDB6K8To1Ssd+OOTK7DfZ5Vzy4A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-foundation/-/semi-foundation-2.28.0.tgz}
     name: '@douyinfe/semi-foundation'
-    version: 2.23.3
+    version: 2.28.0
     dependencies:
       '@douyinfe/semi-animation': registry.npmmirror.com/@douyinfe/semi-animation/2.12.0
       async-validator: registry.npmmirror.com/async-validator/3.5.2
@@ -839,11 +849,11 @@ packages:
       scroll-into-view-if-needed: registry.npmmirror.com/scroll-into-view-if-needed/2.2.29
     dev: false
 
-  registry.npmmirror.com/@douyinfe/semi-icons/2.22.3_react@18.2.0:
-    resolution: {integrity: sha512-aEHMK73TGl71oR7KN78OS19KlO4IgpUd9sMpFlPhFwO7f/Gw27I7r7AobIdnXjNHPT/UOl6hFSNOr/ZFVItQ/A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-icons/-/semi-icons-2.22.3.tgz}
-    id: registry.npmmirror.com/@douyinfe/semi-icons/2.22.3
+  registry.npmmirror.com/@douyinfe/semi-icons/2.28.0_react@18.2.0:
+    resolution: {integrity: sha512-W5BaKAFi+9AvvAtVm9qGPTGT3RfS96RyMf2oMsiMCGwbT9XUqXKmLw0IlkEOoXPA/ZBpgNqDw6tdA9+Rv4S6MA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-icons/-/semi-icons-2.28.0.tgz}
+    id: registry.npmmirror.com/@douyinfe/semi-icons/2.28.0
     name: '@douyinfe/semi-icons'
-    version: 2.22.3
+    version: 2.28.0
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
@@ -851,64 +861,40 @@ packages:
       react: registry.npmmirror.com/react/18.2.0
     dev: false
 
-  registry.npmmirror.com/@douyinfe/semi-icons/2.23.3_react@18.2.0:
-    resolution: {integrity: sha512-LxmZ3vkKy9UZ8bYnSiGKUxPm+QRpkht0eTqndfw1+6Tq60TgmZXaPEnYfIDDDVi8UQdQgv12Mb2Ee4BQDUr5Sg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-icons/-/semi-icons-2.23.3.tgz}
-    id: registry.npmmirror.com/@douyinfe/semi-icons/2.23.3
-    name: '@douyinfe/semi-icons'
-    version: 2.23.3
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      classnames: registry.npmmirror.com/classnames/2.3.2
-      react: registry.npmmirror.com/react/18.2.0
-    dev: false
-
-  registry.npmmirror.com/@douyinfe/semi-illustrations/2.15.0_react@18.2.0:
-    resolution: {integrity: sha512-8gajbeKZwJTk7G79tK7qPg8s3V1UUxjg8oA8X/11kim+rt0vzRqCXclyR65JMWIayZIIj+VftqjCHcTc6ozI0A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-illustrations/-/semi-illustrations-2.15.0.tgz}
-    id: registry.npmmirror.com/@douyinfe/semi-illustrations/2.15.0
+  registry.npmmirror.com/@douyinfe/semi-illustrations/2.28.0_react@18.2.0:
+    resolution: {integrity: sha512-6Q9ZzKld8EhoZ06PA0SJOGO547H6o3PhyiqIj9Fmxt8mDGjYvDCSXcDjgg3K1KJL6hLcYSQZsQa0Z6tJLLWaiw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-illustrations/-/semi-illustrations-2.28.0.tgz}
+    id: registry.npmmirror.com/@douyinfe/semi-illustrations/2.28.0
     name: '@douyinfe/semi-illustrations'
-    version: 2.15.0
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    dependencies:
-      '@babel/runtime-corejs3': registry.npmmirror.com/@babel/runtime-corejs3/7.20.1
-      react: registry.npmmirror.com/react/18.2.0
-    dev: false
-
-  registry.npmmirror.com/@douyinfe/semi-illustrations/2.23.1_react@18.2.0:
-    resolution: {integrity: sha512-tJWylcR0+VuLaRwt65pr7FjXGJ9ArAMeSYUJGg8aEbmzdMLDt0H2Dei6DayAgPPGNNQJL662HtaV8OkyJFJt6Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-illustrations/-/semi-illustrations-2.23.1.tgz}
-    id: registry.npmmirror.com/@douyinfe/semi-illustrations/2.23.1
-    name: '@douyinfe/semi-illustrations'
-    version: 2.23.1
+    version: 2.28.0
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
       react: registry.npmmirror.com/react/18.2.0
     dev: false
 
-  registry.npmmirror.com/@douyinfe/semi-theme-default/2.23.3:
-    resolution: {integrity: sha512-dZzvqjuZ2kAIDVpgcb37yGXIVZB4/xhnabyxCJy7IFio2ZHwTOEbwuqDNrluYhQjPf5XMymlfm2DWzmCT3pS1w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-theme-default/-/semi-theme-default-2.23.3.tgz}
+  registry.npmmirror.com/@douyinfe/semi-theme-default/2.28.0:
+    resolution: {integrity: sha512-VnMA2myv77x7qIh+s872It3WhbwKgciZEhVuZGD677h4Rmbc2/mDxjmJK9EPHQoN/Kr3phZGeU6MpKIaV500Rw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-theme-default/-/semi-theme-default-2.28.0.tgz}
     name: '@douyinfe/semi-theme-default'
-    version: 2.23.3
+    version: 2.28.0
     dependencies:
       glob: registry.npmmirror.com/glob/7.2.3
     dev: false
 
-  registry.npmmirror.com/@douyinfe/semi-ui/2.23.3_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-tccjQnlMbnQChc9x9FlyzRgpYZFe4cpJZnser9rW4XAZxv1IEaGLRM3d7Md1cJcTfuZCiGpiDzR84Pw6ifBAfw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-ui/-/semi-ui-2.23.3.tgz}
-    id: registry.npmmirror.com/@douyinfe/semi-ui/2.23.3
+  registry.npmmirror.com/@douyinfe/semi-ui/2.28.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-ezoQ3RxL8A4ol7ay2jhuFO6AfAibs22Vf/1UOrNdRU2FUuFC+JEGuSbGXl73M5jP3+j2LhKlSoCFB4icrePb7w==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@douyinfe/semi-ui/-/semi-ui-2.28.0.tgz}
+    id: registry.npmmirror.com/@douyinfe/semi-ui/2.28.0
     name: '@douyinfe/semi-ui'
-    version: 2.23.3
+    version: 2.28.0
     peerDependencies:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
     dependencies:
-      '@douyinfe/semi-animation': registry.npmmirror.com/@douyinfe/semi-animation/2.12.0
-      '@douyinfe/semi-animation-react': registry.npmmirror.com/@douyinfe/semi-animation-react/2.23.3
-      '@douyinfe/semi-foundation': registry.npmmirror.com/@douyinfe/semi-foundation/2.23.3
-      '@douyinfe/semi-icons': registry.npmmirror.com/@douyinfe/semi-icons/2.23.3_react@18.2.0
-      '@douyinfe/semi-illustrations': registry.npmmirror.com/@douyinfe/semi-illustrations/2.15.0_react@18.2.0
-      '@douyinfe/semi-theme-default': registry.npmmirror.com/@douyinfe/semi-theme-default/2.23.3
+      '@douyinfe/semi-animation': registry.npmmirror.com/@douyinfe/semi-animation/2.28.0
+      '@douyinfe/semi-animation-react': registry.npmmirror.com/@douyinfe/semi-animation-react/2.28.0
+      '@douyinfe/semi-foundation': registry.npmmirror.com/@douyinfe/semi-foundation/2.28.0
+      '@douyinfe/semi-icons': registry.npmmirror.com/@douyinfe/semi-icons/2.28.0_react@18.2.0
+      '@douyinfe/semi-illustrations': registry.npmmirror.com/@douyinfe/semi-illustrations/2.28.0_react@18.2.0
+      '@douyinfe/semi-theme-default': registry.npmmirror.com/@douyinfe/semi-theme-default/2.28.0
       async-validator: registry.npmmirror.com/async-validator/3.5.2
       classnames: registry.npmmirror.com/classnames/2.3.2
       copy-text-to-clipboard: registry.npmmirror.com/copy-text-to-clipboard/2.2.0

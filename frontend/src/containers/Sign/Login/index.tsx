@@ -5,7 +5,7 @@ import { Button, Col, Form, Modal, Row, Typography, Toast } from '@douyinfe/semi
 import { useRequest } from 'ahooks'
 import { Request } from '@/utils'
 import { User } from '@/utils/Request/User'
-import { IconArrowRight, IconLock, IconUser } from '@douyinfe/semi-icons'
+import { IconLock, IconUser } from '@douyinfe/semi-icons'
 import { useSelector } from 'react-redux'
 import { RootState, store } from '@/store'
 
@@ -19,8 +19,7 @@ const Login = React.memo(() => {
   const dispatch = useSelector(() => store.dispatch.common)
   const needRedirect = location.pathname === PathName.LOGIN && isLogin
 
-  const [modalTimer, setModalTimer] = useState<NodeJS.Timeout | null>()
-
+  const [modalTimer, setModalTimer] = useState<number | null>()
   const loginService = useRequest(
     async (user: Partial<User>) => {
       try {
