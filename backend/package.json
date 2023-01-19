@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/Hokori23/Pro_design#readme",
   "dependencies": {
+    "@types/debug": "^4.1.7",
     "axios": "^0.21.0",
     "dotenv": "^16.0.0",
     "ejs": "^3.1.5",

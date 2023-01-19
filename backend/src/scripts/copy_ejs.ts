@@ -1,20 +1,22 @@
 import path from 'path'
 import { findSrcFiles, File } from '@utils'
-import chalk from 'chalk'
-import { exec } from 'child_process'
+import { copyFile } from 'node:fs/promises'
 
-export default (ejsFiles?: File[]) => {
+export default async (ejsFiles?: File[]) => {
   const _ejsFiles = ejsFiles || findSrcFiles(path.resolve('./src/mailer'), [], /.*\.ejs$/)
-  _ejsFiles.forEach((ejs) => {
-    const outputPath = path.resolve(
-      ejs.path.replace(path.join('backend', 'src'), path.join('backend', 'build')),
+
+  try {
+    await Promise.all(
+      _ejsFiles.map((ejs) => {
+        const outputPath = path.resolve(
+          ejs.path.replace(path.join('backend', 'src'), path.join('backend', 'build')),
+        )
+        return copyFile(ejs.path, outputPath)
+      }),
     )
-    exec(`cp ${ejs.path} ${outputPath}`, (e) => {
-      if (e) {
-        // eslint-disable-next-line no-console
-        console.log(chalk.red(e))
-        process.exit(0)
-      }
-    })
-  })
+  } catch (e) {
+    console.error('构建失败 -- 复制ejs文件失败')
+    console.error(e)
+    process.exit(0)
+  }
 }
