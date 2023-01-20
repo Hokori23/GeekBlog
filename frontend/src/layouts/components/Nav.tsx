@@ -21,10 +21,9 @@ const { Title } = Typography
 const Nav = React.memo<SemiNavProps>((props) => {
   const location = useLocation()
   const navigate = useNavigate()
-  const state = useSelector((state: RootState) => state.common)
+  const { isLogin, userInfo, blogConfig } = useSelector((state: RootState) => state.common)
   const dispatch = useSelector(() => store.dispatch.common)
 
-  const { isLogin, userInfo } = state
   const { isAdmin } = useAuth()
   const inAdminPage = useMemo(
     () => location.pathname.startsWith(PathName.ADMIN),
@@ -32,8 +31,8 @@ const Nav = React.memo<SemiNavProps>((props) => {
   )
   const inUserPage = useMemo(() => location.pathname.startsWith(PathName.USER), [location.pathname])
   const blogName = useMemo(
-    () => state.blogConfig?.find((v) => v.module === 'system' && v.key === 'blogName')?.value,
-    [state.blogConfig],
+    () => blogConfig?.find((v) => v.module === 'system' && v.key === 'blogName')?.value,
+    [blogConfig],
   )
 
   const handleLogOut = useCallback(() => {

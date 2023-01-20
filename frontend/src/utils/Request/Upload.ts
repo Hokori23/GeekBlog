@@ -1,5 +1,7 @@
 import { Request } from '.'
-import { Restful, UploadRestful } from './type'
+import { CodeDictionary, Restful, UploadRestful } from './type'
+import { Notification } from '@douyinfe/semi-ui'
+
 const baseUrl = '/api/upload'
 
 export enum FileType {
@@ -52,4 +54,18 @@ export const handleUpload = async ({ fileName, formData }: FileProps, type: File
 
   // 上传又拍云
   return await Upload(formData, payload, url)
+}
+
+export const uploaderRequestHandler = async (image: File) => {
+  const formData = new FormData()
+  formData.append('file', image)
+  const uploadRes = await handleUpload({ fileName: image.name, formData }, FileType.IMAGE)
+  if (uploadRes?.code !== CodeDictionary.UPYUN_SUCCESS) {
+    Notification.error({
+      title: '警告',
+      content: `上传图片失败: ${image.name}`,
+    })
+    return null
+  }
+  return uploadRes
 }

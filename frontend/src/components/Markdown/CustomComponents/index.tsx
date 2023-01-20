@@ -3,15 +3,15 @@ import { Typography, Divider, Upload as SemiUpload, Popover, Button, Row } from 
 import { useNodeCtx } from '@milkdown/react'
 import ImageComponent from '@/components/Image'
 import styles from './index.module.scss'
-import { uploaderRequestHandler } from '../Editor/uploader'
 import { UPYUN_URL } from '@/utils/const'
 import { IconTick, IconUpload } from '@douyinfe/semi-icons'
 import { Input } from '@douyinfe/semi-ui/lib/es/input'
 import { useUpdateEffect } from 'ahooks'
+import { uploaderRequestHandler } from '@/utils/Request/Upload'
 
 const { Title: SemiTitle, Paragraph: SemiParagraph } = Typography
 
-export const Paragraph = React.memo(({ children }) => (
+export const Paragraph = React.memo<PropsWithChildren>(({ children }) => (
   <SemiParagraph className={styles.p}>{children}</SemiParagraph>
 ))
 
@@ -101,7 +101,7 @@ export const Image = () => {
   )
 }
 
-export const Title = React.memo(({ children }) => {
+export const Title = React.memo<PropsWithChildren>(({ children }) => {
   const { node } = useNodeCtx()
   return <SemiTitle heading={node.attrs.level}>{children}</SemiTitle>
 })

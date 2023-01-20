@@ -19,6 +19,8 @@ import CommentList from './CommentList'
 import Markdown, { EditorHandler } from '@/components/Markdown/Editor'
 import EditArea from './EditArea'
 import { AssociatedPost, PostRequest } from '@/utils/Request/Post'
+import { RootState } from '@/store'
+import { useSelector } from 'react-redux'
 interface FeAssociatedPost
   extends Omit<AssociatedPost, 'isLocked' | 'isDraft' | 'isHidden' | 'tags'> {
   isLocked: boolean
@@ -35,7 +37,6 @@ const PostDetail = React.memo(() => {
   const navigate = useNavigate()
   const { urlParams } = useUrlParams<{ id: string }>()
   const { id } = urlParams
-  const { isAdmin } = useAuth()
   const [isEdit, setIsEdit] = useState(false)
 
   const { getPostService, editPostService, deletePostService, post } = useService({
@@ -43,6 +44,11 @@ const PostDetail = React.memo(() => {
     onSave: () => setIsEdit(false),
     onDelete: () => navigate(PathName.HOME),
   })
+
+  // 编辑权限
+  const { isAdmin } = useAuth()
+  const { userInfo } = useSelector((state: RootState) => state.common)
+  const hasAuth = useMemo(() => isAdmin || userInfo?.id === post?.id, [isAdmin, userInfo, post])
 
   const formRef = useRef<Form<FormType>>(null)
   const markdownRef = useRef<EditorHandler | null>(null)
@@ -69,7 +75,7 @@ const PostDetail = React.memo(() => {
       // 请求不到
       return { formInitValues: undefined, key: Date.now() }
     }
-  }, [getPostService.loading, editPostService.loading, post])
+  }, [getPostService.loading, editPostService.loading])
 
   const Content = useMemo(
     () => (
@@ -120,9 +126,9 @@ const PostDetail = React.memo(() => {
                   onValueChange={(e) => console.log(e)}
                 >
                   <Row type='flex' justify='center'>
-                    <Banner post={post} />
+                    <Banner post={post} hasAuth={hasAuth} />
                     <Col span={24} xl={18} xxl={16} style={{ position: 'relative' }}>
-                      {isAdmin && (
+                      {hasAuth && (
                         <EditArea
                           isEdit={isEdit}
                           loading={editPostService.loading}

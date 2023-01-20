@@ -1,25 +1,8 @@
 import { UPYUN_URL } from '@/utils/const'
-import { Upload } from '@/utils/Request'
-import { CodeDictionary } from '@/utils/Request/type'
-import { FileType } from '@/utils/Request/Upload'
-import { Notification } from '@douyinfe/semi-ui'
+import { uploaderRequestHandler } from '@/utils/Request/Upload'
 
 import { Uploader } from '@milkdown/plugin-upload'
 import type { Node } from 'prosemirror-model'
-
-export const uploaderRequestHandler = async (image: File) => {
-  const formData = new FormData()
-  formData.append('file', image)
-  const uploadRes = await Upload.handleUpload({ fileName: image.name, formData }, FileType.IMAGE)
-  if (uploadRes?.code !== CodeDictionary.UPYUN_SUCCESS) {
-    Notification.error({
-      title: '警告',
-      content: `上传图片失败: ${image.name}`,
-    })
-    return null
-  }
-  return uploadRes
-}
 
 const uploader: Uploader = async (files, schema) => {
   const images: File[] = []

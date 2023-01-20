@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Divider, Space, TagGroup, Tooltip, Typography } from '@douyinfe/semi-ui'
+import { Divider, Popover, Space, TagGroup, Typography } from '@douyinfe/semi-ui'
 import styles from './index.module.scss'
 import { setUpYunImg } from '@/utils/tools'
 import classnames from 'classnames'
@@ -7,16 +7,20 @@ import { formatDistanceToNow, format } from 'date-fns'
 import { zhCN } from 'date-fns/locale'
 import { TagGroupProps, TagProps } from '@douyinfe/semi-ui/lib/es/tag'
 import { AssociatedPost } from '@/utils/Request/Post'
+import { useMobileSize } from '@/hooks/useScreenSize'
+import UploadBg from './components/UploadBg'
 
 const { Title, Text } = Typography
 
 interface BannerProps {
   post: AssociatedPost
+  hasAuth: boolean
 }
 
-const Banner = React.memo<BannerProps>(({ post }) => {
+const Banner = React.memo<BannerProps>(({ post, hasAuth }) => {
   const { title, coverUrl, author, createdAt, pageViews, postComments, tags } = post
 
+  const isMobileSize = useMobileSize()
   const { _createdAtReadable, _createdAtDistance } = useMemo(
     () => ({
       _createdAtReadable: format(new Date(createdAt), 'yyyy/MM/dd HH:mm'),
@@ -33,6 +37,7 @@ const Banner = React.memo<BannerProps>(({ post }) => {
       tags?.map(({ name, iconColor }) => ({
         type: coverUrl ? 'solid' : 'ghost',
         children: name,
+        color: 'white',
         // color: iconColor,
       })),
     [tags],
@@ -47,7 +52,6 @@ const Banner = React.memo<BannerProps>(({ post }) => {
       ),
     [coverUrl],
   )
-
   return (
     <header className={styles.bannerWrapper}>
       {bannerBg}
@@ -66,9 +70,9 @@ const Banner = React.memo<BannerProps>(({ post }) => {
           <Text>评论数: {postComments?.length || 0}</Text>
         </Space>
         <Space style={{ marginTop: 8 }}>
-          <Tooltip content={_createdAtDistance} position='right'>
-            <Text>发布时间: {_createdAtReadable}</Text>
-          </Tooltip>
+          <Popover showArrow content={_createdAtReadable} position={isMobileSize ? 'top' : 'right'}>
+            <Text>发布时间: {_createdAtDistance}</Text>
+          </Popover>
         </Space>
         {Boolean(tagList?.length) && (
           <Space style={{ marginTop: 8 }}>
@@ -82,6 +86,7 @@ const Banner = React.memo<BannerProps>(({ post }) => {
             />
           </Space>
         )}
+        {hasAuth && <UploadBg coverUrl={coverUrl} />}
       </figure>
     </header>
   )

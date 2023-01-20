@@ -1,0 +1,10 @@
+.uploadButton {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+}
+.uploadImgPreview {
+  & > img {
+    width: 100%;
+  }
+}
