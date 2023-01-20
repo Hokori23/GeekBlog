@@ -24,14 +24,14 @@ import isURL from 'validator/lib/isUrl'
 import isEmail from 'validator/lib/isEmail'
 import { useMobileSize } from '@/hooks/useScreenSize'
 import classnames from 'classnames'
-import { FeAssociatedPost } from '../model'
+import { AssociatedPost } from '@/utils/Request/Post'
 
 const { Text, Title } = Typography
 
 type FormValues = Pick<PostComment, 'pid' | 'uid' | 'content' | 'email' | 'url'>
 
 interface CommentBoxProps {
-  post: FeAssociatedPost
+  post: AssociatedPost
 }
 
 const CommentBox = React.memo<CommentBoxProps>(({ post }) => {

@@ -19,9 +19,6 @@
   .markdown {
     &__edit {
       :global {
-        .milkdown .editor {
-          padding-top: 55px !important;
-        }
         .milkdown-menu {
           position: sticky;
           top: 0;

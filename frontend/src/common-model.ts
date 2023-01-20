@@ -15,12 +15,14 @@ export interface CommonState {
   mainHeight: string
 }
 
+const token = ls.get<string>(LS_KEYS.ACCESS_TOKEN_NAME, { raw: true })
+
 export const defaultCommonState: CommonState = {
   userInfo: ls.get<Partial<User>>(LS_KEYS.USER_INFO_NAME, {
     defaultValue: {},
   }),
-  token: ls.get<string>(LS_KEYS.ACCESS_TOKEN_NAME, { raw: true }),
-  isLogin: false,
+  token: token,
+  isLogin: Boolean(token),
   blogConfig: ls.get<Option[] | null>(LS_KEYS.BLOG_CONFIG, {
     defaultValue: null,
   })!,

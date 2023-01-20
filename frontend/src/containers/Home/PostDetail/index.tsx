@@ -121,8 +121,6 @@ const PostDetail = React.memo(() => {
                 >
                   <Row type='flex' justify='center'>
                     <Banner post={post} />
-                    {/* TODO: 标签编辑 */}
-                    {/* TODO: 高级设置 */}
                     <Col span={24} xl={18} xxl={16} style={{ position: 'relative' }}>
                       {isAdmin && (
                         <EditArea

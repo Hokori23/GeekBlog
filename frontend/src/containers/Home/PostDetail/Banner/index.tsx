@@ -6,12 +6,12 @@ import classnames from 'classnames'
 import { formatDistanceToNow, format } from 'date-fns'
 import { zhCN } from 'date-fns/locale'
 import { TagGroupProps, TagProps } from '@douyinfe/semi-ui/lib/es/tag'
-import { FeAssociatedPost } from '../model'
+import { AssociatedPost } from '@/utils/Request/Post'
 
 const { Title, Text } = Typography
 
 interface BannerProps {
-  post: FeAssociatedPost
+  post: AssociatedPost
 }
 
 const Banner = React.memo<BannerProps>(({ post }) => {

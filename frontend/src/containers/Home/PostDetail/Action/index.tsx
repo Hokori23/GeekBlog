@@ -5,10 +5,10 @@ import classnames from 'classnames'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import styles from './index.module.scss'
-import { FeAssociatedPost } from '../model'
+import { AssociatedPost } from '@/utils/Request/Post'
 
 interface ActionProps {
-  post: FeAssociatedPost
+  post: AssociatedPost
 }
 
 const Action = React.memo<ActionProps>(({ post }) => {
