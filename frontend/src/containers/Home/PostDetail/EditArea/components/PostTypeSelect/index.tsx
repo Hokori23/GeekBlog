@@ -31,7 +31,7 @@ const PostTypeSelect = React.memo(() => {
   return (
     <Form.Select
       field='post.type'
-      insetLabel='类型'
+      placeholder='类型'
       size={isMobileSize ? 'small' : 'default'}
       noLabel={true}
       optionList={optionList}

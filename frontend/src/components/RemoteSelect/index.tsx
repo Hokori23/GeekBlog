@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React from 'react'
 import Select, { SelectProps } from '@douyinfe/semi-ui/lib/es/select'
 import { useRequest } from 'ahooks'
 import { useMobileSize } from '@/hooks/useScreenSize'
@@ -12,48 +12,8 @@ interface RemoteSelectProps extends SelectProps {
   lazy?: boolean
 }
 
-const RemoteSelect = React.memo<RemoteSelectProps>(({ api, lazy = true, ...props }) => {
-  const isMobileSize = useMobileSize()
-  const { run, loading, data, cancel } = useRequest(api, {
-    manual: lazy,
-  })
-
-  const onFocus = lazy
-    ? () => {
-        if (!data) {
-          run()
-        }
-      }
-    : undefined
-
-  useEffect(() => {
-    if (!lazy) {
-      run()
-    }
-    return () => {
-      cancel()
-    }
-  }, [])
-
-  return (
-    <Select
-      loading={loading}
-      optionList={data}
-      clickToHide={true}
-      onFocus={onFocus}
-      size={isMobileSize ? 'small' : 'default'}
-      {...props}
-    />
-  )
-})
-
-interface FormRemoteSelectProps extends FormSelectProps {
-  api: () => Promise<SelectProps['optionList']>
-  lazy?: boolean
-}
-
-export const FormRemoteSelect = React.memo<FormRemoteSelectProps>(
-  ({ api, lazy = true, field, ...props }) => {
+const RemoteSelect = React.memo<RemoteSelectProps>(
+  ({ api, lazy, placeholder, value, ...props }) => {
     const isMobileSize = useMobileSize()
     const { run, loading, data, cancel } = useRequest(api, {
       manual: lazy,
@@ -67,14 +27,41 @@ export const FormRemoteSelect = React.memo<FormRemoteSelectProps>(
         }
       : undefined
 
-    useEffect(() => {
-      if (!lazy) {
-        run()
-      }
-      return () => {
-        cancel()
-      }
-    }, [])
+    return (
+      <Select
+        loading={loading}
+        optionList={data}
+        clickToHide={true}
+        onFocus={onFocus}
+        size={isMobileSize ? 'small' : 'default'}
+        placeholder={loading ? '加载中' : placeholder}
+        value={loading ? undefined : value}
+        {...props}
+      />
+    )
+  },
+)
+
+interface FormRemoteSelectProps extends FormSelectProps {
+  api: () => Promise<SelectProps['optionList']>
+  lazy?: boolean
+}
+
+export const FormRemoteSelect = React.memo<FormRemoteSelectProps>(
+  ({ api, lazy, field, ...props }) => {
+    const isMobileSize = useMobileSize()
+    const { run, loading, data, cancel } = useRequest(api, {
+      manual: lazy,
+    })
+
+    const onFocus = lazy
+      ? () => {
+          if (!data) {
+            console.log('onFocus')
+            run()
+          }
+        }
+      : undefined
 
     return (
       <Form.Select

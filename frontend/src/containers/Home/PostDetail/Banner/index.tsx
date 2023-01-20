@@ -1,17 +1,17 @@
 import React, { useMemo } from 'react'
 import { Divider, Space, TagGroup, Tooltip, Typography } from '@douyinfe/semi-ui'
-import { AssociatedPost } from '@/utils/Request/Post'
 import styles from './index.module.scss'
 import { setUpYunImg } from '@/utils/tools'
 import classnames from 'classnames'
 import { formatDistanceToNow, format } from 'date-fns'
 import { zhCN } from 'date-fns/locale'
 import { TagGroupProps, TagProps } from '@douyinfe/semi-ui/lib/es/tag'
+import { FeAssociatedPost } from '../model'
 
 const { Title, Text } = Typography
 
 interface BannerProps {
-  post: AssociatedPost
+  post: FeAssociatedPost
 }
 
 const Banner = React.memo<BannerProps>(({ post }) => {

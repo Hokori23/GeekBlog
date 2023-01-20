@@ -244,22 +244,24 @@ const Edit = async (post: any, tids: number[]): Promise<Restful> => {
       tagTransaction,
     ])
 
-    // 广播新帖订阅邮件，仅LANDSCAPE/POST且非隐藏非草稿广播
-    if (
-      !newPost.isDraft &&
-      !newPost.isHidden &&
-      (newPost.type === PostType.LANDSCAPE || newPost.type === PostType.POST) &&
-      existedPost.type !== PostType.LANDSCAPE &&
-      existedPost.type !== PostType.POST
-    ) {
-      await BoardCastNewPost(
-        newPost.title || '',
-        `${blogConfig.publicPath}/${PostType[newPost.type as PostType]}/${String(newPost.id)}`,
-      )
-    }
+    /** 修改帖子为什么要进行广播呢？ */
+    // 广播新帖订阅邮件，仅LANDSCAPE/POST且非隐藏非草稿进行广播
+    // if (
+    //   !newPost.isDraft &&
+    //   !newPost.isHidden &&
+    //   (newPost.type === PostType.LANDSCAPE || newPost.type === PostType.POST) &&
+    //   existedPost.type !== PostType.LANDSCAPE &&
+    //   existedPost.type !== PostType.POST
+    // ) {
+    //   await BoardCastNewPost(
+    //     newPost.title || '',
+    //     `${blogConfig.publicPath}/${PostType[newPost.type as PostType]}/${String(newPost.id)}`,
+    //   )
+    // }
 
     await t.commit()
-    return new Restful(CodeDictionary.SUCCESS, '编辑成功', newPost.toJSON())
+    const res = await Action.RetrieveByID(existedPost.id)
+    return new Restful(CodeDictionary.SUCCESS, '编辑成功', res!.toJSON())
   } catch (e: any) {
     await t.rollback()
     return new Restful(CodeDictionary.COMMON_ERROR, `编辑失败, ${String(e.message)}`)

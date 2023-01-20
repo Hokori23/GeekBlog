@@ -7,6 +7,7 @@ import styles from './index.module.scss'
 import useAuth from '@/hooks/useAuth'
 import useService from './useService'
 import classnames from 'classnames'
+import { useUpdateEffect } from 'ahooks'
 
 // components
 import ScrollTop from '@/components/ScrollTop'
@@ -17,7 +18,18 @@ import CommentBox from './CommentBox'
 import CommentList from './CommentList'
 import Markdown, { EditorHandler } from '@/components/Markdown/Editor'
 import EditArea from './EditArea'
-import { EditByAdminRequest, Post } from '@/utils/Request/Post'
+import { AssociatedPost, PostRequest } from '@/utils/Request/Post'
+interface FeAssociatedPost
+  extends Omit<AssociatedPost, 'isLocked' | 'isDraft' | 'isHidden' | 'tags'> {
+  isLocked: boolean
+  isDraft: boolean
+  isHidden: boolean
+  tags: number[] | undefined
+}
+type FormType = Partial<{
+  post: FeAssociatedPost
+  tids: number[] | undefined
+}>
 
 const PostDetail = React.memo(() => {
   const navigate = useNavigate()
@@ -32,8 +44,32 @@ const PostDetail = React.memo(() => {
     onDelete: () => navigate(PathName.HOME),
   })
 
-  const formRef = useRef<Form>(null)
+  const formRef = useRef<Form<FormType>>(null)
   const markdownRef = useRef<EditorHandler | null>(null)
+
+  const { formInitValues, key } = useMemo(() => {
+    // 请求帖子完毕, 表单回显
+    if (!getPostService.loading && !editPostService.loading && post) {
+      const tags = post.tags?.map((v) => v.id!)
+      // format一下方便表单展示
+      return {
+        formInitValues: {
+          post: {
+            ...post,
+            isLocked: Boolean(post.isLocked),
+            isDraft: Boolean(post.isDraft),
+            isHidden: Boolean(post.isHidden),
+            tags,
+          },
+          tids: tags,
+        },
+        key: Date.now(),
+      }
+    } else {
+      // 请求不到
+      return { formInitValues: undefined, key: Date.now() }
+    }
+  }, [getPostService.loading, editPostService.loading, post])
 
   const Content = useMemo(
     () => (
@@ -49,6 +85,25 @@ const PostDetail = React.memo(() => {
     [post?.content, isEdit],
   )
 
+  const handleOnSave = () => {
+    const postContent = markdownRef.current?.getValue() || ''
+    const formValues = formRef.current?.formApi.getValues()
+    const _post = {
+      ...formInitValues,
+      ...(formValues?.post || {}),
+    }
+    const payload: PostRequest = {
+      post: {
+        ..._post,
+        isLocked: Number(_post.isLocked),
+        isDraft: Number(_post.isDraft),
+        isHidden: Number(_post.isHidden),
+        content: postContent,
+      },
+      tids: formValues?.tids,
+    }
+    editPostService.run(payload)
+  }
   return (
     <>
       <Row type='flex' justify='center' className={styles.postDetailWrapper}>
@@ -58,8 +113,10 @@ const PostDetail = React.memo(() => {
           ) : (
             post && (
               <>
-                <Form<Partial<EditByAdminRequest>>
+                <Form<FormType>
                   ref={formRef}
+                  key={key}
+                  initValues={formInitValues}
                   onValueChange={(e) => console.log(e)}
                 >
                   <Row type='flex' justify='center'>
@@ -72,7 +129,7 @@ const PostDetail = React.memo(() => {
                           isEdit={isEdit}
                           loading={editPostService.loading}
                           onChange={setIsEdit}
-                          onSave={() => editPostService.run(markdownRef.current?.getValue() || '')}
+                          onSave={handleOnSave}
                           onCancel={() => {
                             markdownRef.current?.refresh()
                             setIsEdit(false)

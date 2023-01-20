@@ -4,6 +4,7 @@ import React from 'react'
 
 const TagSelect = React.memo(() => {
   const getAllTagsOptionList = async () => {
+    console.log('request')
     const res = await PostTag.RetrieveAll()
     if (!res?.data) {
       return []
@@ -19,9 +20,13 @@ const TagSelect = React.memo(() => {
       field='tids'
       noLabel={true}
       multiple={true}
-      insetLabel='标签'
+      placeholder='标签'
       api={getAllTagsOptionList}
       style={{ width: 150 }}
+      maxTagCount={1}
+      showClear={true}
+      showRestTagsPopover={true}
+      ellipsisTrigger={true}
     />
   )
 })

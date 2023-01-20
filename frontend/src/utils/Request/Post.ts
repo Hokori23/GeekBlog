@@ -42,7 +42,7 @@ export interface Post {
 export type AssociatedPost = WithAuthor<WithPostTags<Post>>
 
 export interface EditedPost extends Post {
-  tags: Array<number | undefined>
+  tags: number[] | undefined
 }
 
 export interface Posts {
@@ -50,13 +50,7 @@ export interface Posts {
   total: number
 }
 
-export const Create = async ({
-  post,
-  tids,
-}: {
-  post: Partial<EditedPost>
-  tids: Array<number | undefined>
-}) => {
+export const Create = async ({ post, tids }: PostRequest) => {
   return await Request<Restful<AssociatedPost>>({
     method: 'POST',
     data: { post, tids },
@@ -146,13 +140,12 @@ export const RetrieveTag__Admin = async (
   })
 }
 
-export const Edit = async ({
-  post,
-  tids,
-}: {
+export interface PostRequest {
   post: Partial<EditedPost>
-  tids: Array<number | undefined>
-}) => {
+  tids: number[] | undefined
+}
+
+export const Edit = async ({ post, tids }: PostRequest) => {
   return await Request<Restful<AssociatedPost>>({
     method: 'POST',
     data: { post, tids },
@@ -160,12 +153,7 @@ export const Edit = async ({
   })
 }
 
-export interface EditByAdminRequest {
-  post: Partial<EditedPost>
-  tids: Array<number | undefined>
-}
-
-export const EditByAdmin = async ({ post, tids }: EditByAdminRequest) => {
+export const EditByAdmin = async ({ post, tids }: PostRequest) => {
   return await Request<Restful<AssociatedPost>>({
     method: 'POST',
     data: { post, tids },

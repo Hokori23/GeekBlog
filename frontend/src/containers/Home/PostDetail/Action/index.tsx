@@ -1,18 +1,14 @@
 import { store } from '@/store'
-import { AssociatedPost } from '@/utils/Request/Post'
-import { IconEyeOpened, IconComment, IconLikeThumb, IconDislikeThumb } from '@douyinfe/semi-icons'
-import { Avatar, Badge, Button, Col, Row, Space } from '@douyinfe/semi-ui'
-import { useRequest } from 'ahooks'
+import { IconEyeOpened, IconLikeThumb, IconDislikeThumb } from '@douyinfe/semi-icons'
+import { Badge, Button, Col, Row } from '@douyinfe/semi-ui'
 import classnames from 'classnames'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import styles from './index.module.scss'
-import Request from '@/utils/Request'
-import { CodeDictionary } from '@/utils/Request/type'
-import { upperFirst } from 'lodash-es'
+import { FeAssociatedPost } from '../model'
 
 interface ActionProps {
-  post: AssociatedPost
+  post: FeAssociatedPost
 }
 
 const Action = React.memo<ActionProps>(({ post }) => {

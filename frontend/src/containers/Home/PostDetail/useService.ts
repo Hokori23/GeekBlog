@@ -4,6 +4,7 @@ import { Request } from '@/utils'
 import { CodeDictionary } from '@/utils/Request/type'
 import { useSelector } from 'react-redux'
 import { RootState, store } from '@/store'
+import { PostRequest } from '@/utils/Request/Post'
 
 export default ({
   id,
@@ -24,17 +25,8 @@ export default ({
     }
   })
   const editPostService = useRequest(
-    async (content = '') => {
-      const tags = post?.tags.map((v) => v.id) || []
-      const newPost = {
-        ...post!,
-        content,
-        tags,
-      }
-      const res = await Request.Post.EditByAdmin({
-        post: newPost,
-        tids: tags,
-      })
+    async (payload: PostRequest) => {
+      const res = await Request.Post.EditByAdmin(payload)
       if (res?.code === CodeDictionary.SUCCESS && res?.data) {
         Notification.success({
           content: res.message,

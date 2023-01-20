@@ -11,6 +11,7 @@ const PriorityInput = React.memo(() => {
       field='post.priority'
       placeholder='优先级'
       noLabel={true}
+      showClear={true}
       size={isMobileSize ? 'small' : 'default'}
     />
   )

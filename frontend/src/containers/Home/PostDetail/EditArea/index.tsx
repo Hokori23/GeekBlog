@@ -82,12 +82,9 @@ const EditArea = React.memo<{
   }, [isEdit, loading, buttonSize])
 
   const PostForm = useMemo(() => {
-    if (!isEdit) {
-      return null
-    }
     if (isMobileSize) {
       return (
-        <div>
+        <div style={{ display: isEdit ? 'block' : 'none' }}>
           <Space wrap={true}>
             <TagSelect />
             <Divider layout='vertical' style={{ margin: '0 8px' }} />
@@ -107,7 +104,7 @@ const EditArea = React.memo<{
       )
     }
     return (
-      <div>
+      <div style={{ display: isEdit ? 'block' : 'none' }}>
         <Space wrap={true}>
           <TagSelect />
           <Divider layout='vertical' style={{ margin: '0 8px' }} />
