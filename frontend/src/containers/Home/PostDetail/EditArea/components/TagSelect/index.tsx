@@ -4,7 +4,6 @@ import React from 'react'
 
 const TagSelect = React.memo(() => {
   const getAllTagsOptionList = async () => {
-    console.log('request')
     const res = await PostTag.RetrieveAll()
     if (!res?.data) {
       return []

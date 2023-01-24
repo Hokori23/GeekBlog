@@ -21,6 +21,8 @@ import EditArea from './EditArea'
 import { AssociatedPost, PostRequest } from '@/utils/Request/Post'
 import { RootState } from '@/store'
 import { useSelector } from 'react-redux'
+import { isNil } from 'lodash-es'
+import NotFoundPage from '@/containers/NotFoundPage'
 interface FeAssociatedPost
   extends Omit<AssociatedPost, 'isLocked' | 'isDraft' | 'isHidden' | 'tags'> {
   isLocked: boolean
@@ -109,6 +111,10 @@ const PostDetail = React.memo(() => {
       tids: formValues?.tids,
     }
     editPostService.run(payload)
+  }
+
+  if (isNil(id)) {
+    return <NotFoundPage />
   }
   return (
     <>

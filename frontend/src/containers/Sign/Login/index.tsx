@@ -8,6 +8,7 @@ import { User } from '@/utils/Request/User'
 import { IconLock, IconUser } from '@douyinfe/semi-icons'
 import { useSelector } from 'react-redux'
 import { RootState, store } from '@/store'
+import { SS_KEYS } from '@/utils/const'
 
 const { Title, Text } = Typography
 
@@ -31,14 +32,21 @@ const Login = React.memo(() => {
           dispatch.setToken(res.data.token)
           const { destroy } = Modal.info({
             title: '提示',
-            content: '登陆成功，正在跳转到首页',
+            content: '登陆成功，正在跳转...',
             footer: <div style={{ padding: 8 }} />,
             closable: false,
             afterClose: () => {
               dispatch.login()
-              navigate(`${PathName.HOME}`, {
-                replace: true,
-              })
+              const redirectUrl = sessionStorage.getItem(SS_KEYS.LOGIN_REDIRECT_URL)
+              if (redirectUrl) {
+                navigate(redirectUrl, {
+                  replace: true,
+                })
+              } else {
+                navigate(`${PathName.HOME}`, {
+                  replace: true,
+                })
+              }
             },
             hasCancel: false,
           })

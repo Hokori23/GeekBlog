@@ -57,7 +57,6 @@ export const FormRemoteSelect = React.memo<FormRemoteSelectProps>(
     const onFocus = lazy
       ? () => {
           if (!data) {
-            console.log('onFocus')
             run()
           }
         }

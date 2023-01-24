@@ -4,6 +4,10 @@ export enum LS_KEYS {
   BLOG_CONFIG = 'BLOG_CONFIG',
 }
 
+export enum SS_KEYS {
+  LOGIN_REDIRECT_URL = 'LOGIN_REDIRECT_URL',
+}
+
 export const UPYUN_URL = 'https://upyun.hokori.online'
 export const REQUEST_WHITE_LIST: RegExp[] = [/^https:\/\/v0.api.upyun.com/]
 export const isDev = import.meta.env.DEV

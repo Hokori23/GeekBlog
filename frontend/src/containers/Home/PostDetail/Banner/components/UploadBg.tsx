@@ -72,7 +72,7 @@ const UploadBg = React.memo<{ coverUrl?: string }>(({ coverUrl }) => {
         {isMobileSize ? null : '上传背景图'}
       </Button>
       <Modal
-        size={isMobileSize ? 'full-width' : 'small'}
+        size={isMobileSize ? 'full-width' : 'medium'}
         visible={uploadModalVisible}
         title='上传背景图'
         onCancel={() => setUploadModalVisible(false)}

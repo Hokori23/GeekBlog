@@ -25,6 +25,7 @@ import isEmail from 'validator/lib/isEmail'
 import { useMobileSize } from '@/hooks/useScreenSize'
 import classnames from 'classnames'
 import { AssociatedPost } from '@/utils/Request/Post'
+import { SS_KEYS } from '@/utils/const'
 
 const { Text, Title } = Typography
 
@@ -97,6 +98,12 @@ const CommentBox = React.memo<CommentBoxProps>(({ post }) => {
     }
   }, [isMobileSize])
 
+  const handleToLogin = () => {
+    const { pathname, search } = window.location
+    sessionStorage.setItem(SS_KEYS.LOGIN_REDIRECT_URL, `${pathname}${search}`)
+    navigate(PathName.LOGIN)
+  }
+
   return (
     <Row type='flex' justify='center' style={{ marginBottom: 20 }}>
       <Col span={23} md={18} xl={14} xxl={12} style={{ position: 'relative' }}>
@@ -108,7 +115,7 @@ const CommentBox = React.memo<CommentBoxProps>(({ post }) => {
           headerExtraContent={
             !isLogin && (
               <Row type='flex' justify='center'>
-                <Text className={styles.link} link onClick={() => navigate(PathName.LOGIN)}>
+                <Text className={styles.link} link onClick={handleToLogin}>
                   {/* TODO: 登录后跳回此处 */}
                   <Title heading={6}>前往登录账号</Title>
                 </Text>
@@ -183,13 +190,15 @@ const CommentBox = React.memo<CommentBoxProps>(({ post }) => {
             <Form.TextArea
               field='content'
               label={
-                isLogin && (
+                isLogin ? (
                   <Avatar
                     alt={userInfo?.userName}
                     size='small'
                     src={userInfo?.avatarUrl}
                     style={{ marginRight: 12 }}
                   />
+                ) : (
+                  '内容'
                 )
               }
               autosize

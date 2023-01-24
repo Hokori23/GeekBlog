@@ -1,5 +1,5 @@
-import { FC } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { PathName } from '@/routes'
 import styles from './index.module.scss'
 import notFoundPageSvg from '@/static/svg/404.json'
@@ -10,7 +10,8 @@ import { IconArrowLeft } from '@douyinfe/semi-icons'
 
 const { Title } = Typography
 
-const NotFoundPage: FC<RouteComponentProps> = ({ history }) => {
+const NotFoundPage = React.memo(() => {
+  const navigate = useNavigate()
   const { ref: animationDOM } = useAnimation(notFoundPageSvg)
 
   const isMobileSize = useMobileSize()
@@ -21,7 +22,7 @@ const NotFoundPage: FC<RouteComponentProps> = ({ history }) => {
         <Button
           aria-label='back'
           onClick={() => {
-            history.goBack()
+            navigate(-1)
           }}
           theme='borderless'
           icon={<IconArrowLeft />}
@@ -42,7 +43,7 @@ const NotFoundPage: FC<RouteComponentProps> = ({ history }) => {
             theme='solid'
             aria-label='home'
             style={{ marginTop: 20 }}
-            onClick={() => history.push(PathName.HOME)}
+            onClick={() => navigate(PathName.HOME)}
           >
             返回首页
           </Button>
@@ -51,5 +52,6 @@ const NotFoundPage: FC<RouteComponentProps> = ({ history }) => {
       </div>
     </div>
   )
-}
-export default withRouter(NotFoundPage)
+})
+
+export default NotFoundPage
